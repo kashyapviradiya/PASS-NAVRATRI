@@ -51,7 +51,6 @@ export default function Footer() {
             © 2026 RaasPass. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <span className="text-gray-400 text-sm font-[500]">Made for seamless event experiences.</span>
           </div>
         </div>
       </div>
