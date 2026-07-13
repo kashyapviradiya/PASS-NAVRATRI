@@ -11,15 +11,16 @@ export async function GET() {
     const batch = adminDb.batch();
 
     // 1. Seed Demo Scanner Staff
-    const scannerMobile = '9999999999';
+    const staffEmail = 'staff@royalevents.com';
     const scannerStaffRef = adminDb.collection('staff').doc('demo-scanner');
     
     batch.set(scannerStaffRef, {
       id: 'demo-scanner',
       name: 'Demo Scanner',
-      mobile: scannerMobile,
+      email: staffEmail,
+      mobile: '9999999999',
       passwordHash: await bcrypt.hash('scanner123', 10),
-      role: 'scanner',
+      role: 'scanner_staff',
       active: true,
       assignedGates: ['VIP Gate', 'Main Entry'],
       assignedEvents: ['demo-event-1'], // Will be created below
@@ -36,6 +37,8 @@ export async function GET() {
       email: organizerEmail,
       phone: '8888888888',
       passwordHash: await bcrypt.hash('organizer123', 10),
+      role: 'organizer',
+      active: true,
       status: 'active',
       createdAt: new Date().toISOString()
     });
@@ -89,7 +92,7 @@ export async function GET() {
       success: true, 
       message: 'Demo data seeded successfully!',
       credentials: {
-        scanner: { mobile: scannerMobile, password: 'scanner123' },
+        scanner: { email: staffEmail, password: 'scanner123' },
         organizer: { email: organizerEmail, password: 'organizer123' }
       },
       eventId: 'demo-event-1'

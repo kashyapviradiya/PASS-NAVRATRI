@@ -21,9 +21,10 @@ export async function POST(request: NextRequest) {
         payload = { id: 'admin-1', role: 'admin', name: 'Super Admin', email };
       }
     } else {
-      // Verify Organizer or Staff from Firestore
+      // Verify Staff (Organizers have their own endpoint)
+      const collectionName = role === 'scanner_staff' ? 'staff' : 'users';
       const usersSnapshot = await adminDb
-        .collection('users')
+        .collection(collectionName)
         .where('email', '==', email.toLowerCase())
         .where('role', '==', role)
         .limit(1)
