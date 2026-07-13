@@ -80,7 +80,7 @@ export default function SystemTest() {
 
         <div className="bg-white rounded-[1.5rem] p-6 border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col items-start gap-4">
           <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center">
-            <RotateCcw className="w-6 h-6 text-[#E53935]" />
+            <RotateCcw className="w-6 h-6 text-[#9333EA]" />
           </div>
           <div>
             <h2 className="text-lg font-[800] text-[#111111]">Reset Demo Data</h2>
@@ -89,7 +89,7 @@ export default function SystemTest() {
           <button 
             onClick={handleReset}
             disabled={loadingReset}
-            className="w-full bg-white border border-gray-200 text-[#E53935] px-5 py-3 rounded-xl font-[800] text-sm shadow-sm hover:bg-red-50 transition-all flex justify-center items-center gap-2 mt-auto disabled:opacity-70"
+            className="w-full bg-white border border-gray-200 text-[#9333EA] px-5 py-3 rounded-xl font-[800] text-sm shadow-sm hover:bg-red-50 transition-all flex justify-center items-center gap-2 mt-auto disabled:opacity-70"
           >
             {loadingReset ? <Loader2 className="w-4 h-4 animate-spin" /> : <RotateCcw className="w-4 h-4" />}
             Reset Demo Data

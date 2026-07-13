@@ -39,7 +39,7 @@ export default function TicketSelectionPage({ params }: { params: { id: string }
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F7F7F8] flex items-center justify-center pt-[80px]">
-        <div className="w-16 h-16 border-4 border-[#E53935] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-16 h-16 border-4 border-[#9333EA] border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -81,7 +81,7 @@ export default function TicketSelectionPage({ params }: { params: { id: string }
   };
 
   return (
-    <div className="bg-[#F7F7F8] min-h-screen pt-[100px] pb-32 font-sans selection:bg-[#E53935] selection:text-white">
+    <div className="bg-[#F7F7F8] min-h-screen pt-[100px] pb-32 font-sans selection:bg-[#9333EA] selection:text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* HEADER */}
@@ -99,7 +99,7 @@ export default function TicketSelectionPage({ params }: { params: { id: string }
                 key={pass.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`bg-white rounded-3xl p-6 md:p-8 border ${selectedPasses[pass.id] > 0 ? 'border-[#E53935] shadow-md shadow-red-500/5' : 'border-gray-200'} transition-all`}
+                className={`bg-white rounded-3xl p-6 md:p-8 border ${selectedPasses[pass.id] > 0 ? 'border-[#9333EA] shadow-md shadow-purple-500/5' : 'border-gray-200'} transition-all`}
               >
                 <div className="flex flex-col md:flex-row justify-between gap-6">
                   <div className="flex-1">
@@ -109,7 +109,7 @@ export default function TicketSelectionPage({ params }: { params: { id: string }
                         <span className="bg-red-50 text-red-600 text-[10px] font-bold px-2 py-1 rounded-md">Only {pass.available} Left</span>
                       )}
                     </div>
-                    <p className="text-[#E53935] font-[800] text-xl mb-4">{formatCurrency(pass.price)}</p>
+                    <p className="text-[#9333EA] font-[800] text-xl mb-4">{formatCurrency(pass.price)}</p>
                     
                     <ul className="space-y-2 mb-6">
                       {(pass.benefits || []).map((benefit: string, idx: number) => (
@@ -166,7 +166,7 @@ export default function TicketSelectionPage({ params }: { params: { id: string }
                 </div>
               </div>
               <div className="flex items-start gap-2 bg-[#F7F7F8] p-3 rounded-xl border border-gray-100">
-                <MapPin className="w-4 h-4 text-[#E53935] shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-[#9333EA] shrink-0 mt-0.5" />
                 <p className="text-xs font-[600] text-[#111111]">{event.venue}</p>
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function TicketSelectionPage({ params }: { params: { id: string }
               <div className="flex justify-between items-end mb-8">
                 <div>
                   <p className="text-xs font-[800] text-gray-400 uppercase tracking-widest mb-1">Total Amount</p>
-                  <p className="text-3xl font-[800] text-[#E53935] tracking-tight">{formatCurrency(totalAmount)}</p>
+                  <p className="text-3xl font-[800] text-[#9333EA] tracking-tight">{formatCurrency(totalAmount)}</p>
                 </div>
               </div>
 

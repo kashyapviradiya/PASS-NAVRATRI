@@ -98,7 +98,7 @@ export default function OrganizerStaff() {
         <div className="overflow-x-auto">
           {loading ? (
              <div className="flex h-64 items-center justify-center">
-               <Loader2 className="w-8 h-8 text-[#E53935] animate-spin" />
+               <Loader2 className="w-8 h-8 text-[#9333EA] animate-spin" />
              </div>
           ) : staff.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -109,7 +109,7 @@ export default function OrganizerStaff() {
               <p className="text-gray-500 font-[500] text-sm mt-1 max-w-sm mb-6">Create credentials for your event staff so they can use the RaasPass Scanner app.</p>
               <button 
                 onClick={() => setIsAddModalOpen(true)}
-                className="bg-[#E53935] text-white px-6 py-3 rounded-xl font-[800] text-sm shadow-[0_0_20px_rgba(229,57,53,0.2)] hover:bg-[#D32F2F] transition-all"
+                className="bg-[#9333EA] text-white px-6 py-3 rounded-xl font-[800] text-sm shadow-[0_0_20px_rgba(229,57,53,0.2)] hover:bg-[#7E22CE] transition-all"
               >
                 Create Staff Account
               </button>
@@ -158,7 +158,7 @@ export default function OrganizerStaff() {
                     <td className="px-6 py-4">
                       <div className="flex flex-wrap gap-1">
                         {(s.assignedGates || []).map((g: string) => (
-                          <span key={g} className="px-2 py-1 text-[10px] font-[800] bg-[#E53935]/10 text-[#E53935] rounded-md border border-[#E53935]/20 flex items-center gap-1">
+                          <span key={g} className="px-2 py-1 text-[10px] font-[800] bg-[#9333EA]/10 text-[#9333EA] rounded-md border border-[#9333EA]/20 flex items-center gap-1">
                             <MapPin className="w-3 h-3" /> {g}
                           </span>
                         ))}
@@ -185,7 +185,7 @@ export default function OrganizerStaff() {
                 <p className="text-xs font-[600] text-gray-500 mt-1">Create credentials for the RaasPass Scanner App</p>
               </div>
               <div className="w-12 h-12 bg-white rounded-xl border border-gray-100 flex items-center justify-center shadow-sm">
-                <ShieldAlert className="w-6 h-6 text-[#E53935]" />
+                <ShieldAlert className="w-6 h-6 text-[#9333EA]" />
               </div>
             </div>
             
@@ -198,7 +198,7 @@ export default function OrganizerStaff() {
                     value={name}
                     onChange={e => setName(e.target.value)}
                     required
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 focus:border-[#E53935] font-[500] text-sm"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
                     placeholder="e.g. Rahul Sharma"
                   />
                 </div>
@@ -209,7 +209,7 @@ export default function OrganizerStaff() {
                     value={mobile}
                     onChange={e => setMobile(e.target.value)}
                     required
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 focus:border-[#E53935] font-[500] text-sm"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
                     placeholder="10 digit mobile"
                   />
                 </div>
@@ -224,7 +224,7 @@ export default function OrganizerStaff() {
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required
-                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 focus:border-[#E53935] font-[500] text-sm"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
                     placeholder="Set a secure password"
                   />
                 </div>
@@ -237,7 +237,7 @@ export default function OrganizerStaff() {
                   value={assignedEventsStr}
                   onChange={e => setAssignedEventsStr(e.target.value)}
                   required
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 focus:border-[#E53935] font-[500] text-sm"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
                   placeholder="e.g. evt-ahmedabad-royal-garba (comma separated)"
                 />
                 <p className="text-[10px] text-gray-400 font-[600] mt-1.5">Only include events assigned to you.</p>
@@ -250,7 +250,7 @@ export default function OrganizerStaff() {
                   value={assignedGatesStr}
                   onChange={e => setAssignedGatesStr(e.target.value)}
                   required
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 focus:border-[#E53935] font-[500] text-sm"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
                   placeholder="e.g. VIP Gate, Gate 1, Gate 2 (comma separated)"
                 />
               </div>
@@ -266,7 +266,7 @@ export default function OrganizerStaff() {
                 <button 
                   type="submit"
                   disabled={adding}
-                  className="flex-1 px-4 py-3 bg-[#E53935] text-white font-[800] rounded-xl hover:bg-[#D32F2F] shadow-[0_0_20px_rgba(229,57,53,0.2)] transition-all text-sm disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-3 bg-[#9333EA] text-white font-[800] rounded-xl hover:bg-[#7E22CE] shadow-[0_0_20px_rgba(229,57,53,0.2)] transition-all text-sm disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {adding ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create Account'}
                 </button>

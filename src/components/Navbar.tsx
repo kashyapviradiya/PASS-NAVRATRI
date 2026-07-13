@@ -50,11 +50,11 @@ export default function Navbar() {
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <Link key={link.name} href={link.href} className={`text-[15px] font-[700] tracking-wide transition-colors text-[#111111] hover:text-[#E53935]`}>
+              <Link key={link.name} href={link.href} className={`text-[15px] font-[700] tracking-wide transition-colors text-[#111111] hover:text-[#9333EA]`}>
                 {link.name}
               </Link>
             ))}
-            <Link href="/events" className="ml-2 px-7 py-2.5 bg-[#E53935] text-white font-[700] rounded-xl hover:shadow-[0_8px_16px_-6px_rgba(229,57,53,0.4)] hover:-translate-y-0.5 transition-all duration-300 text-[15px]">
+            <Link href="/events" className="ml-2 px-7 py-2.5 bg-[#9333EA] text-white font-[700] rounded-xl hover:shadow-[0_8px_16px_-6px_rgba(229,57,53,0.4)] hover:-translate-y-0.5 transition-all duration-300 text-[15px]">
               Book Pass
             </Link>
           </div>
@@ -77,12 +77,12 @@ export default function Navbar() {
           >
             <div className="px-6 pt-2 pb-8 space-y-2 shadow-inner">
               {navLinks.map((link) => (
-                <Link key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="block px-4 py-3 text-[#111111] hover:bg-gray-50 hover:text-[#E53935] rounded-xl font-[800] transition-colors">
+                <Link key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="block px-4 py-3 text-[#111111] hover:bg-gray-50 hover:text-[#9333EA] rounded-xl font-[800] transition-colors">
                   {link.name}
                 </Link>
               ))}
               <div className="pt-6 px-4">
-                <Link href="/events" onClick={() => setIsOpen(false)} className="block w-full text-center px-6 py-4 bg-gradient-to-r from-[#E53935] to-[#D32F2F] text-white font-[800] rounded-xl shadow-lg shadow-red-500/20">
+                <Link href="/events" onClick={() => setIsOpen(false)} className="block w-full text-center px-6 py-4 bg-gradient-to-r from-[#9333EA] to-[#7E22CE] text-white font-[800] rounded-xl shadow-lg shadow-purple-500/20">
                   Book Pass
                 </Link>
               </div>

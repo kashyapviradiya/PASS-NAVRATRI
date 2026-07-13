@@ -93,7 +93,7 @@ export default function AdminDashboard() {
           <Link href="/" target="_blank" className="flex items-center gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition-colors">
             <ExternalLink className="w-4 h-4" /> Public Site
           </Link>
-          <Link href="/admin/events/new" className="flex items-center gap-2 bg-navratri-primary text-white hover:bg-red-700 px-4 py-2 rounded-xl text-sm font-bold shadow-sm shadow-red-500/20 transition-all">
+          <Link href="/admin/events/new" className="flex items-center gap-2 bg-navratri-primary text-white hover:bg-red-700 px-4 py-2 rounded-xl text-sm font-bold shadow-sm shadow-purple-500/20 transition-all">
             <Plus className="w-4 h-4" /> Create Event
           </Link>
         </div>

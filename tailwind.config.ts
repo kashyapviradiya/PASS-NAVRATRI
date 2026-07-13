@@ -10,12 +10,12 @@ const config: Config = {
     extend: {
       colors: {
         navratri: {
-          primary: "#5A0000",
-          secondary: "#8B0000",
-          accent: "#FF8C00",
-          gold: "#D4AF37",
-          softgold: "#F2D27A",
-          bg: "#FFFDF8",
+          primary: "#9333EA",
+          secondary: "#7E22CE",
+          accent: "#A855F7",
+          gold: "#D8B4FE",
+          softgold: "#F3E8FF",
+          bg: "#FFFFFF",
           text: "#111111",
         },
       },

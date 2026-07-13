@@ -37,7 +37,7 @@ export default function BookingSuccess({ params }: { params: { bookingId: string
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F7F7F8] flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-[#E53935] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-16 h-16 border-4 border-[#9333EA] border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -47,7 +47,7 @@ export default function BookingSuccess({ params }: { params: { bookingId: string
   const { event, customerName, totalAmount, bookingId, passes, demo } = orderDetails;
 
   return (
-    <div className="bg-[#F7F7F8] min-h-screen flex items-center justify-center p-4 font-sans selection:bg-[#E53935] selection:text-white py-20 pt-[100px]">
+    <div className="bg-[#F7F7F8] min-h-screen flex items-center justify-center p-4 font-sans selection:bg-[#9333EA] selection:text-white py-20 pt-[100px]">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -16,7 +16,7 @@ export default function ContactPage() {
             <div className="space-y-8">
               <div className="flex gap-4">
                 <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center shrink-0">
-                  <Mail className="w-6 h-6 text-[#E53935]" />
+                  <Mail className="w-6 h-6 text-[#9333EA]" />
                 </div>
                 <div>
                   <h3 className="text-xs font-[800] text-gray-400 uppercase tracking-widest mb-1">Email Support</h3>
@@ -27,7 +27,7 @@ export default function ContactPage() {
 
               <div className="flex gap-4">
                 <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center shrink-0">
-                  <Phone className="w-6 h-6 text-[#E53935]" />
+                  <Phone className="w-6 h-6 text-[#9333EA]" />
                 </div>
                 <div>
                   <h3 className="text-xs font-[800] text-gray-400 uppercase tracking-widest mb-1">Phone Support</h3>
@@ -38,7 +38,7 @@ export default function ContactPage() {
 
               <div className="flex gap-4">
                 <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center shrink-0">
-                  <MapPin className="w-6 h-6 text-[#E53935]" />
+                  <MapPin className="w-6 h-6 text-[#9333EA]" />
                 </div>
                 <div>
                   <h3 className="text-xs font-[800] text-gray-400 uppercase tracking-widest mb-1">Office Address</h3>
@@ -58,15 +58,15 @@ export default function ContactPage() {
             <form className="space-y-6">
               <div>
                 <label className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-2 block">Full Name</label>
-                <input type="text" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#E53935] focus:ring-1 focus:ring-[#E53935] outline-none transition-all font-[600]" placeholder="Your Name" />
+                <input type="text" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#9333EA] focus:ring-1 focus:ring-[#9333EA] outline-none transition-all font-[600]" placeholder="Your Name" />
               </div>
               <div>
                 <label className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-2 block">Email Address</label>
-                <input type="email" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#E53935] focus:ring-1 focus:ring-[#E53935] outline-none transition-all font-[600]" placeholder="you@example.com" />
+                <input type="email" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#9333EA] focus:ring-1 focus:ring-[#9333EA] outline-none transition-all font-[600]" placeholder="you@example.com" />
               </div>
               <div>
                 <label className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-2 block">Message</label>
-                <textarea rows={4} className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#E53935] focus:ring-1 focus:ring-[#E53935] outline-none transition-all font-[600]" placeholder="How can we help?"></textarea>
+                <textarea rows={4} className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#9333EA] focus:ring-1 focus:ring-[#9333EA] outline-none transition-all font-[600]" placeholder="How can we help?"></textarea>
               </div>
               <button type="button" className="w-full px-8 py-4 bg-[#111111] text-white font-[800] rounded-2xl hover:bg-black transition-all shadow-lg hover:-translate-y-0.5">
                 Send Message

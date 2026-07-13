@@ -41,7 +41,7 @@ export default function Home() {
       {/* 1. HERO SECTION */}
       <section className="relative min-h-[calc(100vh-88px)] flex items-center justify-center bg-white pt-10 pb-24 border-b border-gray-100">
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#E53935]/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#9333EA]/5 rounded-full blur-3xl"></div>
         </div>
         
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,7 +56,7 @@ export default function Home() {
             >
               <h1 className="text-5xl md:text-[64px] font-sans font-[800] text-[#111111] leading-[1.1] tracking-tight">
                 Discover Gujarat’s <br/>
-                <span className="text-[#E53935]">Best Events</span>
+                <span className="text-[#9333EA]">Best Events</span>
               </h1>
               
               <p className="text-xl text-[#6B7280] font-[500] max-w-lg leading-relaxed">
@@ -64,7 +64,7 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <Link href="/events" className="px-8 py-4 bg-[#E53935] text-white font-[800] rounded-2xl hover:bg-[#D32F2F] hover:-translate-y-0.5 transition-all shadow-lg text-[16px] text-center flex items-center justify-center gap-2">
+                <Link href="/events" className="px-8 py-4 bg-[#9333EA] text-white font-[800] rounded-2xl hover:bg-[#7E22CE] hover:-translate-y-0.5 transition-all shadow-lg text-[16px] text-center flex items-center justify-center gap-2">
                   Explore Events
                 </Link>
                 <Link href="/my-tickets" className="px-8 py-4 bg-white border border-gray-200 text-[#111111] font-[800] rounded-2xl hover:bg-gray-50 transition-all text-[16px] text-center">
@@ -79,7 +79,7 @@ export default function Home() {
                   { text: 'Fast Event Entry' },
                 ].map((badge, i) => (
                   <div key={i} className="flex items-center gap-2 text-sm text-[#111111] font-[700]">
-                    <CheckCircle className="w-5 h-5 text-[#E53935]" />
+                    <CheckCircle className="w-5 h-5 text-[#9333EA]" />
                     <span>{badge.text}</span>
                   </div>
                 ))}
@@ -155,7 +155,7 @@ export default function Home() {
                   transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: 0.5 }}
                   className="absolute -right-2 xl:-right-4 top-16 xl:top-20 z-20 bg-[#111111] text-white rounded-xl px-4 py-2 xl:px-5 xl:py-3 shadow-xl flex items-center gap-2"
                 >
-                  <Star className="w-3 h-3 xl:w-4 xl:h-4 text-[#E53935] fill-current" />
+                  <Star className="w-3 h-3 xl:w-4 xl:h-4 text-[#9333EA] fill-current" />
                   <span className="text-[10px] xl:text-xs font-[800] uppercase tracking-widest">Sold Out</span>
                 </motion.div>
 
@@ -215,9 +215,9 @@ export default function Home() {
             ].map((s, i) => (
               <div key={i} className="bg-[#F7F7F8] rounded-[2rem] p-10 text-center relative overflow-hidden group hover:-translate-y-1 transition-transform">
                 <div className="w-16 h-16 mx-auto bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                  <s.icon className="w-8 h-8 text-[#E53935]" />
+                  <s.icon className="w-8 h-8 text-[#9333EA]" />
                 </div>
-                <p className="text-[10px] font-[800] text-[#E53935] uppercase tracking-widest mb-2">{s.step}</p>
+                <p className="text-[10px] font-[800] text-[#9333EA] uppercase tracking-widest mb-2">{s.step}</p>
                 <h3 className="text-2xl font-[800] text-[#111111] mb-4">{s.title}</h3>
                 <p className="text-[#6B7280] font-[500] leading-relaxed">{s.desc}</p>
               </div>
@@ -308,7 +308,7 @@ export default function Home() {
                 ].map((item, i) => (
                   <div key={i} className="flex flex-col gap-3">
                     <div className="w-12 h-12 bg-[#F7F7F8] rounded-full flex items-center justify-center">
-                      <item.icon className="w-6 h-6 text-[#E53935]" />
+                      <item.icon className="w-6 h-6 text-[#9333EA]" />
                     </div>
                     <span className="font-[800] text-[#111111]">{item.text}</span>
                   </div>
@@ -348,7 +348,7 @@ export default function Home() {
                 className="w-full flex items-center justify-between p-6 text-left"
               >
                 <span className="font-[800] text-[#111111] text-lg">{faq.q}</span>
-                {openFaq === idx ? <ChevronUp className="w-6 h-6 text-[#E53935]" /> : <ChevronDown className="w-6 h-6 text-gray-400" />}
+                {openFaq === idx ? <ChevronUp className="w-6 h-6 text-[#9333EA]" /> : <ChevronDown className="w-6 h-6 text-gray-400" />}
               </button>
               <AnimatePresence>
                 {openFaq === idx && (

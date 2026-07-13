@@ -76,7 +76,7 @@ export default function OrganizerBookings() {
               placeholder="Search by Booking ID, Name or Mobile..." 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 focus:border-[#E53935] text-sm font-[500] transition-all"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] text-sm font-[500] transition-all"
             />
           </div>
           
@@ -84,7 +84,7 @@ export default function OrganizerBookings() {
             <select 
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-[600] text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 w-full md:w-auto outline-none"
+              className="bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-[600] text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 w-full md:w-auto outline-none"
             >
               <option value="all">All Statuses</option>
               <option value="paid">Paid</option>
@@ -98,7 +98,7 @@ export default function OrganizerBookings() {
         <div className="overflow-x-auto">
           {loading ? (
              <div className="flex h-64 items-center justify-center">
-               <Loader2 className="w-8 h-8 text-[#E53935] animate-spin" />
+               <Loader2 className="w-8 h-8 text-[#9333EA] animate-spin" />
              </div>
           ) : filteredBookings.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -125,7 +125,7 @@ export default function OrganizerBookings() {
                 {filteredBookings.map((booking: any) => (
                   <tr key={booking.id} className="hover:bg-gray-50/50 transition-colors group">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-mono text-sm font-[800] text-[#E53935]">{booking.id}</div>
+                      <div className="font-mono text-sm font-[800] text-[#9333EA]">{booking.id}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-[700] text-[#111111]">{booking.customerName}</div>
@@ -149,7 +149,7 @@ export default function OrganizerBookings() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button className="p-2 text-gray-400 hover:text-[#E53935] hover:bg-red-50 rounded-lg transition-colors inline-flex items-center justify-center" title="View Details">
+                      <button className="p-2 text-gray-400 hover:text-[#9333EA] hover:bg-red-50 rounded-lg transition-colors inline-flex items-center justify-center" title="View Details">
                         <Eye className="w-4 h-4" />
                       </button>
                     </td>

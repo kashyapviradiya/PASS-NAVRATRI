@@ -81,7 +81,7 @@ export default function AdminEventsPage() {
           <h1 className="text-2xl font-serif font-bold text-gray-900">Events Hub</h1>
           <p className="text-gray-500 text-sm">Manage all your events and inventory</p>
         </div>
-        <Link href="/admin/events/new" className="bg-navratri-primary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-red-700 transition-all shadow-md shadow-red-500/20">
+        <Link href="/admin/events/new" className="bg-navratri-primary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-red-700 transition-all shadow-md shadow-purple-500/20">
           <Plus className="w-4 h-4" /> Create Event
         </Link>
       </div>

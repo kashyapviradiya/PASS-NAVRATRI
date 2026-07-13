@@ -136,7 +136,7 @@ export default function ScannerDashboard() {
   const getStatusColor = () => {
     switch (scanResult) {
       case 'valid': return 'from-green-500 to-green-600 shadow-green-500/20';
-      case 'invalid': return 'from-red-500 to-red-600 shadow-red-500/20';
+      case 'invalid': return 'from-red-500 to-red-600 shadow-purple-500/20';
       case 'already_used': return 'from-amber-500 to-amber-600 shadow-amber-500/20';
       case 'cancelled': return 'from-gray-500 to-gray-600 shadow-gray-500/20';
       default: return 'from-navratri-primary to-navratri-text shadow-navratri-primary/20';

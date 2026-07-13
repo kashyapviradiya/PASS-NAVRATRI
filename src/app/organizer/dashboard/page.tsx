@@ -65,7 +65,7 @@ export default function OrganizerDashboard() {
   if (loading) {
     return (
       <div className="flex h-[calc(100vh-4rem)] items-center justify-center bg-[#F7F7F8]">
-        <Loader2 className="w-8 h-8 text-[#E53935] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#9333EA] animate-spin" />
       </div>
     );
   }
@@ -96,7 +96,7 @@ export default function OrganizerDashboard() {
 
         <div className="bg-white p-6 rounded-[1.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-md transition-shadow">
           <div className="flex justify-between items-start mb-4">
-            <div className="w-12 h-12 bg-[#E53935]/10 rounded-xl flex items-center justify-center text-[#E53935]">
+            <div className="w-12 h-12 bg-[#9333EA]/10 rounded-xl flex items-center justify-center text-[#9333EA]">
               <Ticket className="w-6 h-6" />
             </div>
           </div>
@@ -164,10 +164,10 @@ export default function OrganizerDashboard() {
                 <Tooltip 
                   contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
                   labelStyle={{ fontWeight: 700, color: '#111111' }}
-                  itemStyle={{ fontWeight: 600, color: '#E53935' }}
+                  itemStyle={{ fontWeight: 600, color: '#9333EA' }}
                   cursor={{ fill: '#F3F4F6' }}
                 />
-                <Bar dataKey="tickets" fill="#E53935" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="tickets" fill="#9333EA" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

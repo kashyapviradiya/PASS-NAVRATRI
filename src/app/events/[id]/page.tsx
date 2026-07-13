@@ -41,7 +41,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F7F7F8] flex items-center justify-center pt-[80px]">
-        <div className="w-16 h-16 border-4 border-[#E53935] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-16 h-16 border-4 border-[#9333EA] border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -89,7 +89,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
             className="max-w-3xl space-y-4"
           >
             <div className="flex flex-wrap items-center gap-3">
-              <span className="bg-[#E53935] text-white text-[10px] font-[800] px-3 py-1 rounded-full tracking-widest uppercase">Garba & Navratri</span>
+              <span className="bg-[#9333EA] text-white text-[10px] font-[800] px-3 py-1 rounded-full tracking-widest uppercase">Garba & Navratri</span>
               <span className="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-[800] px-3 py-1 rounded-full tracking-widest uppercase">{event.city}</span>
             </div>
             
@@ -99,22 +99,22 @@ export default function EventDetails({ params }: { params: { id: string } }) {
             
             <div className="flex flex-wrap items-center gap-6 pt-2">
               <div className="flex items-center gap-2 text-white/90 text-sm font-[600]">
-                <Calendar className="w-5 h-5 text-[#E53935]" /> {new Date(event.startDate).toLocaleDateString()} - {new Date(event.endDate).toLocaleDateString()}
+                <Calendar className="w-5 h-5 text-[#9333EA]" /> {new Date(event.startDate).toLocaleDateString()} - {new Date(event.endDate).toLocaleDateString()}
               </div>
               <div className="flex items-center gap-3 text-white/90 font-[500] text-lg">
-                <Clock className="w-5 h-5 text-[#E53935]" /> {new Date(event.startDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                <Clock className="w-5 h-5 text-[#9333EA]" /> {new Date(event.startDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
               </div>
               <div className="flex items-center gap-3 text-white/90 font-[500] text-lg">
-                <MapPin className="w-5 h-5 text-[#E53935]" /> {event.venue}
+                <MapPin className="w-5 h-5 text-[#9333EA]" /> {event.venue}
               </div>
               <div className="flex items-center gap-3 text-white/90 font-[500] text-lg">
-                <User className="w-5 h-5 text-[#E53935]" /> All Ages
+                <User className="w-5 h-5 text-[#9333EA]" /> All Ages
               </div>
             </div>
           </motion.div>
           
           <div className="hidden md:flex items-center gap-3">
-            <button onClick={handleFavourite} className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-[#E53935] hover:border-transparent transition-all shadow-lg">
+            <button onClick={handleFavourite} className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-[#9333EA] hover:border-transparent transition-all shadow-lg">
               <Heart className="w-5 h-5" />
             </button>
             <button onClick={handleShare} className="w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white hover:text-[#111111] hover:border-transparent transition-all shadow-lg">
@@ -141,7 +141,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
               <ul className="grid sm:grid-cols-2 gap-4">
                 {['Live performances', 'Premium venue', 'Secure QR entry', 'Food and beverage zone', 'Dedicated support desk'].map((highlight, i) => (
                   <li key={i} className="flex items-center gap-3 text-[#111111] font-[600]">
-                    <CheckCircle className="w-5 h-5 text-[#E53935]" /> {highlight}
+                    <CheckCircle className="w-5 h-5 text-[#9333EA]" /> {highlight}
                   </li>
                 ))}
               </ul>
@@ -154,7 +154,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
                 <div className="w-24 h-24 rounded-2xl bg-cover bg-center border border-gray-200" style={{ backgroundImage: `url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1974&auto=format&fit=crop')` }}></div>
                 <div>
                   <h3 className="text-xl font-[800] text-[#111111] mb-1">Live Performances</h3>
-                  <p className="text-sm font-[600] text-[#E53935]">Performance Time: 9:00 PM onwards</p>
+                  <p className="text-sm font-[600] text-[#9333EA]">Performance Time: 9:00 PM onwards</p>
                 </div>
               </div>
             </div>
@@ -186,7 +186,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
             {/* 5. IMPORTANT INFORMATION */}
             <div className="bg-[#111111] rounded-[2rem] p-8 shadow-sm">
               <div className="flex items-center gap-3 mb-6">
-                <AlertCircle className="w-6 h-6 text-[#E53935]" />
+                <AlertCircle className="w-6 h-6 text-[#9333EA]" />
                 <h2 className="text-2xl font-[800] text-white">Before You Attend</h2>
               </div>
               <ul className="space-y-4">
@@ -198,7 +198,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
                   'Event rules are subject to organizer policy.'
                 ].map((rule, idx) => (
                   <li key={idx} className="flex items-start gap-3 text-white/80 font-[500]">
-                    <span className="w-1.5 h-1.5 bg-[#E53935] rounded-full mt-2 shrink-0"></span>
+                    <span className="w-1.5 h-1.5 bg-[#9333EA] rounded-full mt-2 shrink-0"></span>
                     {rule}
                   </li>
                 ))}
@@ -216,7 +216,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
                       className="w-full flex items-center justify-between p-5 text-left"
                     >
                       <span className="font-[800] text-[#111111] text-sm">{faq.q}</span>
-                      {openFaq === idx ? <ChevronUp className="w-4 h-4 text-[#E53935]" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                      {openFaq === idx ? <ChevronUp className="w-4 h-4 text-[#9333EA]" /> : <ChevronDown className="w-4 h-4 text-gray-400" />}
                     </button>
                     {openFaq === idx && (
                       <div className="px-5 pb-5 text-[#6B7280] text-sm font-[500] leading-relaxed border-t border-gray-200 pt-3">
@@ -264,7 +264,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
                   </div>
                 </div>
 
-                <Link href={`/events/${event.id}/book`} className="w-full bg-[#E53935] text-white font-[800] py-4 rounded-2xl flex justify-center items-center gap-2 hover:bg-[#D32F2F] transition-all shadow-lg hover:-translate-y-0.5 text-lg">
+                <Link href={`/events/${event.id}/book`} className="w-full bg-[#9333EA] text-white font-[800] py-4 rounded-2xl flex justify-center items-center gap-2 hover:bg-[#7E22CE] transition-all shadow-lg hover:-translate-y-0.5 text-lg">
                   Book Now
                 </Link>
                 <p className="text-[10px] text-gray-400 uppercase tracking-widest font-[800] mt-4 flex items-center justify-center gap-1">
@@ -295,7 +295,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
             <span className="text-[10px] text-gray-500 uppercase tracking-widest font-[800]">Starting From</span>
             <span className="text-2xl font-[800] text-[#111111] tracking-tight">₹499</span>
           </div>
-          <Link href={`/events/${event.id}/book`} className="bg-[#E53935] text-white font-[800] px-8 py-3.5 rounded-2xl flex items-center gap-2 shadow-lg hover:-translate-y-0.5 transition-transform">
+          <Link href={`/events/${event.id}/book`} className="bg-[#9333EA] text-white font-[800] px-8 py-3.5 rounded-2xl flex items-center gap-2 shadow-lg hover:-translate-y-0.5 transition-transform">
             Book Now
           </Link>
         </div>

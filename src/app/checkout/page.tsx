@@ -95,7 +95,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="bg-[#F7F7F8] min-h-screen pt-[100px] pb-32 font-sans selection:bg-[#E53935] selection:text-white">
+    <div className="bg-[#F7F7F8] min-h-screen pt-[100px] pb-32 font-sans selection:bg-[#9333EA] selection:text-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* HEADER */}
@@ -121,11 +121,11 @@ export default function CheckoutPage() {
             <div className="flex items-center mb-8">
               {[1, 2, 3].map((num) => (
                 <div key={num} className="flex items-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-[800] text-sm ${step >= num ? 'bg-[#E53935] text-white' : 'bg-gray-200 text-gray-400'} transition-colors`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-[800] text-sm ${step >= num ? 'bg-[#9333EA] text-white' : 'bg-gray-200 text-gray-400'} transition-colors`}>
                     {step > num ? <CheckCircle className="w-4 h-4" /> : num}
                   </div>
                   {num < 3 && (
-                    <div className={`w-12 h-1 ${step > num ? 'bg-[#E53935]' : 'bg-gray-200'} transition-colors mx-2 rounded-full`}></div>
+                    <div className={`w-12 h-1 ${step > num ? 'bg-[#9333EA]' : 'bg-gray-200'} transition-colors mx-2 rounded-full`}></div>
                   )}
                 </div>
               ))}
@@ -146,19 +146,19 @@ export default function CheckoutPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest">Full Name</label>
-                        <input type="text" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#E53935] focus:ring-1 focus:ring-[#E53935] outline-none transition-all font-[600]" placeholder="Rahul Sharma" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                        <input type="text" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#9333EA] focus:ring-1 focus:ring-[#9333EA] outline-none transition-all font-[600]" placeholder="Rahul Sharma" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest">Email Address</label>
-                        <input type="email" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#E53935] focus:ring-1 focus:ring-[#E53935] outline-none transition-all font-[600]" placeholder="rahul@example.com" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+                        <input type="email" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#9333EA] focus:ring-1 focus:ring-[#9333EA] outline-none transition-all font-[600]" placeholder="rahul@example.com" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest">Phone Number</label>
-                        <input type="tel" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#E53935] focus:ring-1 focus:ring-[#E53935] outline-none transition-all font-[600]" placeholder="+91 98765 43210" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
+                        <input type="tel" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#9333EA] focus:ring-1 focus:ring-[#9333EA] outline-none transition-all font-[600]" placeholder="+91 98765 43210" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest">City</label>
-                        <input type="text" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#E53935] focus:ring-1 focus:ring-[#E53935] outline-none transition-all font-[600]" placeholder="Ahmedabad" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} />
+                        <input type="text" className="w-full px-5 py-4 rounded-xl bg-[#F7F7F8] border border-gray-100 focus:border-[#9333EA] focus:ring-1 focus:ring-[#9333EA] outline-none transition-all font-[600]" placeholder="Ahmedabad" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} />
                       </div>
                     </div>
                     <button onClick={handleNextStep} className="mt-8 px-8 py-4 bg-[#111111] text-white font-[800] rounded-2xl hover:bg-black transition-all shadow-lg hover:-translate-y-0.5 w-full sm:w-auto">
@@ -199,9 +199,9 @@ export default function CheckoutPage() {
                       </div>
                     </div>
 
-                    <div className="bg-[#E53935]/5 p-6 rounded-2xl border border-[#E53935]/10 flex justify-between items-center">
+                    <div className="bg-[#9333EA]/5 p-6 rounded-2xl border border-[#9333EA]/10 flex justify-between items-center">
                       <div>
-                        <p className="text-[10px] font-[800] text-[#E53935] uppercase tracking-widest mb-1">Total Payable</p>
+                        <p className="text-[10px] font-[800] text-[#9333EA] uppercase tracking-widest mb-1">Total Payable</p>
                         <p className="text-3xl font-[800] text-[#111111] tracking-tight">{formatCurrency(totalAmount)}</p>
                       </div>
                     </div>
@@ -228,8 +228,8 @@ export default function CheckoutPage() {
                     <h2 className="text-2xl font-[800] text-[#111111] mb-6">Select Payment Method</h2>
                     
                     <div className="space-y-4 mb-8">
-                      <label className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'upi' ? 'border-[#E53935] bg-red-50/50' : 'border-gray-100 hover:border-gray-200 bg-white'}`}>
-                        <input type="radio" name="payment" value="upi" checked={paymentMethod === 'upi'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 text-[#E53935] focus:ring-[#E53935]" />
+                      <label className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'upi' ? 'border-[#9333EA] bg-red-50/50' : 'border-gray-100 hover:border-gray-200 bg-white'}`}>
+                        <input type="radio" name="payment" value="upi" checked={paymentMethod === 'upi'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 text-[#9333EA] focus:ring-[#9333EA]" />
                         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
                           <Smartphone className="w-5 h-5 text-gray-700" />
                         </div>
@@ -239,8 +239,8 @@ export default function CheckoutPage() {
                         </div>
                       </label>
 
-                      <label className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-[#E53935] bg-red-50/50' : 'border-gray-100 hover:border-gray-200 bg-white'}`}>
-                        <input type="radio" name="payment" value="card" checked={paymentMethod === 'card'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 text-[#E53935] focus:ring-[#E53935]" />
+                      <label className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-[#9333EA] bg-red-50/50' : 'border-gray-100 hover:border-gray-200 bg-white'}`}>
+                        <input type="radio" name="payment" value="card" checked={paymentMethod === 'card'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 text-[#9333EA] focus:ring-[#9333EA]" />
                         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
                           <CreditCard className="w-5 h-5 text-gray-700" />
                         </div>
@@ -250,8 +250,8 @@ export default function CheckoutPage() {
                         </div>
                       </label>
 
-                      <label className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'netbanking' ? 'border-[#E53935] bg-red-50/50' : 'border-gray-100 hover:border-gray-200 bg-white'}`}>
-                        <input type="radio" name="payment" value="netbanking" checked={paymentMethod === 'netbanking'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 text-[#E53935] focus:ring-[#E53935]" />
+                      <label className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${paymentMethod === 'netbanking' ? 'border-[#9333EA] bg-red-50/50' : 'border-gray-100 hover:border-gray-200 bg-white'}`}>
+                        <input type="radio" name="payment" value="netbanking" checked={paymentMethod === 'netbanking'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 text-[#9333EA] focus:ring-[#9333EA]" />
                         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
                           <Building className="w-5 h-5 text-gray-700" />
                         </div>
@@ -266,7 +266,7 @@ export default function CheckoutPage() {
                       <button 
                         onClick={handleCheckout} 
                         disabled={isProcessing}
-                        className="w-full sm:w-auto px-10 py-4 bg-[#E53935] text-white font-[800] rounded-2xl hover:bg-[#D32F2F] transition-all shadow-lg shadow-red-500/20 hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:translate-y-0"
+                        className="w-full sm:w-auto px-10 py-4 bg-[#9333EA] text-white font-[800] rounded-2xl hover:bg-[#7E22CE] transition-all shadow-lg shadow-purple-500/20 hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:translate-y-0"
                       >
                         {isProcessing ? (
                           <><Loader2 className="w-5 h-5 animate-spin" /> Processing Securely...</>
@@ -308,7 +308,7 @@ export default function CheckoutPage() {
               <div className="flex justify-between items-end mb-4">
                 <div>
                   <p className="text-xs font-[800] text-gray-400 uppercase tracking-widest mb-1">Total Amount</p>
-                  <p className="text-3xl font-[800] text-[#E53935] tracking-tight">{formatCurrency(totalAmount)}</p>
+                  <p className="text-3xl font-[800] text-[#9333EA] tracking-tight">{formatCurrency(totalAmount)}</p>
                 </div>
               </div>
 

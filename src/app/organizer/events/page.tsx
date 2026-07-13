@@ -38,7 +38,7 @@ export default function OrganizerEvents() {
   if (loading) {
     return (
       <div className="flex h-[calc(100vh-4rem)] items-center justify-center bg-[#F7F7F8]">
-        <Loader2 className="w-8 h-8 text-[#E53935] animate-spin" />
+        <Loader2 className="w-8 h-8 text-[#9333EA] animate-spin" />
       </div>
     );
   }
@@ -60,7 +60,7 @@ export default function OrganizerEvents() {
             placeholder="Search events by name or city..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-[1rem] focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 focus:border-[#E53935] text-sm font-[500] transition-all"
+            className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-[1rem] focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] text-sm font-[500] transition-all"
           />
         </div>
         <button className="flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-[1rem] hover:bg-gray-50 font-[700] text-sm text-[#111111] shadow-sm">
@@ -82,7 +82,7 @@ export default function OrganizerEvents() {
                   <span className={`px-3 py-1 rounded-full text-xs font-[800] uppercase tracking-wider shadow-sm ${
                     event.status === 'published' ? 'bg-green-100 text-green-700' :
                     event.status === 'draft' ? 'bg-gray-100 text-gray-700' :
-                    'bg-red-100 text-[#E53935]'
+                    'bg-red-100 text-[#9333EA]'
                   }`}>
                     {event.status || 'DRAFT'}
                   </span>
@@ -114,7 +114,7 @@ export default function OrganizerEvents() {
                     <span className="font-[800] text-[#111111]">{percentSold}% Sold</span>
                   </div>
                   <div className="w-full bg-gray-100 rounded-full h-2.5 mb-5 overflow-hidden">
-                    <div className="bg-[#E53935] h-2.5 rounded-full" style={{ width: `${percentSold}%` }}></div>
+                    <div className="bg-[#9333EA] h-2.5 rounded-full" style={{ width: `${percentSold}%` }}></div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">

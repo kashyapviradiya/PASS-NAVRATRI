@@ -105,14 +105,14 @@ export default function MyTicketsPage() {
     const isDemo = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
     return (
-      <div className="min-h-screen bg-[#F7F7F8] flex items-center justify-center p-4 selection:bg-[#E53935] selection:text-white pt-[60px]">
+      <div className="min-h-screen bg-[#F7F7F8] flex items-center justify-center p-4 selection:bg-[#9333EA] selection:text-white pt-[60px]">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white max-w-md w-full rounded-[2rem] p-8 shadow-xl shadow-black/5 border border-gray-100"
         >
-          <div className="w-16 h-16 bg-[#E53935]/10 rounded-2xl flex items-center justify-center mb-8 relative">
-            <Lock className="w-8 h-8 text-[#E53935]" />
+          <div className="w-16 h-16 bg-[#9333EA]/10 rounded-2xl flex items-center justify-center mb-8 relative">
+            <Lock className="w-8 h-8 text-[#9333EA]" />
             {isDemo && (
               <span className="absolute -top-2 -right-12 bg-orange-100 text-orange-600 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
                 DEMO
@@ -144,7 +144,7 @@ export default function MyTicketsPage() {
                       value={phone} 
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))} 
                       placeholder="Enter 10 digits" 
-                      className="w-full pl-14 pr-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#E53935] focus:border-transparent bg-gray-50/50 font-[600] text-lg text-[#111111] tracking-wider" 
+                      className="w-full pl-14 pr-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#9333EA] focus:border-transparent bg-gray-50/50 font-[600] text-lg text-[#111111] tracking-wider" 
                     />
                   </div>
                 </div>
@@ -156,11 +156,11 @@ export default function MyTicketsPage() {
                       value={otp} // Reusing OTP state for Booking ID
                       onChange={(e) => setOtp(e.target.value)} 
                       placeholder="e.g. RP-2026-123456" 
-                      className="w-full px-5 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#E53935] focus:border-transparent bg-gray-50/50 font-[600] text-lg text-[#111111]" 
+                      className="w-full px-5 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#9333EA] focus:border-transparent bg-gray-50/50 font-[600] text-lg text-[#111111]" 
                     />
                   </div>
                 )}
-                <button type="submit" disabled={loading || phone.length !== 10 || (isDemo && !otp)} className="w-full bg-[#E53935] text-white font-[800] py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-[#D32F2F] hover:shadow-[0_10px_20px_-10px_rgba(229,57,53,0.5)] hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+                <button type="submit" disabled={loading || phone.length !== 10 || (isDemo && !otp)} className="w-full bg-[#9333EA] text-white font-[800] py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-[#7E22CE] hover:shadow-[0_10px_20px_-10px_rgba(229,57,53,0.5)] hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed">
                   {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isDemo ? <>View Tickets <ArrowRight className="w-5 h-5" /></> : <>Request OTP <ArrowRight className="w-5 h-5" /></>)}
                 </button>
               </motion.form>
@@ -173,7 +173,7 @@ export default function MyTicketsPage() {
                     value={otp} 
                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))} 
                     placeholder="• • • • • •" 
-                    className="w-full px-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#E53935] focus:border-transparent bg-gray-50/50 font-[800] text-3xl text-center text-[#111111] tracking-[0.5em]" 
+                    className="w-full px-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#9333EA] focus:border-transparent bg-gray-50/50 font-[800] text-3xl text-center text-[#111111] tracking-[0.5em]" 
                     autoFocus
                   />
                 </div>
@@ -193,14 +193,14 @@ export default function MyTicketsPage() {
 
   // UI for Authenticated View
   return (
-    <div className="bg-[#F7F7F8] min-h-screen pb-20 pt-[80px] font-sans selection:bg-[#E53935] selection:text-white">
+    <div className="bg-[#F7F7F8] min-h-screen pb-20 pt-[80px] font-sans selection:bg-[#9333EA] selection:text-white">
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 mt-8">
           <div>
             <h1 className="text-4xl font-sans font-[800] text-[#111111] tracking-tight mb-2">My Tickets</h1>
             <p className="text-[#6B7280] font-[500] text-lg">Manage your event bookings and QR passes.</p>
           </div>
-          <button onClick={handleLogout} className="text-sm font-[600] text-gray-500 hover:text-[#E53935] bg-white px-4 py-2 rounded-xl border border-gray-200 transition-colors self-start sm:self-auto">
+          <button onClick={handleLogout} className="text-sm font-[600] text-gray-500 hover:text-[#9333EA] bg-white px-4 py-2 rounded-xl border border-gray-200 transition-colors self-start sm:self-auto">
             Log out
           </button>
         </div>
@@ -212,7 +212,7 @@ export default function MyTicketsPage() {
             </div>
             <h2 className="text-2xl font-sans font-[800] text-[#111111] mb-2">No Bookings Found</h2>
             <p className="text-[#6B7280] font-[500] max-w-sm mb-8">You haven't booked any tickets yet. Explore our premium events and book your passes.</p>
-            <button onClick={() => router.push('/')} className="bg-[#E53935] text-white font-[800] px-8 py-3.5 rounded-2xl shadow-lg hover:shadow-[0_10px_20px_-10px_rgba(229,57,53,0.5)] hover:-translate-y-0.5 transition-all">
+            <button onClick={() => router.push('/')} className="bg-[#9333EA] text-white font-[800] px-8 py-3.5 rounded-2xl shadow-lg hover:shadow-[0_10px_20px_-10px_rgba(229,57,53,0.5)] hover:-translate-y-0.5 transition-all">
               Explore Events
             </button>
           </div>
@@ -228,7 +228,7 @@ export default function MyTicketsPage() {
                     {booking.tickets[0]?.eventBanner ? (
                       <img src={booking.tickets[0].eventBanner} alt={booking.eventName} className="w-full h-full object-cover" />
                     ) : (
-                      <Ticket className="w-8 h-8 text-[#E53935]" />
+                      <Ticket className="w-8 h-8 text-[#9333EA]" />
                     )}
                   </div>
                   
@@ -249,7 +249,7 @@ export default function MyTicketsPage() {
                       <p className="text-[10px] text-gray-400 uppercase tracking-widest font-[800] mb-0.5">Tickets</p>
                       <p className="font-[800] text-[#111111] text-lg">{totalTickets} Pass{totalTickets > 1 ? 'es' : ''}</p>
                     </div>
-                    <div className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center group-hover:bg-[#E53935] group-hover:text-white transition-colors">
+                    <div className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center group-hover:bg-[#9333EA] group-hover:text-white transition-colors">
                       <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
                     </div>
                   </div>

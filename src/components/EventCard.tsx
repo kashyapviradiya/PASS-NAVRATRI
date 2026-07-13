@@ -48,7 +48,7 @@ export default function EventCard({ event }: EventCardProps) {
       <div className="p-6 flex flex-col flex-1">
         
         {/* Event Name */}
-        <h3 className="text-xl font-sans font-[800] text-[#111111] leading-tight mb-4 group-hover:text-[#E53935] transition-colors line-clamp-2">
+        <h3 className="text-xl font-sans font-[800] text-[#111111] leading-tight mb-4 group-hover:text-[#9333EA] transition-colors line-clamp-2">
           {event.title}
         </h3>
 
@@ -83,7 +83,7 @@ export default function EventCard({ event }: EventCardProps) {
                   Sold Out
                 </span>
               ) : isAlmostSoldOut ? (
-                <span className="text-xs font-[800] text-[#E53935] flex items-center gap-1 bg-red-50 px-2 py-1 rounded-md">
+                <span className="text-xs font-[800] text-[#9333EA] flex items-center gap-1 bg-red-50 px-2 py-1 rounded-md">
                   🔥 Few Passes Left
                 </span>
               ) : (

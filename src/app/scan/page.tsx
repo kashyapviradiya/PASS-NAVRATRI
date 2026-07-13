@@ -250,7 +250,7 @@ export default function ScannerDashboard() {
 
     if (scanResult.status === 'used') {
       return (
-        <div className="fixed inset-0 bg-[#E53935] z-50 flex flex-col items-center justify-center p-6 text-white text-center">
+        <div className="fixed inset-0 bg-[#9333EA] z-50 flex flex-col items-center justify-center p-6 text-white text-center">
           <div className="w-28 h-28 bg-white/20 rounded-full flex items-center justify-center mb-6">
             <XCircle className="w-20 h-20 text-white" />
           </div>
@@ -268,7 +268,7 @@ export default function ScannerDashboard() {
             </div>
           </div>
           
-          <button onClick={dismissResult} className="mt-12 bg-white text-[#E53935] px-10 py-5 rounded-2xl font-[900] text-xl shadow-2xl active:scale-95 transition-transform w-full max-w-sm">
+          <button onClick={dismissResult} className="mt-12 bg-white text-[#9333EA] px-10 py-5 rounded-2xl font-[900] text-xl shadow-2xl active:scale-95 transition-transform w-full max-w-sm">
             Dismiss
           </button>
         </div>
@@ -294,12 +294,12 @@ export default function ScannerDashboard() {
     return (
       <div className="fixed inset-0 bg-[#111111] z-50 flex flex-col items-center justify-center p-6 text-white text-center">
         <div className="w-28 h-28 bg-red-500/20 rounded-full flex items-center justify-center mb-6">
-          <XCircle className="w-20 h-20 text-[#E53935]" />
+          <XCircle className="w-20 h-20 text-[#9333EA]" />
         </div>
-        <h1 className="text-5xl font-[900] tracking-tight mb-2 text-[#E53935]">Invalid Ticket</h1>
+        <h1 className="text-5xl font-[900] tracking-tight mb-2 text-[#9333EA]">Invalid Ticket</h1>
         <p className="text-xl font-[600] text-gray-400 mb-10">{scanResult.message || 'This pass is not recognized.'}</p>
         
-        <button onClick={dismissResult} className="mt-12 bg-[#E53935] text-white px-10 py-5 rounded-2xl font-[900] text-xl shadow-2xl active:scale-95 transition-transform w-full max-w-sm">
+        <button onClick={dismissResult} className="mt-12 bg-[#9333EA] text-white px-10 py-5 rounded-2xl font-[900] text-xl shadow-2xl active:scale-95 transition-transform w-full max-w-sm">
           Dismiss
         </button>
       </div>
@@ -312,7 +312,7 @@ export default function ScannerDashboard() {
       <header className="bg-[#111111] text-white px-4 py-4 flex flex-col shadow-md z-10 w-full relative shrink-0">
         <div className="flex items-center justify-between mb-4">
           <h1 className="font-[900] text-xl flex items-center gap-2 tracking-tight">
-            <ScanLine className="w-6 h-6 text-[#E53935]" /> RaasPass Scanner
+            <ScanLine className="w-6 h-6 text-[#9333EA]" /> RaasPass Scanner
           </h1>
           <button onClick={handleLogout} className="p-2 bg-gray-800 rounded-full text-gray-300 hover:text-white flex items-center gap-2 text-sm font-[600] pr-4">
             <LogOut className="w-4 h-4" /> Logout
@@ -369,7 +369,7 @@ export default function ScannerDashboard() {
             <div id="qr-reader" className="w-full h-full object-cover"></div>
             {processing && (
               <div className="absolute inset-0 bg-black/70 backdrop-blur-md flex flex-col items-center justify-center z-20">
-                <div className="w-16 h-16 border-4 border-[#E53935] border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-16 h-16 border-4 border-[#9333EA] border-t-transparent rounded-full animate-spin"></div>
                 <p className="text-white font-[900] text-xl mt-4">Verifying Pass...</p>
               </div>
             )}
@@ -394,7 +394,7 @@ export default function ScannerDashboard() {
             <p className="text-gray-400 font-[500] mb-8 text-lg">Tap below to open camera</p>
             <button 
               onClick={startScanner}
-              className="bg-[#E53935] text-white px-10 py-5 rounded-2xl font-[900] text-xl shadow-[0_0_40px_rgba(229,57,53,0.3)] hover:bg-[#D32F2F] active:scale-95 transition-all flex items-center gap-3 w-full max-w-sm justify-center"
+              className="bg-[#9333EA] text-white px-10 py-5 rounded-2xl font-[900] text-xl shadow-[0_0_40px_rgba(229,57,53,0.3)] hover:bg-[#7E22CE] active:scale-95 transition-all flex items-center gap-3 w-full max-w-sm justify-center"
             >
               <ScanLine className="w-7 h-7" /> Start Scanning
             </button>
@@ -421,7 +421,7 @@ export default function ScannerDashboard() {
                   {scan.status === 'valid' ? (
                     <CheckCircle className="w-6 h-6 text-green-500" />
                   ) : scan.status === 'used' ? (
-                    <XCircle className="w-6 h-6 text-[#E53935]" />
+                    <XCircle className="w-6 h-6 text-[#9333EA]" />
                   ) : (
                     <AlertTriangle className="w-6 h-6 text-orange-500" />
                   )}

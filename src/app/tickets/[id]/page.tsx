@@ -44,7 +44,7 @@ export default function DigitalTicketPage({ params }: { params: { id: string } }
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F7F7F8] flex items-center justify-center pt-[80px]">
-        <div className="w-16 h-16 border-4 border-[#E53935] border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-16 h-16 border-4 border-[#9333EA] border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -55,7 +55,7 @@ export default function DigitalTicketPage({ params }: { params: { id: string } }
   const totalTickets = tickets.length;
 
   return (
-    <div className="bg-[#111111] min-h-screen pt-[100px] pb-20 font-sans selection:bg-[#E53935] selection:text-white flex flex-col">
+    <div className="bg-[#111111] min-h-screen pt-[100px] pb-20 font-sans selection:bg-[#9333EA] selection:text-white flex flex-col">
       <div className="max-w-md mx-auto w-full px-4 flex-1 flex flex-col">
         
         <div className="mb-6 flex items-center justify-between">
@@ -75,7 +75,7 @@ export default function DigitalTicketPage({ params }: { params: { id: string } }
         >
           {/* Top Half: Event & QR */}
           <div className="bg-white p-8 relative flex-1">
-            <div className="absolute top-0 left-0 w-full h-2 bg-[#E53935]"></div>
+            <div className="absolute top-0 left-0 w-full h-2 bg-[#9333EA]"></div>
             
             <div className="text-center mb-8">
               <h2 className="text-2xl font-[800] text-[#111111] leading-tight mb-2 tracking-tight">{firstTicket.eventName}</h2>
@@ -83,7 +83,7 @@ export default function DigitalTicketPage({ params }: { params: { id: string } }
             </div>
 
             <div className="bg-[#F7F7F8] w-48 h-48 mx-auto rounded-3xl p-4 flex items-center justify-center border border-gray-100 shadow-inner relative overflow-hidden mb-8">
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-[#E53935]/50 animate-scan"></div>
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-[#9333EA]/50 animate-scan"></div>
               {/* Render real QR code locally */}
               {qrCodeDataUrl ? (
                 <img 
@@ -93,7 +93,7 @@ export default function DigitalTicketPage({ params }: { params: { id: string } }
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <div className="w-8 h-8 border-2 border-[#E53935] border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-8 h-8 border-2 border-[#9333EA] border-t-transparent rounded-full animate-spin"></div>
                 </div>
               )}
             </div>

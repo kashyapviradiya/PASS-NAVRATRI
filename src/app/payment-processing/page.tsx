@@ -100,7 +100,7 @@ export default function PaymentProcessing() {
   }, [router]);
 
   return (
-    <div className="bg-[#F7F7F8] min-h-screen flex items-center justify-center p-4 font-sans selection:bg-[#E53935] selection:text-white">
+    <div className="bg-[#F7F7F8] min-h-screen flex items-center justify-center p-4 font-sans selection:bg-[#9333EA] selection:text-white">
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -108,9 +108,9 @@ export default function PaymentProcessing() {
       >
         
         <div className="relative w-24 h-24 mx-auto mb-8">
-          <div className="absolute inset-0 bg-[#E53935]/10 rounded-full animate-ping"></div>
+          <div className="absolute inset-0 bg-[#9333EA]/10 rounded-full animate-ping"></div>
           <div className="relative bg-white rounded-full w-full h-full flex items-center justify-center border-4 border-[#F7F7F8] shadow-sm z-10">
-            <Loader2 className="w-10 h-10 text-[#E53935] animate-spin" />
+            <Loader2 className="w-10 h-10 text-[#9333EA] animate-spin" />
           </div>
         </div>
 

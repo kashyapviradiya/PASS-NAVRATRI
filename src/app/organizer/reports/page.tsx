@@ -41,8 +41,8 @@ export default function OrganizerReports() {
         
         {/* Bookings Report */}
         <div className="bg-white p-6 sm:p-8 rounded-[1.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col items-center text-center">
-          <div className="w-16 h-16 bg-[#E53935]/10 rounded-2xl flex items-center justify-center mb-6">
-            <Ticket className="w-8 h-8 text-[#E53935]" />
+          <div className="w-16 h-16 bg-[#9333EA]/10 rounded-2xl flex items-center justify-center mb-6">
+            <Ticket className="w-8 h-8 text-[#9333EA]" />
           </div>
           <h2 className="text-xl font-[800] text-[#111111] mb-2">Bookings Report</h2>
           <p className="text-gray-500 text-sm font-[500] mb-8">

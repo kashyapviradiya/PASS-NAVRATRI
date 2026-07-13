@@ -49,7 +49,7 @@ export default function ScannerLogin() {
     <div className="min-h-screen bg-[#111111] flex flex-col justify-center px-6 py-12">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-[#E53935] rounded-2xl flex items-center justify-center shadow-[0_0_40px_rgba(229,57,53,0.4)]">
+          <div className="w-16 h-16 bg-[#9333EA] rounded-2xl flex items-center justify-center shadow-[0_0_40px_rgba(229,57,53,0.4)]">
             <ScanLine className="w-8 h-8 text-white" />
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function ScannerLogin() {
                 required
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
-                className="block w-full rounded-xl border-0 bg-gray-900 py-3.5 px-4 text-white shadow-sm ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-[#E53935] sm:text-sm sm:leading-6"
+                className="block w-full rounded-xl border-0 bg-gray-900 py-3.5 px-4 text-white shadow-sm ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-[#9333EA] sm:text-sm sm:leading-6"
                 placeholder="Enter 10-digit number"
               />
             </div>
@@ -91,7 +91,7 @@ export default function ScannerLogin() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="block w-full rounded-xl border-0 bg-gray-900 py-3.5 px-4 text-white shadow-sm ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-[#E53935] sm:text-sm sm:leading-6"
+                className="block w-full rounded-xl border-0 bg-gray-900 py-3.5 px-4 text-white shadow-sm ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-[#9333EA] sm:text-sm sm:leading-6"
                 placeholder="Enter your password"
               />
             </div>
@@ -101,7 +101,7 @@ export default function ScannerLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full justify-center items-center rounded-xl bg-[#E53935] px-3 py-3.5 text-sm font-[800] leading-6 text-white shadow-sm hover:bg-[#D32F2F] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E53935] disabled:opacity-70 transition-all"
+              className="flex w-full justify-center items-center rounded-xl bg-[#9333EA] px-3 py-3.5 text-sm font-[800] leading-6 text-white shadow-sm hover:bg-[#7E22CE] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9333EA] disabled:opacity-70 transition-all"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Log In to Scanner'}
             </button>

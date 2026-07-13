@@ -80,7 +80,7 @@ export default function EventsPage() {
               placeholder="Search events, artists or venues"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 transition-all"
+              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 transition-all"
             />
           </div>
 
@@ -89,7 +89,7 @@ export default function EventsPage() {
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 cursor-pointer"
+                className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 cursor-pointer"
               >
                 <option value="">All Cities</option>
                 {CITIES.map(city => <option key={city} value={city}>{city}</option>)}
@@ -101,7 +101,7 @@ export default function EventsPage() {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 cursor-pointer"
+                className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 cursor-pointer"
               >
                 <option value="">All Categories</option>
                 {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
@@ -113,7 +113,7 @@ export default function EventsPage() {
               <select
                 value={selectedSort}
                 onChange={(e) => setSelectedSort(e.target.value)}
-                className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none focus:outline-none focus:ring-2 focus:ring-[#E53935]/20 cursor-pointer"
+                className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 cursor-pointer"
               >
                 {sortOptions.map(sort => <option key={sort} value={sort}>Sort by: {sort}</option>)}
               </select>
@@ -176,7 +176,7 @@ export default function EventsPage() {
             </div>
             <h2 className="text-3xl font-[800] text-[#111111] mb-4">No Events Found</h2>
             <p className="text-[#6B7280] font-[500] mb-8">Try changing your filters or search for another city.</p>
-            <button onClick={clearFilters} className="px-8 py-4 bg-[#E53935] text-white font-[800] rounded-2xl hover:bg-[#D32F2F] hover:-translate-y-0.5 transition-all shadow-lg">
+            <button onClick={clearFilters} className="px-8 py-4 bg-[#9333EA] text-white font-[800] rounded-2xl hover:bg-[#7E22CE] hover:-translate-y-0.5 transition-all shadow-lg">
               Clear Filters
             </button>
           </div>

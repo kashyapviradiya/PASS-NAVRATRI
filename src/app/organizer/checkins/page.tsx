@@ -48,8 +48,8 @@ export default function OrganizerCheckins() {
           <h1 className="text-3xl font-[900] tracking-tight text-[#111111] flex items-center gap-3">
             Live Check-ins
             {isLive && (
-              <span className="flex items-center gap-1.5 px-2.5 py-1 bg-red-100 text-[#E53935] text-xs font-[800] rounded-full tracking-wide uppercase">
-                <span className="w-1.5 h-1.5 bg-[#E53935] rounded-full animate-pulse"></span> Live
+              <span className="flex items-center gap-1.5 px-2.5 py-1 bg-red-100 text-[#9333EA] text-xs font-[800] rounded-full tracking-wide uppercase">
+                <span className="w-1.5 h-1.5 bg-[#9333EA] rounded-full animate-pulse"></span> Live
               </span>
             )}
           </h1>
@@ -60,7 +60,7 @@ export default function OrganizerCheckins() {
           <button 
             onClick={() => setIsLive(!isLive)}
             className={`px-4 py-2 rounded-xl font-[700] text-sm transition-all border ${
-              isLive ? 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50' : 'bg-[#E53935] text-white border-[#E53935] shadow-md shadow-[#E53935]/20'
+              isLive ? 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50' : 'bg-[#9333EA] text-white border-[#9333EA] shadow-md shadow-[#9333EA]/20'
             }`}
           >
             {isLive ? 'Pause Live Feed' : 'Resume Live Feed'}
@@ -71,7 +71,7 @@ export default function OrganizerCheckins() {
       <div className="bg-white rounded-[1.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden">
         {loading && checkins.length === 0 ? (
           <div className="flex h-64 items-center justify-center">
-            <Loader2 className="w-8 h-8 text-[#E53935] animate-spin" />
+            <Loader2 className="w-8 h-8 text-[#9333EA] animate-spin" />
           </div>
         ) : checkins.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -88,7 +88,7 @@ export default function OrganizerCheckins() {
                 <div className="flex items-center gap-4">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
                     scan.status === 'valid' ? 'bg-green-50 text-green-600' : 
-                    scan.status === 'used' ? 'bg-red-50 text-[#E53935]' : 'bg-orange-50 text-orange-600'
+                    scan.status === 'used' ? 'bg-red-50 text-[#9333EA]' : 'bg-orange-50 text-orange-600'
                   }`}>
                     {scan.status === 'valid' ? <CheckCircle className="w-6 h-6" /> : <ScanLine className="w-6 h-6" />}
                   </div>

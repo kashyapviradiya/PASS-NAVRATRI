@@ -17,7 +17,7 @@ export default function BookingSuccessPage({ params }: { params: { id: string } 
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-[#F7F7F8] flex items-center justify-center p-4 selection:bg-[#E53935] selection:text-white pt-[60px]">
+    <div className="min-h-screen bg-[#F7F7F8] flex items-center justify-center p-4 selection:bg-[#9333EA] selection:text-white pt-[60px]">
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}

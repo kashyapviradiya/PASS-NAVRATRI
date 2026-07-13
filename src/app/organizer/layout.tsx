@@ -54,7 +54,7 @@ export default function OrganizerLayout({ children }: { children: React.ReactNod
         
         <div className="h-20 flex items-center justify-between px-6 border-b border-gray-100">
           <Link href="/organizer/dashboard" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#E53935] rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-[#9333EA] rounded-lg flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
             <span className="font-serif font-bold text-xl text-[#111111] leading-none">PASS<br/><span className="text-[10px] text-gray-400 tracking-widest uppercase font-sans">Organizer</span></span>
@@ -73,8 +73,8 @@ export default function OrganizerLayout({ children }: { children: React.ReactNod
                 href={item.href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors font-[600] text-sm ${
                   isActive 
-                    ? 'bg-[#E53935] text-white shadow-md shadow-[#E53935]/20' 
-                    : 'text-gray-500 hover:bg-gray-50 hover:text-[#E53935]'
+                    ? 'bg-[#9333EA] text-white shadow-md shadow-[#9333EA]/20' 
+                    : 'text-gray-500 hover:bg-gray-50 hover:text-[#9333EA]'
                 }`}
               >
                 <item.icon className="w-5 h-5" />
@@ -87,7 +87,7 @@ export default function OrganizerLayout({ children }: { children: React.ReactNod
         <div className="p-4 border-t border-gray-100">
           <button 
             onClick={handleLogout}
-            className="flex items-center justify-center gap-2 px-4 py-3 w-full bg-red-50 text-[#E53935] hover:bg-red-100 rounded-xl transition-colors font-[700] text-sm"
+            className="flex items-center justify-center gap-2 px-4 py-3 w-full bg-red-50 text-[#9333EA] hover:bg-red-100 rounded-xl transition-colors font-[700] text-sm"
           >
             <LogOut className="w-4 h-4" />
             Logout
@@ -112,7 +112,7 @@ export default function OrganizerLayout({ children }: { children: React.ReactNod
           <div className="flex items-center gap-4">
             <button className="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-full transition-colors">
               <Bell className="w-5 h-5" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-[#E53935] rounded-full border-2 border-white"></span>
+              <span className="absolute top-2 right-2 w-2 h-2 bg-[#9333EA] rounded-full border-2 border-white"></span>
             </button>
             <div className="h-8 w-px bg-gray-200 mx-2 hidden sm:block"></div>
             <div className="flex items-center gap-3">
