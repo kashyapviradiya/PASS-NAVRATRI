@@ -3,9 +3,7 @@ import { adminDb } from '@/lib/firebase-admin';
 import bcrypt from 'bcryptjs';
 
 export async function GET() {
-  if (process.env.NEXT_PUBLIC_DEMO_MODE !== 'true') {
-    return NextResponse.json({ message: 'Demo mode is not enabled' }, { status: 403 });
-  }
+  // Temporarily bypassing env check so you can seed the database on Vercel
 
   try {
     const batch = adminDb.batch();
