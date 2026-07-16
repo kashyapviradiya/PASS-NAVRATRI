@@ -209,39 +209,39 @@ export default function ScannerDashboard() {
   if (scanResult) {
     if (scanResult.status === 'valid') {
       return (
-        <div className="fixed inset-0 bg-green-500 z-50 flex flex-col items-center justify-center p-6 text-white text-center">
-          <div className="w-28 h-28 bg-white/20 rounded-full flex items-center justify-center mb-6">
-            <CheckCircle className="w-20 h-20 text-white" />
+        <div className="fixed inset-0 bg-green-500 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
+          <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6">
+            <CheckCircle className="w-16 h-16 text-white" />
           </div>
-          <h1 className="text-5xl font-[900] tracking-tight mb-2">Entry Approved</h1>
-          <p className="text-xl font-[600] opacity-90 mb-10">Pass successfully scanned.</p>
+          <h1 className="text-[40px] font-display font-[700] tracking-tight mb-2">Entry Approved</h1>
+          <p className="text-[18px] font-[500] opacity-90 mb-10">Pass successfully scanned.</p>
           
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 w-full max-w-sm space-y-4 text-left border border-white/20">
+          <div className="bg-white/10 backdrop-blur-md rounded-card p-6 w-full max-w-sm space-y-4 text-left border border-white/20">
             <div>
-              <p className="text-green-100 text-xs font-[700] uppercase tracking-wider mb-1">Customer Name</p>
-              <p className="font-[800] text-2xl">{scanResult.ticket?.customerName}</p>
+              <p className="text-green-100 text-[11px] font-[700] uppercase tracking-wider mb-1">Customer Name</p>
+              <p className="font-display font-[700] text-[24px]">{scanResult.ticket?.customerName}</p>
             </div>
             <div>
-              <p className="text-green-100 text-xs font-[700] uppercase tracking-wider mb-1">Pass Type</p>
-              <p className="font-[800] text-xl">{scanResult.ticket?.ticketType}</p>
+              <p className="text-green-100 text-[11px] font-[700] uppercase tracking-wider mb-1">Pass Type</p>
+              <p className="font-display font-[700] text-[20px]">{scanResult.ticket?.ticketType}</p>
             </div>
             <div className="flex justify-between pt-4 border-t border-white/20">
               <div>
                 <p className="text-green-100 text-[10px] font-[700] uppercase tracking-wider mb-1">Booking ID</p>
-                <p className="font-mono font-[800] text-lg">{scanResult.ticket?.bookingId}</p>
+                <p className="font-mono font-[700] text-[16px]">{scanResult.ticket?.bookingId}</p>
               </div>
               <div className="text-right">
                 <p className="text-green-100 text-[10px] font-[700] uppercase tracking-wider mb-1">Gate</p>
-                <p className="font-[800] text-lg">{selectedGate}</p>
+                <p className="font-[700] text-[16px]">{selectedGate}</p>
               </div>
             </div>
             <div>
                 <p className="text-green-100 text-[10px] font-[700] uppercase tracking-wider mb-1 mt-2">Scan Time</p>
-                <p className="font-[600] text-sm">{new Date().toLocaleTimeString()}</p>
+                <p className="font-[500] text-[14px]">{new Date().toLocaleTimeString()}</p>
             </div>
           </div>
           
-          <button onClick={dismissResult} className="mt-12 bg-white text-green-600 px-10 py-5 rounded-2xl font-[900] text-xl shadow-2xl active:scale-95 transition-transform w-full max-w-sm">
+          <button onClick={dismissResult} className="mt-12 bg-white text-green-600 px-10 py-4 rounded-button font-[700] text-[16px] shadow-sm hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
             Scan Next Pass
           </button>
         </div>
@@ -250,25 +250,25 @@ export default function ScannerDashboard() {
 
     if (scanResult.status === 'used') {
       return (
-        <div className="fixed inset-0 bg-[#9333EA] z-50 flex flex-col items-center justify-center p-6 text-white text-center">
-          <div className="w-28 h-28 bg-white/20 rounded-full flex items-center justify-center mb-6">
-            <XCircle className="w-20 h-20 text-white" />
+        <div className="fixed inset-0 bg-navratri-accent z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
+          <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6">
+            <XCircle className="w-16 h-16 text-white" />
           </div>
-          <h1 className="text-5xl font-[900] tracking-tight mb-2">Ticket Already Used</h1>
-          <p className="text-xl font-[600] opacity-90 mb-10">This pass has already been scanned.</p>
+          <h1 className="text-[40px] font-display font-[700] tracking-tight mb-2">Ticket Already Used</h1>
+          <p className="text-[18px] font-[500] opacity-90 mb-10">This pass has already been scanned.</p>
           
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 w-full max-w-sm space-y-4 text-left border border-white/20">
+          <div className="bg-white/10 backdrop-blur-md rounded-card p-6 w-full max-w-sm space-y-4 text-left border border-white/20">
             <div>
-              <p className="text-red-200 text-xs font-[700] uppercase tracking-wider mb-1">Customer</p>
-              <p className="font-[800] text-2xl">{scanResult.ticket?.customerName}</p>
+              <p className="text-red-200 text-[11px] font-[700] uppercase tracking-wider mb-1">Customer</p>
+              <p className="font-display font-[700] text-[24px]">{scanResult.ticket?.customerName}</p>
             </div>
             <div>
-              <p className="text-red-200 text-xs font-[700] uppercase tracking-wider mb-1">Booking ID</p>
-              <p className="font-mono font-[800] text-xl">{scanResult.ticket?.bookingId}</p>
+              <p className="text-red-200 text-[11px] font-[700] uppercase tracking-wider mb-1">Booking ID</p>
+              <p className="font-mono font-[700] text-[20px]">{scanResult.ticket?.bookingId}</p>
             </div>
           </div>
           
-          <button onClick={dismissResult} className="mt-12 bg-white text-[#9333EA] px-10 py-5 rounded-2xl font-[900] text-xl shadow-2xl active:scale-95 transition-transform w-full max-w-sm">
+          <button onClick={dismissResult} className="mt-12 bg-white text-navratri-accent px-10 py-4 rounded-button font-[700] text-[16px] shadow-sm hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
             Dismiss
           </button>
         </div>
@@ -277,14 +277,14 @@ export default function ScannerDashboard() {
 
     if (scanResult.status === 'wrong_event') {
       return (
-        <div className="fixed inset-0 bg-orange-600 z-50 flex flex-col items-center justify-center p-6 text-white text-center">
-          <div className="w-28 h-28 bg-white/20 rounded-full flex items-center justify-center mb-6">
-            <AlertTriangle className="w-20 h-20 text-white" />
+        <div className="fixed inset-0 bg-orange-600 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
+          <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6">
+            <AlertTriangle className="w-16 h-16 text-white" />
           </div>
-          <h1 className="text-5xl font-[900] tracking-tight mb-2">Wrong Event</h1>
-          <p className="text-xl font-[600] opacity-90 mb-10">This pass is not for the current event.</p>
+          <h1 className="text-[40px] font-display font-[700] tracking-tight mb-2">Wrong Event</h1>
+          <p className="text-[18px] font-[500] opacity-90 mb-10">This pass is not for the current event.</p>
           
-          <button onClick={dismissResult} className="mt-12 bg-white text-orange-600 px-10 py-5 rounded-2xl font-[900] text-xl shadow-2xl active:scale-95 transition-transform w-full max-w-sm">
+          <button onClick={dismissResult} className="mt-12 bg-white text-orange-600 px-10 py-4 rounded-button font-[700] text-[16px] shadow-sm hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
             Dismiss
           </button>
         </div>
@@ -292,14 +292,14 @@ export default function ScannerDashboard() {
     }
 
     return (
-      <div className="fixed inset-0 bg-[#111111] z-50 flex flex-col items-center justify-center p-6 text-white text-center">
-        <div className="w-28 h-28 bg-red-500/20 rounded-full flex items-center justify-center mb-6">
-          <XCircle className="w-20 h-20 text-[#9333EA]" />
+      <div className="fixed inset-0 bg-navratri-primary z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
+        <div className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mb-6">
+          <XCircle className="w-16 h-16 text-navratri-accent" />
         </div>
-        <h1 className="text-5xl font-[900] tracking-tight mb-2 text-[#9333EA]">Invalid Ticket</h1>
-        <p className="text-xl font-[600] text-gray-400 mb-10">{scanResult.message || 'This pass is not recognized.'}</p>
+        <h1 className="text-[40px] font-display font-[700] tracking-tight mb-2 text-navratri-accent">Invalid Ticket</h1>
+        <p className="text-[18px] font-[500] text-gray-400 mb-10">{scanResult.message || 'This pass is not recognized.'}</p>
         
-        <button onClick={dismissResult} className="mt-12 bg-[#9333EA] text-white px-10 py-5 rounded-2xl font-[900] text-xl shadow-2xl active:scale-95 transition-transform w-full max-w-sm">
+        <button onClick={dismissResult} className="mt-12 bg-navratri-accent text-white px-10 py-4 rounded-button font-[700] text-[16px] shadow-sm hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
           Dismiss
         </button>
       </div>
@@ -307,58 +307,58 @@ export default function ScannerDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F7F8] flex flex-col w-full">
+    <div className="min-h-screen bg-navratri-bg flex flex-col w-full selection:bg-navratri-accent selection:text-white">
       {/* Dedicated Header */}
-      <header className="bg-[#111111] text-white px-4 py-4 flex flex-col shadow-md z-10 w-full relative shrink-0">
+      <header className="bg-navratri-primary text-white px-4 py-4 flex flex-col shadow-sm z-10 w-full relative shrink-0">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="font-[900] text-xl flex items-center gap-2 tracking-tight">
-            <ScanLine className="w-6 h-6 text-[#9333EA]" /> RaasPass Scanner
+          <h1 className="font-display font-[700] text-[20px] flex items-center gap-2 tracking-tight">
+            <ScanLine className="w-6 h-6 text-navratri-accent" /> RasPass Scanner
           </h1>
-          <button onClick={handleLogout} className="p-2 bg-gray-800 rounded-full text-gray-300 hover:text-white flex items-center gap-2 text-sm font-[600] pr-4">
-            <LogOut className="w-4 h-4" /> Logout
+          <button onClick={handleLogout} className="px-3 py-1.5 bg-white/10 rounded-[8px] text-white/80 hover:text-white hover:bg-white/20 flex items-center gap-2 text-[12px] font-[600] transition-colors border border-white/5">
+            <LogOut className="w-3.5 h-3.5" /> Logout
           </button>
         </div>
         
         <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-gray-400" />
+          <div className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-[10px] border border-white/5">
+            <Calendar className="w-4 h-4 text-navratri-accent" />
             <select 
               value={selectedEvent}
               onChange={(e) => setSelectedEvent(e.target.value)}
-              className="bg-transparent border-b border-gray-700 text-white text-sm font-[700] py-1 outline-none w-full"
+              className="bg-transparent text-white text-[14px] font-[600] py-1 outline-none w-full"
             >
               {events.map(ev => <option key={ev} value={ev} className="text-black">{ev}</option>)}
             </select>
           </div>
-          <div className="flex items-center gap-2">
-            <Ticket className="w-4 h-4 text-gray-400" />
+          <div className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-[10px] border border-white/5">
+            <Ticket className="w-4 h-4 text-navratri-accent" />
             <select 
               value={selectedGate}
               onChange={(e) => setSelectedGate(e.target.value)}
-              className="bg-transparent border-b border-gray-700 text-white text-sm font-[700] py-1 outline-none w-full"
+              className="bg-transparent text-white text-[14px] font-[600] py-1 outline-none w-full"
             >
               {gates.map(gate => <option key={gate} value={gate} className="text-black">{gate}</option>)}
             </select>
           </div>
         </div>
-        <div className="absolute bottom-4 right-4 text-xs text-gray-400 font-[600]">
+        <div className="absolute top-5 right-4 text-[10px] text-white/40 font-[700] uppercase tracking-widest mt-10 pointer-events-none">
           Staff: {staffName}
         </div>
       </header>
 
       {/* Live Stats */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 flex gap-2 shrink-0 overflow-x-auto hide-scrollbar">
-        <div className="bg-gray-50 border border-gray-100 rounded-xl px-4 py-2 shrink-0">
-          <p className="text-[10px] uppercase font-[800] text-gray-400 tracking-wider">Today's Check-ins</p>
-          <p className="text-xl font-[900] text-[#111111]">{stats.total}</p>
+      <div className="bg-white border-b border-navratri-lightGrey px-4 py-3 flex gap-3 shrink-0 overflow-x-auto hide-scrollbar">
+        <div className="bg-navratri-bg border border-navratri-lightGrey rounded-[14px] px-5 py-3 shrink-0 flex-1 text-center">
+          <p className="text-[10px] uppercase font-[700] text-navratri-muted tracking-widest mb-1">Today's Entry</p>
+          <p className="text-[20px] font-display font-[700] text-navratri-text">{stats.total}</p>
         </div>
-        <div className="bg-yellow-50 border border-yellow-100 rounded-xl px-4 py-2 shrink-0">
-          <p className="text-[10px] uppercase font-[800] text-yellow-600 tracking-wider">VIP</p>
-          <p className="text-xl font-[900] text-yellow-800">{stats.vip}</p>
+        <div className="bg-orange-50 border border-orange-100 rounded-[14px] px-5 py-3 shrink-0 flex-1 text-center">
+          <p className="text-[10px] uppercase font-[700] text-orange-600 tracking-widest mb-1">VIP</p>
+          <p className="text-[20px] font-display font-[700] text-orange-800">{stats.vip}</p>
         </div>
-        <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-2 shrink-0">
-          <p className="text-[10px] uppercase font-[800] text-blue-600 tracking-wider">Regular</p>
-          <p className="text-xl font-[900] text-blue-800">{stats.regular}</p>
+        <div className="bg-blue-50 border border-blue-100 rounded-[14px] px-5 py-3 shrink-0 flex-1 text-center">
+          <p className="text-[10px] uppercase font-[700] text-blue-600 tracking-widest mb-1">Regular</p>
+          <p className="text-[20px] font-display font-[700] text-blue-800">{stats.regular}</p>
         </div>
       </div>
 
@@ -369,73 +369,73 @@ export default function ScannerDashboard() {
             <div id="qr-reader" className="w-full h-full object-cover"></div>
             {processing && (
               <div className="absolute inset-0 bg-black/70 backdrop-blur-md flex flex-col items-center justify-center z-20">
-                <div className="w-16 h-16 border-4 border-[#9333EA] border-t-transparent rounded-full animate-spin"></div>
-                <p className="text-white font-[900] text-xl mt-4">Verifying Pass...</p>
+                <div className="w-16 h-16 border-4 border-navratri-accent border-t-transparent rounded-full animate-spin"></div>
+                <p className="text-white font-display font-[700] text-[20px] mt-4">Verifying Pass...</p>
               </div>
             )}
             <button 
               onClick={stopScanner}
-              className="absolute top-6 right-6 bg-black/50 text-white p-3 rounded-full backdrop-blur-md z-30"
+              className="absolute top-6 right-6 bg-white/10 text-white p-3 rounded-full backdrop-blur-md z-30 hover:bg-white/20 transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
             <div className="absolute bottom-6 left-0 right-0 flex justify-center z-30 pointer-events-none">
-              <div className="bg-black/50 backdrop-blur-md text-white px-6 py-2 rounded-full font-[600] text-sm">
+              <div className="bg-black/60 backdrop-blur-md text-white px-6 py-2 rounded-full font-[600] text-[13px] border border-white/10">
                 Point camera at QR code
               </div>
             </div>
           </>
         ) : (
           <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-10">
-            <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mb-6">
-              <Camera className="w-12 h-12 text-white" />
+            <div className="w-24 h-24 bg-white/5 border border-white/10 rounded-[20px] flex items-center justify-center mb-8">
+              <Camera className="w-10 h-10 text-white/50" />
             </div>
-            <h3 className="text-3xl font-[900] text-white mb-2">Scanner Ready</h3>
-            <p className="text-gray-400 font-[500] mb-8 text-lg">Tap below to open camera</p>
+            <h3 className="text-[28px] font-display font-[700] text-white mb-2">Scanner Ready</h3>
+            <p className="text-white/60 font-[500] mb-8 text-[15px]">Tap below to open camera</p>
             <button 
               onClick={startScanner}
-              className="bg-[#9333EA] text-white px-10 py-5 rounded-2xl font-[900] text-xl shadow-[0_0_40px_rgba(229,57,53,0.3)] hover:bg-[#7E22CE] active:scale-95 transition-all flex items-center gap-3 w-full max-w-sm justify-center"
+              className="bg-navratri-accent text-white px-8 py-4 rounded-button font-[700] text-[15px] shadow-lg shadow-navratri-accent/20 hover:bg-navratri-darkAccent active:scale-95 transition-all flex items-center justify-center gap-2 w-full max-w-[280px]"
             >
-              <ScanLine className="w-7 h-7" /> Start Scanning
+              <ScanLine className="w-5 h-5" /> Start Scanning
             </button>
           </div>
         )}
       </div>
 
       {/* Recent Scans */}
-      <div className="bg-white shrink-0 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] border-t border-gray-100 z-10 max-h-[30vh] overflow-y-auto">
-        <div className="p-4 border-b border-gray-50 sticky top-0 bg-white/90 backdrop-blur-md">
-          <h3 className="text-sm font-[800] text-[#111111] flex items-center gap-2">
-            <Clock className="w-4 h-4 text-gray-400" /> Recent Scans
+      <div className="bg-white shrink-0 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] border-t border-navratri-lightGrey z-10 max-h-[30vh] overflow-y-auto">
+        <div className="p-4 border-b border-navratri-lightGrey sticky top-0 bg-white/90 backdrop-blur-md">
+          <h3 className="text-[13px] font-[700] text-navratri-text flex items-center gap-2 uppercase tracking-widest">
+            <Clock className="w-4 h-4 text-navratri-accent" /> Recent Scans
           </h3>
         </div>
-        <div className="p-2 space-y-2">
+        <div className="p-3 space-y-2">
           {recentScans.length === 0 ? (
             <div className="text-center py-6">
-              <p className="text-sm text-gray-400 font-[500]">No passes scanned yet.</p>
+              <p className="text-[14px] text-navratri-muted font-[500]">No passes scanned yet.</p>
             </div>
           ) : (
             recentScans.map((scan, idx) => (
-              <div key={idx} className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
+              <div key={idx} className="flex items-center justify-between p-3.5 rounded-[16px] bg-navratri-bg border border-navratri-lightGrey">
                 <div className="flex items-center gap-3">
                   {scan.status === 'valid' ? (
-                    <CheckCircle className="w-6 h-6 text-green-500" />
+                    <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />
                   ) : scan.status === 'used' ? (
-                    <XCircle className="w-6 h-6 text-[#9333EA]" />
+                    <XCircle className="w-5 h-5 text-navratri-accent shrink-0" />
                   ) : (
-                    <AlertTriangle className="w-6 h-6 text-orange-500" />
+                    <AlertTriangle className="w-5 h-5 text-orange-500 shrink-0" />
                   )}
                   <div>
-                    <p className="font-[800] text-sm text-[#111111] leading-tight">
+                    <p className="font-[700] text-[14px] text-navratri-text leading-tight truncate max-w-[150px]">
                       {scan.ticket?.customerName || 'Unknown Pass'}
                     </p>
-                    <p className="text-[10px] font-[600] text-gray-500 uppercase tracking-widest mt-0.5">
+                    <p className="text-[10px] font-[700] text-navratri-muted uppercase tracking-widest mt-0.5">
                       {scan.ticket?.ticketType || scan.status.replace('_', ' ')}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs font-[700] text-[#111111]">
+                  <p className="text-[12px] font-[600] text-navratri-text">
                     {new Date(scan.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>

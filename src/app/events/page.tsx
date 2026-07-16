@@ -60,27 +60,32 @@ export default function EventsPage() {
   });
 
   return (
-    <div className="bg-[#F7F7F8] min-h-screen pt-[100px] pb-20 font-sans">
+    <div className="bg-navratri-bg min-h-[calc(100vh-64px)] pb-24">
       
       {/* PAGE HEADER */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center">
-        <h1 className="text-4xl md:text-5xl font-[800] text-[#111111] mb-4 tracking-tight">Explore Events</h1>
-        <p className="text-lg text-[#6B7280] font-[500]">Find the best live experiences happening near you.</p>
+      <section className="bg-navratri-primary pt-12 pb-16 border-b border-white/5 mb-10 text-center relative overflow-hidden">
+        <div className="absolute inset-0 z-0 opacity-40">
+          <div className="absolute -top-1/2 left-1/4 w-[400px] h-[400px] bg-navratri-accent/20 rounded-full blur-[100px]"></div>
+        </div>
+        <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-[40px] md:text-[56px] font-display font-[700] text-white mb-4 tracking-tight">Explore Events</h1>
+          <p className="text-[18px] text-navratri-muted font-[500]">Find the best live experiences happening near you.</p>
+        </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* SEARCH & FILTERS DESKTOP */}
-        <div className="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 mb-8 flex flex-col lg:flex-row gap-4">
+        <div className="bg-white rounded-card p-4 shadow-sm border border-navratri-lightGrey mb-8 flex flex-col lg:flex-row gap-4">
           
           <div className="flex-1 relative">
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
             <input
               type="text"
               placeholder="Search events, artists or venues"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 transition-all"
+              className="w-full pl-12 pr-4 py-3.5 rounded-[14px] bg-navratri-bg border-none text-navratri-text font-[500] placeholder-navratri-muted focus:outline-none focus:ring-1 focus:ring-navratri-accent transition-all text-[15px]"
             />
           </div>
 
@@ -89,40 +94,40 @@ export default function EventsPage() {
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 cursor-pointer"
+                className="w-full pl-5 pr-10 py-3.5 rounded-[14px] bg-navratri-bg border-none text-navratri-text font-[500] appearance-none focus:outline-none focus:ring-1 focus:ring-navratri-accent cursor-pointer text-[15px]"
               >
                 <option value="">All Cities</option>
                 {CITIES.map(city => <option key={city} value={city}>{city}</option>)}
               </select>
-              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted pointer-events-none" />
             </div>
 
             <div className="relative min-w-[200px]">
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 cursor-pointer"
+                className="w-full pl-5 pr-10 py-3.5 rounded-[14px] bg-navratri-bg border-none text-navratri-text font-[500] appearance-none focus:outline-none focus:ring-1 focus:ring-navratri-accent cursor-pointer text-[15px]"
               >
                 <option value="">All Categories</option>
                 {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
               </select>
-              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted pointer-events-none" />
             </div>
 
             <div className="relative min-w-[200px]">
               <select
                 value={selectedSort}
                 onChange={(e) => setSelectedSort(e.target.value)}
-                className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 cursor-pointer"
+                className="w-full pl-5 pr-10 py-3.5 rounded-[14px] bg-navratri-bg border-none text-navratri-text font-[500] appearance-none focus:outline-none focus:ring-1 focus:ring-navratri-accent cursor-pointer text-[15px]"
               >
-                {sortOptions.map(sort => <option key={sort} value={sort}>Sort by: {sort}</option>)}
+                {sortOptions.map(sort => <option key={sort} value={sort}>Sort: {sort}</option>)}
               </select>
-              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+              <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted pointer-events-none" />
             </div>
           </div>
           
           <button 
-            className="lg:hidden w-full flex justify-center items-center gap-2 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[800]"
+            className="lg:hidden w-full flex justify-center items-center gap-2 py-3.5 rounded-[14px] bg-navratri-bg text-navratri-text font-[600] text-[15px]"
             onClick={() => setShowFilters(!showFilters)}
           >
             <SlidersHorizontal className="w-5 h-5" /> Filters
@@ -136,25 +141,25 @@ export default function EventsPage() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-white p-6 rounded-3xl shadow-sm border border-gray-100 mb-8 space-y-4"
+              className="lg:hidden bg-white p-6 rounded-card shadow-sm border border-navratri-lightGrey mb-8 space-y-4"
             >
               <div>
-                <label className="text-xs font-[800] text-gray-400 uppercase tracking-widest mb-2 block">City</label>
-                <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none">
+                <label className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2 block">City</label>
+                <select value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)} className="w-full px-4 py-3.5 rounded-[14px] bg-navratri-bg text-navratri-text font-[500] appearance-none border-none">
                   <option value="">All Cities</option>
                   {CITIES.map(city => <option key={city} value={city}>{city}</option>)}
                 </select>
               </div>
               <div>
-                <label className="text-xs font-[800] text-gray-400 uppercase tracking-widest mb-2 block">Category</label>
-                <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none">
+                <label className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2 block">Category</label>
+                <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="w-full px-4 py-3.5 rounded-[14px] bg-navratri-bg text-navratri-text font-[500] appearance-none border-none">
                   <option value="">All Categories</option>
                   {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                 </select>
               </div>
               <div>
-                <label className="text-xs font-[800] text-gray-400 uppercase tracking-widest mb-2 block">Sort By</label>
-                <select value={selectedSort} onChange={(e) => setSelectedSort(e.target.value)} className="w-full px-5 py-4 rounded-2xl bg-[#F7F7F8] text-[#111111] font-[600] appearance-none">
+                <label className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2 block">Sort By</label>
+                <select value={selectedSort} onChange={(e) => setSelectedSort(e.target.value)} className="w-full px-4 py-3.5 rounded-[14px] bg-navratri-bg text-navratri-text font-[500] appearance-none border-none">
                   {sortOptions.map(sort => <option key={sort} value={sort}>{sort}</option>)}
                 </select>
               </div>
@@ -164,19 +169,19 @@ export default function EventsPage() {
 
         {/* EVENT GRID */}
         {filteredEvents.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {filteredEvents.map(event => (
               <EventCard key={event.id} event={event} />
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-[3rem] p-16 text-center border border-gray-100 shadow-sm max-w-2xl mx-auto mt-12">
-            <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Search className="w-10 h-10 text-gray-300" />
+          <div className="bg-white rounded-card p-16 text-center border border-navratri-lightGrey shadow-sm max-w-2xl mx-auto mt-12">
+            <div className="w-20 h-20 bg-navratri-bg rounded-full flex items-center justify-center mx-auto mb-6">
+              <Search className="w-8 h-8 text-navratri-muted" />
             </div>
-            <h2 className="text-3xl font-[800] text-[#111111] mb-4">No Events Found</h2>
-            <p className="text-[#6B7280] font-[500] mb-8">Try changing your filters or search for another city.</p>
-            <button onClick={clearFilters} className="px-8 py-4 bg-[#9333EA] text-white font-[800] rounded-2xl hover:bg-[#7E22CE] hover:-translate-y-0.5 transition-all shadow-lg">
+            <h2 className="text-[28px] font-display font-[700] text-navratri-text mb-3">No Events Found</h2>
+            <p className="text-navratri-muted font-[500] mb-8 text-[16px]">Try changing your filters or search for another city.</p>
+            <button onClick={clearFilters} className="px-8 py-3.5 bg-navratri-accent text-white font-[700] rounded-button hover:bg-navratri-darkAccent transition-all shadow-sm text-[15px]">
               Clear Filters
             </button>
           </div>

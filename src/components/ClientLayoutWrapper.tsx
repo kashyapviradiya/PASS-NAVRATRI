@@ -10,14 +10,14 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
   const isScanRoute = pathname?.startsWith('/scan');
   const isOrganizerRoute = pathname?.startsWith('/organizer');
 
-  if (isAdminRoute || isScanRoute || isOrganizerRoute) {
+  if (isAdminRoute || isScanRoute || isOrganizerRoute || pathname?.startsWith('/staff')) {
     return <main className="flex-grow">{children}</main>;
   }
 
   return (
     <>
       <Navbar />
-      <main className="pt-20 flex-grow">
+      <main className="pt-[64px] flex-grow">
         {children}
       </main>
       <Footer />

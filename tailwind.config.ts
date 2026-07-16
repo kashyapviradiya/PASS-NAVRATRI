@@ -10,18 +10,23 @@ const config: Config = {
     extend: {
       colors: {
         navratri: {
-          primary: "#9333EA",
-          secondary: "#7E22CE",
-          accent: "#A855F7",
-          gold: "#D8B4FE",
-          softgold: "#F3E8FF",
-          bg: "#FFFFFF",
-          text: "#111111",
+          primary: "#090909",       // Primary Black
+          secondary: "#121212",     // Soft Black
+          accent: "#E53935",        // Premium Red
+          darkAccent: "#B71C1C",    // Deep Red
+          bg: "#F8F7F4",            // Warm White
+          lightGrey: "#E8E8E8",     // Light Grey
+          muted: "#A3A3A3",         // Muted Grey
+          text: "#111111",          // Main text
         },
       },
       fontFamily: {
-        sans: ['var(--font-inter)'],
-        serif: ['var(--font-playfair)'],
+        sans: ['var(--font-inter)', 'sans-serif'],
+        display: ['var(--font-jakarta)', 'sans-serif'],
+      },
+      borderRadius: {
+        'card': '18px',
+        'button': '14px',
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

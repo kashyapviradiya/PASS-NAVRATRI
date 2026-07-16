@@ -36,50 +36,51 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <div className="bg-[#F7F7F8] pb-20 font-sans overflow-x-hidden">
+    <div className="bg-navratri-bg pb-24 overflow-x-hidden">
       
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[calc(100vh-88px)] flex items-center justify-center bg-white pt-10 pb-24 border-b border-gray-100">
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#9333EA]/5 rounded-full blur-3xl"></div>
+      <section className="relative min-h-[calc(100vh-64px)] flex items-center justify-center bg-navratri-primary pt-10 pb-24 overflow-hidden border-b border-white/5">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-navratri-accent/10 rounded-full blur-[100px]"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-navratri-darkAccent/5 rounded-full blur-[80px]"></div>
         </div>
         
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Left Content */}
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-left space-y-8"
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-7 text-left space-y-8"
             >
-              <h1 className="text-5xl md:text-[64px] font-sans font-[800] text-[#111111] leading-[1.1] tracking-tight">
-                Discover Gujarat’s <br/>
-                <span className="text-[#9333EA]">Best Events</span>
+              <h1 className="text-[56px] md:text-[72px] lg:text-[84px] font-display font-[700] text-white leading-[1.05] tracking-tight">
+                Your Pass to <br/>
+                <span className="text-navratri-accent">Unforgettable</span> Events
               </h1>
               
-              <p className="text-xl text-[#6B7280] font-[500] max-w-lg leading-relaxed">
-                Book tickets instantly, receive secure QR passes, and enjoy seamless entry to Gujarat’s most exciting events.
+              <p className="text-[18px] md:text-[20px] text-navratri-muted font-[500] max-w-xl leading-relaxed">
+                Discover premium events, book your pass, and enter seamlessly with secure digital QR tickets.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <Link href="/events" className="px-8 py-4 bg-[#9333EA] text-white font-[800] rounded-2xl hover:bg-[#7E22CE] hover:-translate-y-0.5 transition-all shadow-lg text-[16px] text-center flex items-center justify-center gap-2">
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Link href="/events" className="px-8 py-4 bg-navratri-accent text-white font-[700] rounded-button hover:bg-navratri-darkAccent hover:-translate-y-0.5 transition-all shadow-sm text-[16px] text-center flex items-center justify-center gap-2">
                   Explore Events
                 </Link>
-                <Link href="/my-tickets" className="px-8 py-4 bg-white border border-gray-200 text-[#111111] font-[800] rounded-2xl hover:bg-gray-50 transition-all text-[16px] text-center">
-                  My Tickets
+                <Link href="/my-tickets" className="px-8 py-4 bg-transparent border border-white/20 text-white font-[700] rounded-button hover:bg-white/5 transition-all text-[16px] text-center">
+                  View My Tickets
                 </Link>
               </div>
 
-              <div className="flex flex-wrap items-center gap-6 pt-6">
+              <div className="flex flex-wrap items-center gap-6 pt-8 border-t border-white/10">
                 {[
-                  { text: 'Instant QR Passes' },
-                  { text: 'Secure Payments' },
-                  { text: 'Fast Event Entry' },
+                  { text: 'Secure Booking', icon: Shield },
+                  { text: 'Instant QR Ticket', icon: QrCode },
+                  { text: 'Fast Entry', icon: Zap },
                 ].map((badge, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm text-[#111111] font-[700]">
-                    <CheckCircle className="w-5 h-5 text-[#9333EA]" />
+                  <div key={i} className="flex items-center gap-2.5 text-[14px] text-navratri-muted font-[600]">
+                    <badge.icon className="w-5 h-5 text-navratri-accent" />
                     <span>{badge.text}</span>
                   </div>
                 ))}
@@ -88,33 +89,32 @@ export default function Home() {
 
             {/* Right Mockup */}
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="relative hidden lg:flex items-center justify-center w-full"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-5 relative hidden lg:flex items-center justify-center w-full"
             >
-              {/* Scaled wrapper to ensure it fits entirely on screen without cropping */}
-              <div className="relative w-full max-w-[340px] xl:max-w-[380px] aspect-[9/18] min-h-[550px] max-h-[650px]">
+              <div className="relative w-full max-w-[340px] aspect-[9/18] min-h-[550px]">
                 {/* Main Phone Mockup */}
-                <div className="absolute inset-0 bg-white rounded-[40px] shadow-2xl border-[8px] border-gray-100 overflow-hidden flex flex-col z-10">
-                  <div className="h-[35%] bg-gradient-to-br from-[#111111] to-gray-900 relative shrink-0">
-                    <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&q=80&w=1000" alt="Event Banner" className="w-full h-full object-cover opacity-50" />
+                <div className="absolute inset-0 bg-navratri-secondary rounded-[40px] shadow-2xl border-[8px] border-navratri-primary overflow-hidden flex flex-col z-10 ring-1 ring-white/10">
+                  <div className="h-[40%] bg-[#0A0A0A] relative shrink-0">
+                    <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&q=80&w=1000" alt="Event Banner" className="w-full h-full object-cover opacity-60" />
                     <div className="absolute inset-0 p-6 flex flex-col justify-between">
                       <div className="flex justify-between items-center">
-                        <span className="text-white text-xs font-[800] uppercase tracking-widest bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-md">VIP</span>
+                        <span className="text-white text-[10px] font-[800] uppercase tracking-widest bg-navratri-accent px-3 py-1.5 rounded-full">VIP PASS</span>
                       </div>
-                      <h3 className="text-white font-[800] text-xl xl:text-2xl tracking-tight leading-tight line-clamp-2">Sunburn Arena<br/>Ahmedabad</h3>
+                      <h3 className="text-white font-display font-[700] text-[24px] tracking-tight leading-tight line-clamp-2">Sunburn Arena</h3>
                     </div>
                   </div>
-                  <div className="flex-1 bg-[#F7F7F8] p-4 xl:p-6 relative flex flex-col items-center justify-center min-h-0">
-                    <div className="bg-white w-full rounded-3xl p-4 xl:p-6 shadow-sm border border-gray-100 text-center relative overflow-hidden flex-1 flex flex-col items-center justify-center">
-                      <div className="w-12 h-12 xl:w-16 xl:h-16 bg-[#F7F7F8] rounded-full absolute -top-6 -left-6 xl:-top-8 xl:-left-8"></div>
-                      <div className="w-12 h-12 xl:w-16 xl:h-16 bg-[#F7F7F8] rounded-full absolute -top-6 -right-6 xl:-top-8 xl:-right-8"></div>
-                      <div className="w-24 h-24 xl:w-32 xl:h-32 mx-auto bg-gray-100 rounded-2xl flex items-center justify-center mb-4 shrink-0">
-                        <QrCode className="w-16 h-16 xl:w-20 xl:h-20 text-[#111111]" />
+                  <div className="flex-1 bg-navratri-bg p-6 relative flex flex-col items-center justify-center min-h-0">
+                    <div className="bg-white w-full rounded-[24px] p-6 shadow-sm border border-navratri-lightGrey text-center relative flex-1 flex flex-col items-center justify-center">
+                      <div className="w-16 h-16 bg-navratri-bg rounded-full absolute -top-8 -left-8 border border-navratri-lightGrey"></div>
+                      <div className="w-16 h-16 bg-navratri-bg rounded-full absolute -top-8 -right-8 border border-navratri-lightGrey"></div>
+                      <div className="w-32 h-32 mx-auto bg-navratri-bg rounded-[20px] flex items-center justify-center mb-6 shrink-0 border border-navratri-lightGrey">
+                        <QrCode className="w-20 h-20 text-navratri-text" />
                       </div>
-                      <p className="text-[10px] xl:text-xs font-[800] text-gray-400 uppercase tracking-widest mb-1 mt-auto">Pass ID</p>
-                      <p className="font-mono text-base xl:text-lg font-[800] text-[#111111]">TK-849201</p>
+                      <p className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-1 mt-auto">Booking ID</p>
+                      <p className="font-mono text-[18px] font-[700] text-navratri-text tracking-wider">TK-849201</p>
                     </div>
                   </div>
                 </div>
@@ -123,14 +123,14 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                  className="absolute -left-8 xl:-left-12 top-24 xl:top-32 z-20 bg-white rounded-2xl p-3 xl:p-4 shadow-xl border border-gray-100 flex items-center gap-3 w-[220px] xl:w-64"
+                  className="absolute -left-12 top-32 z-20 bg-white rounded-[16px] p-4 shadow-elevated border border-navratri-lightGrey flex items-center gap-4 w-64"
                 >
-                  <div className="w-8 h-8 xl:w-10 xl:h-10 bg-green-50 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-4 h-4 xl:w-5 xl:h-5 text-green-500" />
+                  <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-xs xl:text-sm font-[800] text-[#111111]">Payment Success</p>
-                    <p className="text-[10px] xl:text-xs font-[500] text-[#6B7280]">₹2,500 securely paid</p>
+                    <p className="text-[14px] font-[700] text-navratri-text">Payment Success</p>
+                    <p className="text-[12px] font-[500] text-navratri-muted">₹2,500 securely paid</p>
                   </div>
                 </motion.div>
 
@@ -138,27 +138,16 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, 10, 0] }}
                   transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-                  className="absolute -right-8 xl:-right-16 bottom-24 xl:bottom-40 z-20 bg-white rounded-2xl p-3 xl:p-4 shadow-xl border border-gray-100 flex items-center gap-3 w-[200px] xl:w-56"
+                  className="absolute -right-16 bottom-32 z-20 bg-navratri-secondary rounded-[16px] p-4 shadow-elevated border border-white/10 flex items-center gap-4 w-56"
                 >
-                  <div className="w-8 h-8 xl:w-10 xl:h-10 bg-blue-50 rounded-full flex items-center justify-center flex-shrink-0">
-                    <QrCode className="w-4 h-4 xl:w-5 xl:h-5 text-blue-500" />
+                  <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <QrCode className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-xs xl:text-sm font-[800] text-[#111111]">Entry Pass</p>
-                    <p className="text-[10px] xl:text-xs font-[500] text-[#6B7280]">Ready to scan</p>
+                    <p className="text-[14px] font-[700] text-white">Entry Pass</p>
+                    <p className="text-[12px] font-[500] text-navratri-muted">Ready to scan</p>
                   </div>
                 </motion.div>
-
-                {/* Floating Sold Out Badge */}
-                <motion.div 
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", delay: 0.5 }}
-                  className="absolute -right-2 xl:-right-4 top-16 xl:top-20 z-20 bg-[#111111] text-white rounded-xl px-4 py-2 xl:px-5 xl:py-3 shadow-xl flex items-center gap-2"
-                >
-                  <Star className="w-3 h-3 xl:w-4 xl:h-4 text-[#9333EA] fill-current" />
-                  <span className="text-[10px] xl:text-xs font-[800] uppercase tracking-widest">Sold Out</span>
-                </motion.div>
-
               </div>
             </motion.div>
 
@@ -167,18 +156,18 @@ export default function Home() {
       </section>
 
       {/* 2. FEATURED EVENTS SECTION */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-[1280px] mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <h2 className="text-4xl font-sans font-[800] text-[#111111] mb-3 tracking-tight">Popular Events Near You</h2>
-            <p className="text-[#6B7280] font-[500] text-lg">Discover the events everyone is talking about.</p>
+            <h2 className="text-[36px] font-display font-[700] text-navratri-text mb-4 tracking-tight">Popular Events Near You</h2>
+            <p className="text-navratri-muted font-[500] text-[18px]">Discover the events everyone is talking about.</p>
           </div>
-          <Link href="/events" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-200 text-[#111111] font-[800] rounded-xl hover:bg-gray-50 transition-colors">
-            View All Events
+          <Link href="/events" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-navratri-lightGrey text-navratri-text font-[700] rounded-button hover:bg-navratri-bg transition-colors shadow-sm text-[15px]">
+            View All Events &rarr;
           </Link>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {events.map(event => (
             <EventCard key={event.id} event={event} />
           ))}
@@ -186,13 +175,16 @@ export default function Home() {
       </section>
 
       {/* 3. HOW IT WORKS SECTION */}
-      <section className="py-24 bg-white border-y border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-4xl font-sans font-[800] text-[#111111] mb-4 tracking-tight">Book Your Entry in 3 Simple Steps</h2>
+      <section className="py-24 bg-white border-y border-navratri-lightGrey">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-20">
+            <h2 className="text-[36px] font-display font-[700] text-navratri-text mb-4 tracking-tight">Book Your Entry in 3 Simple Steps</h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 relative">
+            {/* Desktop Connectors */}
+            <div className="hidden md:block absolute top-[44px] left-[15%] right-[15%] h-px bg-navratri-lightGrey z-0"></div>
+
             {[
               { 
                 step: 'Step 1', 
@@ -204,35 +196,35 @@ export default function Home() {
                 step: 'Step 2', 
                 title: 'Book Your Pass', 
                 icon: Ticket, 
-                desc: 'Select your ticket type, complete secure payment and receive confirmation instantly.' 
+                desc: 'Select your ticket type, complete secure payment and receive confirmation.' 
               },
               { 
                 step: 'Step 3', 
                 title: 'Scan & Enter', 
                 icon: QrCode, 
-                desc: 'Show your QR pass at the gate and enjoy fast, hassle-free entry.' 
+                desc: 'Show your digital QR pass at the gate and enjoy fast entry.' 
               }
             ].map((s, i) => (
-              <div key={i} className="bg-[#F7F7F8] rounded-[2rem] p-10 text-center relative overflow-hidden group hover:-translate-y-1 transition-transform">
-                <div className="w-16 h-16 mx-auto bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                  <s.icon className="w-8 h-8 text-[#9333EA]" />
+              <div key={i} className="text-center relative z-10 group">
+                <div className="w-[88px] h-[88px] mx-auto bg-white rounded-[24px] border border-navratri-lightGrey flex items-center justify-center mb-8 shadow-sm group-hover:-translate-y-2 group-hover:shadow-elevated transition-all duration-300">
+                  <s.icon className="w-8 h-8 text-navratri-accent" />
                 </div>
-                <p className="text-[10px] font-[800] text-[#9333EA] uppercase tracking-widest mb-2">{s.step}</p>
-                <h3 className="text-2xl font-[800] text-[#111111] mb-4">{s.title}</h3>
-                <p className="text-[#6B7280] font-[500] leading-relaxed">{s.desc}</p>
+                <p className="text-[12px] font-[700] text-navratri-accent uppercase tracking-widest mb-3">{s.step}</p>
+                <h3 className="text-[24px] font-display font-[700] text-navratri-text mb-4">{s.title}</h3>
+                <p className="text-navratri-muted font-[500] leading-relaxed text-[16px] max-w-sm mx-auto">{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4. WHY RAASPASS SECTION */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* 4. WHY RASPASS SECTION */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-[1280px] mx-auto">
         <div className="mb-16">
-          <h2 className="text-4xl font-sans font-[800] text-[#111111] tracking-tight">A Better Way to Attend Events</h2>
+          <h2 className="text-[36px] font-display font-[700] text-navratri-text tracking-tight">A Better Way to Attend Events</h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {[
             { 
               title: 'Instant Digital Pass', 
@@ -255,13 +247,13 @@ export default function Home() {
               desc: 'View all upcoming and past bookings inside My Tickets.' 
             }
           ].map((feature, i) => (
-            <div key={i} className="bg-white rounded-3xl p-8 border border-gray-100 flex gap-6 hover:shadow-md transition-shadow">
-              <div className="w-14 h-14 bg-[#F7F7F8] rounded-2xl flex items-center justify-center shrink-0">
-                <feature.icon className="w-7 h-7 text-[#111111]" />
+            <div key={i} className="bg-white rounded-[24px] p-8 md:p-10 border border-navratri-lightGrey flex flex-col sm:flex-row gap-8 hover:shadow-card transition-shadow">
+              <div className="w-16 h-16 bg-navratri-bg rounded-[20px] flex items-center justify-center shrink-0 border border-navratri-lightGrey/50">
+                <feature.icon className="w-8 h-8 text-navratri-accent" />
               </div>
               <div>
-                <h3 className="text-xl font-[800] text-[#111111] mb-2">{feature.title}</h3>
-                <p className="text-[#6B7280] font-[500]">{feature.desc}</p>
+                <h3 className="text-[22px] font-display font-[700] text-navratri-text mb-3">{feature.title}</h3>
+                <p className="text-navratri-muted font-[500] text-[16px] leading-relaxed">{feature.desc}</p>
               </div>
             </div>
           ))}
@@ -269,9 +261,9 @@ export default function Home() {
       </section>
 
       {/* 5. STATS SECTION */}
-      <section className="py-20 bg-[#111111] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/10">
+      <section className="py-24 bg-navratri-primary text-white border-y border-white/5">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 divide-x divide-white/10">
             {[
               { label: 'Tickets Booked', value: '50,000+' },
               { label: 'Events Hosted', value: '100+' },
@@ -279,54 +271,53 @@ export default function Home() {
               { label: 'Customer Rating', value: '4.8/5' },
             ].map((stat, i) => (
               <div key={i} className="text-center px-4">
-                <p className="text-4xl md:text-5xl font-[800] mb-2">{stat.value}</p>
-                <p className="text-white/60 font-[600] text-sm uppercase tracking-widest">{stat.label}</p>
+                <p className="text-[40px] md:text-[56px] font-display font-[700] mb-4">{stat.value}</p>
+                <p className="text-navratri-muted font-[600] text-[12px] uppercase tracking-widest">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 6. CUSTOMER TRUST & 7. APP-LIKE PREVIEW */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      {/* 6. APP-LIKE PREVIEW */}
+      <section className="py-32 bg-white">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="space-y-12">
               <div>
-                <h2 className="text-4xl font-sans font-[800] text-[#111111] mb-6 tracking-tight">Made for Seamless Event Experiences</h2>
-                <p className="text-lg text-[#6B7280] font-[500] leading-relaxed">
-                  From booking to entry, RaasPass keeps every step fast, simple and secure.
+                <h2 className="text-[40px] font-display font-[700] text-navratri-text mb-6 tracking-tight leading-[1.1]">Made for Seamless Event Experiences</h2>
+                <p className="text-[18px] text-navratri-muted font-[500] leading-relaxed max-w-lg">
+                  From booking to entry, RasPass keeps every step fast, simple and secure. Access everything from your phone.
                 </p>
               </div>
               
-              <div className="grid grid-cols-2 gap-8">
+              <div className="grid grid-cols-2 gap-10">
                 {[
                   { text: 'Secure Payment', icon: Lock },
                   { text: 'Verified Events', icon: CheckCircle },
                   { text: 'Instant Confirmation', icon: Zap },
                   { text: 'Dedicated Support', icon: Heart }
                 ].map((item, i) => (
-                  <div key={i} className="flex flex-col gap-3">
-                    <div className="w-12 h-12 bg-[#F7F7F8] rounded-full flex items-center justify-center">
-                      <item.icon className="w-6 h-6 text-[#9333EA]" />
+                  <div key={i} className="flex flex-col gap-4">
+                    <div className="w-12 h-12 bg-navratri-bg rounded-[16px] border border-navratri-lightGrey flex items-center justify-center">
+                      <item.icon className="w-6 h-6 text-navratri-accent" />
                     </div>
-                    <span className="font-[800] text-[#111111]">{item.text}</span>
+                    <span className="font-display font-[700] text-navratri-text text-[16px]">{item.text}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-[#F7F7F8] rounded-[3rem] p-12 text-center border border-gray-100 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/40 via-transparent to-transparent"></div>
+            <div className="bg-navratri-bg rounded-[40px] p-16 text-center border border-navratri-lightGrey relative overflow-hidden">
               <div className="relative z-10">
-                <div className="w-20 h-20 bg-white rounded-2xl mx-auto flex items-center justify-center mb-8 shadow-sm">
-                  <Smartphone className="w-10 h-10 text-[#111111]" />
+                <div className="w-24 h-24 bg-white rounded-[24px] mx-auto flex items-center justify-center mb-10 shadow-sm border border-navratri-lightGrey">
+                  <Smartphone className="w-12 h-12 text-navratri-text" />
                 </div>
-                <h2 className="text-3xl font-[800] text-[#111111] mb-4 tracking-tight">Your Pass, Always With You</h2>
-                <p className="text-[#6B7280] font-[500] mb-8 max-w-md mx-auto">
+                <h2 className="text-[32px] font-display font-[700] text-navratri-text mb-6 tracking-tight">Your Pass, Always With You</h2>
+                <p className="text-navratri-muted font-[500] mb-12 max-w-md mx-auto text-[16px] leading-relaxed">
                   Access your booking, event details and secure QR pass anytime from your phone.
                 </p>
-                <Link href="/my-tickets" className="inline-flex items-center justify-center px-8 py-4 bg-[#111111] text-white font-[800] rounded-2xl hover:bg-black transition-all shadow-lg hover:-translate-y-0.5">
+                <Link href="/my-tickets" className="inline-flex items-center justify-center px-8 py-4 bg-navratri-text text-white font-[700] rounded-button hover:bg-black transition-all shadow-sm hover:-translate-y-0.5 text-[16px]">
                   View My Tickets
                 </Link>
               </div>
@@ -335,20 +326,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 8. FAQ SECTION */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-gray-100">
+      {/* 7. FAQ SECTION */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-[800px] mx-auto border-t border-navratri-lightGrey">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-sans font-[800] text-[#111111] tracking-tight">Frequently Asked Questions</h2>
+          <h2 className="text-[36px] font-display font-[700] text-navratri-text tracking-tight">Frequently Asked Questions</h2>
         </div>
         <div className="space-y-4">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 transition-colors shadow-sm">
+            <div key={idx} className="bg-white rounded-[20px] overflow-hidden border border-navratri-lightGrey hover:border-[#D4D4D4] transition-colors shadow-sm">
               <button
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                className="w-full flex items-center justify-between p-6 text-left"
+                className="w-full flex items-center justify-between p-6 md:p-8 text-left"
               >
-                <span className="font-[800] text-[#111111] text-lg">{faq.q}</span>
-                {openFaq === idx ? <ChevronUp className="w-6 h-6 text-[#9333EA]" /> : <ChevronDown className="w-6 h-6 text-gray-400" />}
+                <span className="font-display font-[700] text-navratri-text text-[18px]">{faq.q}</span>
+                {openFaq === idx ? <ChevronUp className="w-6 h-6 text-navratri-accent" /> : <ChevronDown className="w-6 h-6 text-navratri-muted" />}
               </button>
               <AnimatePresence>
                 {openFaq === idx && (
@@ -358,7 +349,7 @@ export default function Home() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-6 text-[#6B7280] font-[500] leading-relaxed">
+                    <div className="px-6 md:px-8 pb-8 text-navratri-muted font-[500] text-[16px] leading-relaxed">
                       {faq.a}
                     </div>
                   </motion.div>

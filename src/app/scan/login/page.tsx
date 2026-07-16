@@ -46,17 +46,17 @@ export default function ScannerLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#111111] flex flex-col justify-center px-6 py-12">
+    <div className="min-h-screen bg-navratri-primary flex flex-col justify-center px-6 py-12 selection:bg-navratri-accent selection:text-white">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-[#9333EA] rounded-2xl flex items-center justify-center shadow-[0_0_40px_rgba(229,57,53,0.4)]">
-            <ScanLine className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 bg-navratri-accent/10 rounded-[16px] flex items-center justify-center shadow-lg shadow-navratri-accent/20 border border-navratri-accent/20">
+            <ScanLine className="w-8 h-8 text-navratri-accent" />
           </div>
         </div>
-        <h2 className="text-center text-2xl font-[800] leading-9 tracking-tight text-white">
-          RaasPass Scanner
+        <h2 className="text-center text-[28px] font-display font-[700] leading-9 tracking-tight text-white">
+          RasPass Scanner
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-400 font-[500]">
+        <p className="mt-2 text-center text-[15px] text-white/60 font-[500]">
           Staff Entry Validation System
         </p>
       </div>
@@ -64,7 +64,7 @@ export default function ScannerLogin() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={handleLogin}>
           <div>
-            <label className="block text-sm font-[600] leading-6 text-gray-300">
+            <label className="block text-[13px] font-[600] leading-6 text-white/80 uppercase tracking-widest">
               Mobile Number
             </label>
             <div className="mt-2">
@@ -73,7 +73,7 @@ export default function ScannerLogin() {
                 required
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
-                className="block w-full rounded-xl border-0 bg-gray-900 py-3.5 px-4 text-white shadow-sm ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-[#9333EA] sm:text-sm sm:leading-6"
+                className="block w-full rounded-[14px] border-0 bg-white/5 py-3.5 px-4 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-1 focus:ring-inset focus:ring-navratri-accent sm:text-[15px] sm:leading-6 font-[500] outline-none transition-all"
                 placeholder="Enter 10-digit number"
               />
             </div>
@@ -81,7 +81,7 @@ export default function ScannerLogin() {
 
           <div>
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-[600] leading-6 text-gray-300">
+              <label className="block text-[13px] font-[600] leading-6 text-white/80 uppercase tracking-widest">
                 Password
               </label>
             </div>
@@ -91,7 +91,7 @@ export default function ScannerLogin() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="block w-full rounded-xl border-0 bg-gray-900 py-3.5 px-4 text-white shadow-sm ring-1 ring-inset ring-gray-800 focus:ring-2 focus:ring-inset focus:ring-[#9333EA] sm:text-sm sm:leading-6"
+                className="block w-full rounded-[14px] border-0 bg-white/5 py-3.5 px-4 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-1 focus:ring-inset focus:ring-navratri-accent sm:text-[15px] sm:leading-6 font-[500] outline-none transition-all"
                 placeholder="Enter your password"
               />
             </div>
@@ -101,7 +101,7 @@ export default function ScannerLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full justify-center items-center rounded-xl bg-[#9333EA] px-3 py-3.5 text-sm font-[800] leading-6 text-white shadow-sm hover:bg-[#7E22CE] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9333EA] disabled:opacity-70 transition-all"
+              className="flex w-full justify-center items-center rounded-button bg-navratri-accent px-3 py-4 text-[15px] font-[700] leading-6 text-white shadow-sm hover:bg-navratri-darkAccent disabled:opacity-70 transition-all hover:-translate-y-0.5 mt-2"
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Log In to Scanner'}
             </button>

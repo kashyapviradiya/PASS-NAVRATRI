@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -11,15 +11,15 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const playfair = Playfair_Display({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  variable: '--font-jakarta',
 });
 
 export const metadata: Metadata = {
-  title: 'PASS NAVRATRI | Premium Garba Event Booking',
-  description: 'Book your Navratri passes for the best Garba events in Gujarat. Premium, secure, and fast ticketing experience.',
-  keywords: 'navratri, garba, dandiya, gujarati, festival, tickets, booking, pass, ahmedabad, surat, vadodara',
+  title: 'RasPass | Premium Event Ticketing',
+  description: 'Book your passes for the best events. Premium, secure, and fast ticketing experience.',
+  keywords: 'events, tickets, booking, pass, premium, concerts, nightlife',
 };
 
 export default function RootLayout({
@@ -28,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <body className={`font-sans min-h-screen flex flex-col bg-[#F7F7F8] text-[#111111]`}>
+    <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
+      <body className={`font-sans min-h-screen flex flex-col bg-[#F8F7F4] text-[#111111]`}>
         <ToasterWrapper />
         <ClientLayoutWrapper>
           {children}

@@ -154,17 +154,17 @@ export default function ScannerDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-navratri-bg font-sans pb-20">
+    <div className="min-h-screen bg-navratri-bg font-sans pb-20 selection:bg-navratri-accent selection:text-white">
       
       {/* Scanner Header */}
-      <div className="bg-navratri-primary text-white sticky top-0 z-30 shadow-md">
+      <div className="bg-navratri-primary text-white sticky top-0 z-30 shadow-sm border-b border-navratri-lightGrey/10">
         <div className="max-w-xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <ShieldCheck className="w-6 h-6 text-navratri-gold" />
-            <h1 className="text-lg font-serif font-bold">Access Control</h1>
+            <ShieldCheck className="w-6 h-6 text-navratri-accent" />
+            <h1 className="text-[18px] font-display font-[700] tracking-tight">Access Control</h1>
           </div>
-          <button onClick={() => router.push('/staff/login')} className="flex items-center gap-2 text-xs font-bold text-white/70 hover:text-white transition-colors bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
-            <LogOut className="w-3 h-3" /> Logout
+          <button onClick={() => router.push('/staff/login')} className="flex items-center gap-2 text-[12px] font-[600] text-white/70 hover:text-white transition-colors bg-white/10 px-3 py-1.5 rounded-[8px] border border-white/10 hover:bg-white/20">
+            <LogOut className="w-3.5 h-3.5" /> Logout
           </button>
         </div>
       </div>
@@ -172,92 +172,92 @@ export default function ScannerDashboard() {
       <div className="max-w-xl mx-auto px-4 py-6">
         
         {/* Gate Selection */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-6 flex items-center justify-between gap-4">
+        <div className="bg-white rounded-[16px] p-4 shadow-sm border border-navratri-lightGrey mb-6 flex items-center justify-between gap-4">
           <div className="flex-1">
-            <label className="block text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-1">Assigned Gate</label>
-            <select value={gateName} onChange={(e) => setGateName(e.target.value)} className="w-full bg-transparent font-bold text-navratri-text focus:outline-none appearance-none cursor-pointer">
+            <label className="block text-[10px] uppercase tracking-widest font-[700] text-navratri-muted mb-1">Assigned Gate</label>
+            <select value={gateName} onChange={(e) => setGateName(e.target.value)} className="w-full bg-transparent font-[700] text-[15px] text-navratri-text focus:outline-none appearance-none cursor-pointer">
               <option>VIP Gate 1</option>
               <option>Main Entrance A</option>
               <option>Main Entrance B</option>
               <option>Artists & Crew</option>
             </select>
           </div>
-          <div className="w-10 h-10 bg-navratri-gold/10 rounded-xl flex items-center justify-center shrink-0 border border-navratri-gold/20">
-            <MapPin className="w-5 h-5 text-navratri-gold" />
+          <div className="w-10 h-10 bg-navratri-bg rounded-[12px] flex items-center justify-center shrink-0 border border-navratri-lightGrey">
+            <MapPin className="w-5 h-5 text-navratri-accent" />
           </div>
         </div>
 
         {scanResult === 'idle' || scanResult === 'scanning' ? (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             {scanResult === 'idle' && (
-              <div className="bg-white rounded-[2rem] p-10 text-center shadow-sm border border-gray-100">
-                <div className="w-24 h-24 bg-navratri-primary/5 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <QrCode className="w-12 h-12 text-navratri-primary" />
+              <div className="bg-white rounded-card p-10 text-center shadow-sm border border-navratri-lightGrey">
+                <div className="w-24 h-24 bg-navratri-bg rounded-full flex items-center justify-center mx-auto mb-6 border border-navratri-lightGrey">
+                  <QrCode className="w-10 h-10 text-navratri-accent" />
                 </div>
-                <h2 className="text-2xl font-serif font-bold text-navratri-text mb-2">Ready to Scan</h2>
-                <p className="text-gray-500 font-light mb-8">Position the QR code within the frame to verify entry.</p>
-                <button onClick={startScanner} className="w-full bg-navratri-primary text-navratri-gold font-bold py-4 rounded-2xl flex items-center justify-center gap-3 text-lg shadow-xl shadow-navratri-primary/20 hover:scale-[1.02] transition-transform">
-                  <Camera className="w-6 h-6" /> Activate Scanner
+                <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-2 tracking-tight">Ready to Scan</h2>
+                <p className="text-[15px] text-navratri-muted font-[500] mb-8">Position the QR code within the frame to verify entry.</p>
+                <button onClick={startScanner} className="w-full bg-navratri-accent text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 text-[15px] shadow-sm hover:scale-[1.02] hover:-translate-y-0.5 transition-all">
+                  <Camera className="w-5 h-5" /> Activate Scanner
                 </button>
               </div>
             )}
-            <div id="qr-reader" className="rounded-[2rem] overflow-hidden shadow-lg border-2 border-navratri-primary/20 bg-black"></div>
+            <div id="qr-reader" className="rounded-card overflow-hidden shadow-sm border border-navratri-lightGrey bg-navratri-bg"></div>
             {scanResult === 'scanning' && (
-              <p className="text-center text-sm font-bold text-navratri-primary animate-pulse tracking-wide uppercase">Scanning for passes...</p>
+              <p className="text-center text-[12px] font-[700] text-navratri-accent animate-pulse tracking-widest uppercase mt-4">Scanning for passes...</p>
             )}
           </motion.div>
         ) : (
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="space-y-6">
             
             {/* Result Status Card */}
-            <div className={`bg-gradient-to-br ${getStatusColor()} rounded-[2rem] p-8 text-center text-white shadow-xl relative overflow-hidden`}>
+            <div className={`bg-gradient-to-br ${getStatusColor()} rounded-card p-8 text-center text-white shadow-sm relative overflow-hidden`}>
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
               <div className="relative z-10 flex flex-col items-center">
                 <div className="mb-4">{getStatusIcon()}</div>
-                <h2 className="text-2xl font-serif font-bold mb-2">
+                <h2 className="text-[28px] font-display font-[700] mb-2 tracking-tight">
                   {scanResult === 'valid' && 'Access Granted'}
                   {scanResult === 'invalid' && 'Access Denied'}
                   {scanResult === 'already_used' && 'Already Scanned'}
                   {scanResult === 'cancelled' && 'Pass Cancelled'}
                 </h2>
-                <p className="text-white/80 font-medium">{message}</p>
+                <p className="text-white/90 font-[500] text-[15px]">{message}</p>
               </div>
             </div>
 
             {/* Pass Details */}
             {ticket && (
-              <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-4">
-                <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div className="bg-white rounded-card p-6 shadow-sm border border-navratri-lightGrey space-y-4">
+                <div className="flex items-center justify-between pb-4 border-b border-navratri-lightGrey">
                   <div>
-                    <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Pass ID</p>
-                    <p className="font-mono font-bold text-navratri-primary">{ticket.id}</p>
+                    <p className="text-[10px] text-navratri-muted uppercase tracking-widest font-[700] mb-1">Pass ID</p>
+                    <p className="font-mono font-[700] text-navratri-text">{ticket.id}</p>
                   </div>
-                  <div className="px-3 py-1 bg-navratri-gold/20 text-navratri-gold rounded-full text-[10px] font-bold uppercase tracking-widest">
+                  <div className="px-3 py-1 bg-navratri-accent/10 text-navratri-accent rounded-full text-[10px] font-[700] uppercase tracking-widest border border-navratri-accent/10">
                     {ticket.passType}
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <User className="w-5 h-5 text-navratri-gold shrink-0 mt-0.5" />
+                    <User className="w-5 h-5 text-navratri-accent shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Guest Name</p>
-                      <p className="font-bold text-gray-900">{ticket.customerName}</p>
+                      <p className="text-[10px] text-navratri-muted uppercase tracking-widest font-[700] mb-1">Guest Name</p>
+                      <p className="font-[700] text-navratri-text text-[15px]">{ticket.customerName}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Ticket className="w-5 h-5 text-navratri-gold shrink-0 mt-0.5" />
+                    <Ticket className="w-5 h-5 text-navratri-accent shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Event</p>
-                      <p className="font-bold text-gray-900 text-sm line-clamp-1">{ticket.eventName}</p>
+                      <p className="text-[10px] text-navratri-muted uppercase tracking-widest font-[700] mb-1">Event</p>
+                      <p className="font-[700] text-navratri-text text-[14px] line-clamp-1">{ticket.eventName}</p>
                     </div>
                   </div>
                   {ticket.entryTime && (
                     <div className="flex items-start gap-3">
                       <Clock className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Time of Entry</p>
-                        <p className="font-bold text-gray-900 text-sm">{new Date(ticket.entryTime).toLocaleString('en-IN')}</p>
+                        <p className="text-[10px] text-navratri-muted uppercase tracking-widest font-[700] mb-1">Time of Entry</p>
+                        <p className="font-[700] text-navratri-text text-[14px]">{new Date(ticket.entryTime).toLocaleString('en-IN')}</p>
                       </div>
                     </div>
                   )}
@@ -270,17 +270,17 @@ export default function ScannerDashboard() {
               <button
                 onClick={handleAllowEntry}
                 disabled={processing}
-                className="w-full bg-green-500 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 text-lg shadow-xl shadow-green-500/20 hover:bg-green-600 transition-colors disabled:opacity-60"
+                className="w-full bg-green-500 text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 text-[15px] shadow-sm hover:-translate-y-0.5 hover:bg-green-600 transition-all disabled:opacity-60 disabled:hover:translate-y-0"
               >
                 {processing ? (
                   <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Registering...</>
                 ) : (
-                  <><ShieldCheck className="w-6 h-6" /> Confirm Entry</>
+                  <><ShieldCheck className="w-5 h-5" /> Confirm Entry</>
                 )}
               </button>
             )}
 
-            <button onClick={startScanner} className="w-full bg-white border-2 border-navratri-primary/20 text-navratri-primary font-bold py-4 rounded-2xl flex items-center justify-center gap-3 text-lg hover:bg-navratri-primary/5 transition-colors">
+            <button onClick={startScanner} className="w-full bg-white border border-navratri-lightGrey text-navratri-text font-[700] py-4 rounded-button flex items-center justify-center gap-2 text-[15px] hover:bg-navratri-bg hover:-translate-y-0.5 shadow-sm transition-all">
               <RotateCcw className="w-5 h-5" /> Scan Another Pass
             </button>
           </motion.div>
@@ -288,23 +288,23 @@ export default function ScannerDashboard() {
 
         {/* Live Session Stats */}
         <div className="mt-8">
-          <h3 className="text-[10px] font-bold text-gray-400 mb-3 uppercase tracking-widest text-center">Live Gate Statistics</h3>
+          <h3 className="text-[11px] font-[700] text-navratri-muted mb-4 uppercase tracking-widest text-center flex items-center justify-center gap-2"><Clock className="w-3.5 h-3.5" /> Live Gate Statistics</h3>
           <div className="grid grid-cols-4 gap-3">
-            <div className="bg-white rounded-2xl p-3 text-center shadow-sm border border-gray-100">
-              <p className="text-xl font-bold text-navratri-text">{counts.total}</p>
-              <p className="text-[9px] text-gray-400 uppercase font-bold mt-1">Total</p>
+            <div className="bg-white rounded-[16px] p-3 text-center shadow-sm border border-navratri-lightGrey">
+              <p className="text-[20px] font-display font-[700] text-navratri-text">{counts.total}</p>
+              <p className="text-[9px] text-navratri-muted uppercase font-[700] tracking-widest mt-1">Total</p>
             </div>
-            <div className="bg-green-50 rounded-2xl p-3 text-center border border-green-100">
-              <p className="text-xl font-bold text-green-600">{counts.valid}</p>
-              <p className="text-[9px] text-green-600/70 uppercase font-bold mt-1">Valid</p>
+            <div className="bg-green-50 rounded-[16px] p-3 text-center border border-green-100">
+              <p className="text-[20px] font-display font-[700] text-green-600">{counts.valid}</p>
+              <p className="text-[9px] text-green-600/70 uppercase font-[700] tracking-widest mt-1">Valid</p>
             </div>
-            <div className="bg-red-50 rounded-2xl p-3 text-center border border-red-100">
-              <p className="text-xl font-bold text-red-600">{counts.invalid}</p>
-              <p className="text-[9px] text-red-600/70 uppercase font-bold mt-1">Invalid</p>
+            <div className="bg-red-50 rounded-[16px] p-3 text-center border border-red-100">
+              <p className="text-[20px] font-display font-[700] text-red-600">{counts.invalid}</p>
+              <p className="text-[9px] text-red-600/70 uppercase font-[700] tracking-widest mt-1">Invalid</p>
             </div>
-            <div className="bg-amber-50 rounded-2xl p-3 text-center border border-amber-100">
-              <p className="text-xl font-bold text-amber-600">{counts.duplicate}</p>
-              <p className="text-[9px] text-amber-600/70 uppercase font-bold mt-1">Dupes</p>
+            <div className="bg-amber-50 rounded-[16px] p-3 text-center border border-amber-100">
+              <p className="text-[20px] font-display font-[700] text-amber-600">{counts.duplicate}</p>
+              <p className="text-[9px] text-amber-600/70 uppercase font-[700] tracking-widest mt-1">Dupes</p>
             </div>
           </div>
         </div>

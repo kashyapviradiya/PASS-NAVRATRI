@@ -31,38 +31,43 @@ export default function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white border-b ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled
-        ? 'shadow-sm border-gray-100 py-2' 
-        : 'border-gray-50 py-3'
+        ? 'bg-navratri-primary/95 backdrop-blur-md shadow-sm border-b border-white/5 py-2' 
+        : 'bg-navratri-primary border-b border-transparent py-3'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[60px]">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-[64px]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <img 
               src={logoImg.src} 
-              alt="Raas Pass Logo" 
-              className={`h-10 w-auto object-contain transition-all duration-300 drop-shadow-sm`} 
+              alt="RasPass Logo" 
+              className={`h-9 w-auto object-contain transition-all duration-300 drop-shadow-sm brightness-0 invert`} 
             />
           </Link>
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <Link key={link.name} href={link.href} className={`text-[15px] font-[700] tracking-wide transition-colors text-[#111111] hover:text-[#9333EA]`}>
+              <Link key={link.name} href={link.href} className={`text-[14px] font-[600] tracking-wide transition-colors text-navratri-lightGrey hover:text-white`}>
                 {link.name}
               </Link>
             ))}
-            <Link href="/events" className="ml-2 px-7 py-2.5 bg-[#9333EA] text-white font-[700] rounded-xl hover:shadow-[0_8px_16px_-6px_rgba(229,57,53,0.4)] hover:-translate-y-0.5 transition-all duration-300 text-[15px]">
-              Book Pass
+            <Link href="/events" className="ml-4 px-6 py-2.5 bg-navratri-accent text-white font-[700] rounded-button hover:bg-navratri-darkAccent transition-all duration-300 text-[14px] shadow-sm">
+              Explore Events
             </Link>
           </div>
 
-          {/* Mobile Toggle */}
-          <button onClick={() => setIsOpen(!isOpen)} className={`lg:hidden p-2 transition-colors text-[#111111]`}>
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile Actions */}
+          <div className="flex items-center gap-4 lg:hidden">
+            <Link href="/events" className="px-4 py-2 bg-navratri-accent text-white font-[700] rounded-lg hover:bg-navratri-darkAccent transition-colors text-[13px] shadow-sm">
+              Explore
+            </Link>
+            <button onClick={() => setIsOpen(!isOpen)} className={`p-1.5 transition-colors text-white`}>
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -73,19 +78,14 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-b border-gray-100 overflow-hidden"
+            className="lg:hidden bg-navratri-secondary border-b border-white/5 overflow-hidden"
           >
-            <div className="px-6 pt-2 pb-8 space-y-2 shadow-inner">
+            <div className="px-6 pt-2 pb-8 space-y-2">
               {navLinks.map((link) => (
-                <Link key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="block px-4 py-3 text-[#111111] hover:bg-gray-50 hover:text-[#9333EA] rounded-xl font-[800] transition-colors">
+                <Link key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="block px-4 py-3 text-navratri-bg hover:bg-white/5 hover:text-white rounded-xl font-[600] transition-colors">
                   {link.name}
                 </Link>
               ))}
-              <div className="pt-6 px-4">
-                <Link href="/events" onClick={() => setIsOpen(false)} className="block w-full text-center px-6 py-4 bg-gradient-to-r from-[#9333EA] to-[#7E22CE] text-white font-[800] rounded-xl shadow-lg shadow-purple-500/20">
-                  Book Pass
-                </Link>
-              </div>
             </div>
           </motion.div>
         )}

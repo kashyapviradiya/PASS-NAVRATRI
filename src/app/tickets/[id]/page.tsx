@@ -55,15 +55,15 @@ export default function DigitalTicketPage({ params }: { params: { id: string } }
   const totalTickets = tickets.length;
 
   return (
-    <div className="bg-[#111111] min-h-screen pt-[100px] pb-20 font-sans selection:bg-[#9333EA] selection:text-white flex flex-col">
+    <div className="bg-navratri-primary min-h-screen pt-[100px] pb-20 font-sans selection:bg-navratri-accent selection:text-white flex flex-col">
       <div className="max-w-md mx-auto w-full px-4 flex-1 flex flex-col">
         
         <div className="mb-6 flex items-center justify-between">
-          <Link href="/my-tickets" className="inline-flex items-center gap-2 text-white/60 hover:text-white font-[600] text-sm transition-colors">
+          <Link href="/my-tickets" className="inline-flex items-center gap-2 text-white/60 hover:text-white font-[600] text-[14px] transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back
           </Link>
-          <div className="flex items-center gap-2 text-xs font-[800] text-white/60 uppercase tracking-widest bg-white/10 px-3 py-1.5 rounded-full">
-            <Shield className="w-3 h-3 text-green-400" /> Confirmed
+          <div className="flex items-center gap-2 text-[10px] font-[700] text-white/80 uppercase tracking-widest bg-white/10 px-3 py-1.5 rounded-full border border-white/10">
+            <Shield className="w-3.5 h-3.5 text-green-400" /> Confirmed
           </div>
         </div>
 
@@ -71,19 +71,19 @@ export default function DigitalTicketPage({ params }: { params: { id: string } }
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex-1 bg-[#F7F7F8] rounded-[2rem] overflow-hidden flex flex-col shadow-2xl"
+          className="flex-1 bg-navratri-bg rounded-[24px] overflow-hidden flex flex-col shadow-2xl"
         >
           {/* Top Half: Event & QR */}
           <div className="bg-white p-8 relative flex-1">
-            <div className="absolute top-0 left-0 w-full h-2 bg-[#9333EA]"></div>
+            <div className="absolute top-0 left-0 w-full h-2 bg-navratri-accent"></div>
             
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-[800] text-[#111111] leading-tight mb-2 tracking-tight">{firstTicket.eventName}</h2>
-              <p className="text-[#6B7280] font-[600] text-sm">RaasPass Live Experience</p>
+              <h2 className="text-[24px] font-display font-[700] text-navratri-text leading-tight mb-2 tracking-tight">{firstTicket.eventName}</h2>
+              <p className="text-navratri-muted font-[600] text-[14px]">RasPass Live Experience</p>
             </div>
 
-            <div className="bg-[#F7F7F8] w-48 h-48 mx-auto rounded-3xl p-4 flex items-center justify-center border border-gray-100 shadow-inner relative overflow-hidden mb-8">
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-[#9333EA]/50 animate-scan"></div>
+            <div className="bg-navratri-bg w-48 h-48 mx-auto rounded-[20px] p-4 flex items-center justify-center border border-navratri-lightGrey shadow-inner relative overflow-hidden mb-8">
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-navratri-accent/50 animate-scan"></div>
               {/* Render real QR code locally */}
               {qrCodeDataUrl ? (
                 <img 
@@ -93,62 +93,62 @@ export default function DigitalTicketPage({ params }: { params: { id: string } }
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <div className="w-8 h-8 border-2 border-[#9333EA] border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-8 h-8 border-2 border-navratri-accent border-t-transparent rounded-full animate-spin"></div>
                 </div>
               )}
             </div>
 
             <div className="grid grid-cols-2 gap-4 text-center">
               <div>
-                <p className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-1">Pass Type</p>
-                <p className="font-[800] text-[#111111] text-sm">{firstTicket.ticketType}</p>
+                <p className="text-[10px] font-[700] text-navratri-muted uppercase tracking-widest mb-1">Pass Type</p>
+                <p className="font-[700] text-navratri-text text-[15px]">{firstTicket.ticketType}</p>
               </div>
               <div>
-                <p className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-1">Total Entry</p>
-                <p className="font-[800] text-[#111111] text-sm">{totalTickets} Person(s)</p>
+                <p className="text-[10px] font-[700] text-navratri-muted uppercase tracking-widest mb-1">Total Entry</p>
+                <p className="font-[700] text-navratri-text text-[15px]">{totalTickets} Person(s)</p>
               </div>
             </div>
           </div>
 
           {/* Divider */}
           <div className="h-0 relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-[#111111] rounded-full z-10"></div>
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-8 h-8 bg-[#111111] rounded-full z-10"></div>
-            <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2 h-[2px] bg-gray-200 border-dashed border-t-2 border-[#111111]/20"></div>
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-navratri-primary rounded-full z-10"></div>
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-8 h-8 bg-navratri-primary rounded-full z-10"></div>
+            <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2 h-[2px] bg-transparent border-dashed border-t-2 border-navratri-lightGrey"></div>
           </div>
 
           {/* Bottom Half: Details */}
-          <div className="bg-[#F7F7F8] p-8 pb-10">
+          <div className="bg-navratri-bg p-8 pb-10">
             <div className="grid grid-cols-2 gap-6 mb-6">
               <div>
-                <p className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1"><Calendar className="w-3 h-3" /> Date</p>
-                <p className="font-[800] text-[#111111] text-sm">{new Date(firstTicket.eventDate).toLocaleDateString()}</p>
+                <p className="text-[10px] font-[700] text-navratri-muted uppercase tracking-widest mb-1 flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> Date</p>
+                <p className="font-[700] text-navratri-text text-[14px]">{new Date(firstTicket.eventDate).toLocaleDateString()}</p>
               </div>
               <div>
-                <p className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1"><Clock className="w-3 h-3" /> Time</p>
-                <p className="font-[800] text-[#111111] text-sm">{new Date(firstTicket.eventDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                <p className="text-[10px] font-[700] text-navratri-muted uppercase tracking-widest mb-1 flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> Time</p>
+                <p className="font-[700] text-navratri-text text-[14px]">{new Date(firstTicket.eventDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
               </div>
             </div>
 
             <div className="mb-6">
-              <p className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1"><MapPin className="w-3 h-3" /> Venue</p>
-              <p className="font-[800] text-[#111111] text-sm leading-snug mb-1">{firstTicket.venue}</p>
+              <p className="text-[10px] font-[700] text-navratri-muted uppercase tracking-widest mb-1 flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> Venue</p>
+              <p className="font-[700] text-navratri-text text-[14px] leading-snug mb-1">{firstTicket.venue}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 pt-6 border-t border-gray-200">
+            <div className="grid grid-cols-2 gap-6 pt-6 border-t border-navratri-lightGrey">
               <div>
-                <p className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-1">Name</p>
-                <p className="font-[800] text-[#111111] text-sm truncate">{firstTicket.customerName}</p>
+                <p className="text-[10px] font-[700] text-navratri-muted uppercase tracking-widest mb-1">Name</p>
+                <p className="font-[700] text-navratri-text text-[14px] truncate">{firstTicket.customerName}</p>
               </div>
               <div>
-                <p className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-1">Booking ID</p>
-                <p className="font-mono font-[800] text-[#111111] text-sm">{firstTicket.bookingId}</p>
+                <p className="text-[10px] font-[700] text-navratri-muted uppercase tracking-widest mb-1">Booking ID</p>
+                <p className="font-mono font-[700] text-navratri-text text-[14px]">{firstTicket.bookingId}</p>
               </div>
             </div>
           </div>
         </motion.div>
 
-        <button className="mt-8 w-full bg-white/10 text-white font-[800] py-4 rounded-2xl flex justify-center items-center gap-2 hover:bg-white/20 transition-all border border-white/20 backdrop-blur-md">
+        <button className="mt-8 w-full bg-white/10 text-white font-[700] py-4 rounded-button flex justify-center items-center gap-2 hover:bg-white/20 transition-all border border-white/20 backdrop-blur-md shadow-sm">
           <Download className="w-5 h-5" /> Download Pass
         </button>
       </div>

@@ -3,24 +3,20 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 75, 0, 0; /* Maroon */
-  --background-start-rgb: 255, 255, 240; /* Ivory */
-  --background-end-rgb: 255, 250, 240; /* Ivory dark */
+  --background-rgb: 248, 247, 244; /* #F8F7F4 Warm White */
+  --foreground-rgb: 17, 17, 17;    /* #111111 */
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: rgb(var(--background-rgb));
   font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@layer utilities {
-  .glass {
-    @apply bg-white bg-opacity-20 backdrop-blur-lg border border-white border-opacity-30 shadow-lg;
-  }
+/* Base focus and selection styles */
+::selection {
+  background-color: #E53935;
+  color: white;
 }
