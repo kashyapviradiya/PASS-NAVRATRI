@@ -16,6 +16,7 @@ export default function ScannerDashboard() {
   const [message, setMessage] = useState('');
   const [gateName, setGateName] = useState('VIP Gate 1');
   const [processing, setProcessing] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const [counts, setCounts] = useState({ total: 0, valid: 0, invalid: 0, duplicate: 0 });
   const [cameraError, setCameraError] = useState('');
   const [soundEnabled, setSoundEnabled] = useState(true);
@@ -60,6 +61,8 @@ export default function ScannerDashboard() {
     }
   };
 
+  const isProcessingRef = useRef(false);
+
   useEffect(() => {
     // Auto-start camera on mount
     startScanner();
@@ -68,7 +71,15 @@ export default function ScannerDashboard() {
 
   const stopScanner = () => {
     if (scannerRef.current) {
-      try { scannerRef.current.clear(); } catch (e) {}
+      try { 
+        if (typeof scannerRef.current.stop === 'function') {
+          scannerRef.current.stop().then(() => {
+            scannerRef.current.clear();
+          }).catch((e: any) => {});
+        } else {
+          scannerRef.current.clear(); 
+        }
+      } catch (e) {}
       scannerRef.current = null;
     }
   };
@@ -78,37 +89,39 @@ export default function ScannerDashboard() {
     setTicket(null);
     setMessage('');
     setCameraError('');
+    setVerifying(false);
+    isProcessingRef.current = false;
 
     setTimeout(() => {
-      const { Html5QrcodeScanner } = require('html5-qrcode');
+      const { Html5Qrcode } = require('html5-qrcode');
       
       stopScanner();
 
-      const scanner = new Html5QrcodeScanner('qr-reader', {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-        aspectRatio: 1,
-        showTorchButtonIfSupported: true,
-        showZoomSliderIfSupported: true,
-        supportedScanTypes: [0] // Camera only
-      }, false);
+      const html5QrCode = new Html5Qrcode("qr-reader");
 
-      scanner.render(
+      html5QrCode.start(
+        { facingMode: "environment" },
+        {
+          fps: 10,
+          // Removing aspectRatio and fixed qrbox to ensure native detection works across all devices.
+          // The library will automatically use the full frame to detect QR codes.
+        },
         async (decodedText: string) => {
-          stopScanner();
+          if (isProcessingRef.current) return;
+          isProcessingRef.current = true;
+          setVerifying(true);
+          console.log("QR Detected:", decodedText);
           await handleScanResult(decodedText);
         },
         (error: any) => {
-          // Only show fatal camera errors, ignore frame-level detection errors
-          if (error?.includes && (error.includes('NotAllowedError') || error.includes('NotFoundError'))) {
-            setScanResult('idle');
-            setCameraError('Camera access denied or no camera found. Please check permissions.');
-            stopScanner();
-          }
+          // Ignore frequent frame-level detection errors
         }
-      );
+      ).catch((err: any) => {
+        setScanResult('idle');
+        setCameraError('Camera access denied or no camera found. Please check permissions.');
+      });
 
-      scannerRef.current = scanner;
+      scannerRef.current = html5QrCode;
     }, 100);
   };
 
@@ -120,23 +133,42 @@ export default function ScannerDashboard() {
 
   const handleScanResult = async (decodedText: string) => {
     try {
-      let payload;
+      let ticketId = '';
+      let token = '';
+
+      // 1. Try parsing as JSON
       try {
-        payload = JSON.parse(decodedText);
-      } catch {
-        playBeep('error');
-        setScanResult('invalid');
-        setMessage('Invalid QR code format. Not a recognized pass.');
-        setCounts(prev => ({ ...prev, total: prev.total + 1, invalid: prev.invalid + 1 }));
-        return;
+        const payload = JSON.parse(decodedText);
+        ticketId = payload.ticketId;
+        token = payload.token;
+      } catch (e) {
+        // Not JSON
       }
 
-      const { ticketId, token } = payload;
-      if (!ticketId || !token) {
+      // 2. Try parsing as URL (e.g., https://demo.passnavratri.com/ticket/12345)
+      if (!ticketId && decodedText.includes('/ticket/')) {
+        const parts = decodedText.split('/ticket/');
+        if (parts.length > 1) {
+          ticketId = parts[1].split('/')[0].split('?')[0]; // Extract ID
+          token = ticketId; // Fallback token
+        }
+      }
+
+      // 3. Fallback to raw string
+      if (!ticketId) {
+        token = decodedText;
+        ticketId = decodedText; // Backend will try to match this
+      }
+
+      console.log("Extracted Ticket ID:", ticketId);
+
+      if (!ticketId) {
         playBeep('error');
         setScanResult('invalid');
-        setMessage('Malformed QR Code. Missing security token.');
+        setMessage('Malformed QR Code. Could not extract ticket data.');
         setCounts(prev => ({ ...prev, total: prev.total + 1, invalid: prev.invalid + 1 }));
+        stopScanner();
+        setVerifying(false);
         return;
       }
 
@@ -148,6 +180,9 @@ export default function ScannerDashboard() {
 
       const data = await res.json();
       setTicket(data.ticket || null);
+      
+      stopScanner(); // Stop camera only after we get a response to display result full screen
+      setVerifying(false);
       
       if (data.status === 'valid') {
         const isCorrectGate = checkGateMatch(data.ticket.ticketType, gateName);
@@ -180,6 +215,8 @@ export default function ScannerDashboard() {
         setCounts(prev => ({ ...prev, total: prev.total + 1, invalid: prev.invalid + 1 }));
       }
     } catch (error) {
+      stopScanner();
+      setVerifying(false);
       playBeep('error');
       setScanResult('invalid');
       setMessage('Network error verifying pass. Please check connection.');
@@ -300,9 +337,15 @@ export default function ScannerDashboard() {
                     <div className="absolute top-0 left-0 w-full h-1 bg-navratri-accent shadow-[0_0_15px_rgba(224,36,84,1)] animate-[scan_2s_ease-in-out_infinite]"></div>
                   </div>
                 )}
+                {verifying && (
+                  <div className="absolute inset-0 bg-black/80 z-20 flex flex-col items-center justify-center backdrop-blur-sm rounded-card">
+                    <Loader2 className="w-10 h-10 text-navratri-accent animate-spin mb-4" />
+                    <p className="text-white font-[700] tracking-widest uppercase text-sm animate-pulse">Verifying Pass...</p>
+                  </div>
+                )}
               </div>
               
-              {scanResult === 'scanning' && !cameraError && (
+              {scanResult === 'scanning' && !cameraError && !verifying && (
                 <p className="text-center text-[12px] font-[700] text-navratri-accent animate-pulse tracking-widest uppercase mt-4">Aim camera at Ticket QR Code</p>
               )}
             </motion.div>
