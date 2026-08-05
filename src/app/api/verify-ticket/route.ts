@@ -25,13 +25,24 @@ export async function POST(request: NextRequest) {
     console.log(`[Scanner API] Matched Ticket: id=${ticket.ticketId}, bookingId=${ticket.bookingId}, status=${ticket.status}, checkedIn=${ticket.checkedIn}, demo=${ticket.demo}`);
 
     // Verify Booking/Order status
-    const orderDoc = await adminDb.collection('orders').doc(ticket.bookingId).get();
+    let orderDoc = await adminDb.collection('orders').doc(ticket.bookingId).get();
+    
+    // If order not found by bookingId, try by orderId if the ticket has it (Demo fallback)
+    if (!orderDoc.exists && (ticket as any).orderId) {
+      orderDoc = await adminDb.collection('orders').doc((ticket as any).orderId).get();
+    }
+
     if (orderDoc.exists) {
       const order = orderDoc.data() as any;
-      if (order.status !== 'confirmed' && order.bookingStatus !== 'confirmed') {
+      
+      // Some orders might only use paymentStatus. If paymentStatus is paid, we consider it confirmed.
+      const isConfirmed = order.status === 'confirmed' || order.bookingStatus === 'confirmed' || order.paymentStatus === 'paid' || order.paymentStatus === 'demo-paid';
+      
+      if (!isConfirmed) {
          console.log(`[Scanner API] Order not confirmed: ${ticket.bookingId}`);
          return NextResponse.json({ success: false, status: 'invalid', message: 'BOOKING_NOT_CONFIRMED' }, { status: 403 });
       }
+      
       if (order.paymentStatus !== 'paid' && order.paymentStatus !== 'demo-paid') {
          console.log(`[Scanner API] Order not paid: ${ticket.bookingId} - ${order.paymentStatus}`);
          return NextResponse.json({ success: false, status: 'invalid', message: 'PAYMENT_NOT_PAID' }, { status: 403 });
