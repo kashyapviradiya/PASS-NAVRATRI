@@ -145,14 +145,17 @@ export default function AdminEventsPage() {
                   </button>
                   <div className="flex items-center gap-1">
                     {event.status === 'published' && (
-                      <Link href={`/events/${event.id}`} target="_blank" className="p-2 text-gray-400 hover:text-navratri-primary hover:bg-red-50 rounded-lg transition-colors">
+                      <Link href={`/events/${event.id}`} target="_blank" className="p-2 text-gray-400 hover:text-navratri-primary hover:bg-red-50 rounded-lg transition-colors" title="View Public Page">
                         <ExternalLink className="w-4 h-4" />
                       </Link>
                     )}
-                    <Link href={`/admin/events/${event.id}/edit`} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                    <Link href={`/admin/events/${event.id}`} className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Event Analytics">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                    </Link>
+                    <Link href={`/admin/events/${event.id}/edit`} className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit Event">
                       <Edit2 className="w-4 h-4" />
                     </Link>
-                    <button onClick={() => handleDelete(event.id)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                    <button onClick={() => handleDelete(event.id)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete Event">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>

@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 
     const stats = {
       totalEvents: events.length,
-      totalPassesSold: tickets.length,
+      totalTicketsSold: tickets.length,
       totalRevenue,
       todaySales,
       totalCustomers: new Set(orders.map((o: any) => o.mobile)).size,

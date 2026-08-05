@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, CalendarDays, Ticket, Users, 
-  Settings, LogOut, Sparkles, Menu, X, Bell, Search
+  Settings, LogOut, Sparkles, Menu, X, Bell, Search, ShieldAlert
 } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -21,7 +21,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navLinks = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Events Hub', href: '/admin/events', icon: CalendarDays },
-    // Later we can add Orders, Check-ins, Organizers
+    { name: 'Bookings', href: '/admin/bookings', icon: Ticket },
+    { name: 'Audit Logs', href: '/admin/logs', icon: ShieldAlert },
+    // Later we can add Organizers, etc.
   ];
 
   return (

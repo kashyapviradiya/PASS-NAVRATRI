@@ -9,24 +9,39 @@ export async function middleware(request: NextRequest) {
   const session = token ? await verifySession(token) : null;
   const role = session?.role || '';
 
-  // 1. Protect Admin Routes
-  if (path.startsWith('/admin') && path !== '/admin/login') {
-    if (!session || role !== 'admin') {
-      return NextResponse.redirect(new URL('/admin/login', request.nextUrl));
+  // 1. Protect Admin Routes (UI and API)
+  if (path.startsWith('/admin') || path.startsWith('/api/admin')) {
+    if (path !== '/admin/login' && path !== '/api/admin/login') {
+      if (!session || role !== 'admin') {
+        if (path.startsWith('/api/')) {
+          return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
+        return NextResponse.redirect(new URL('/admin/login', request.nextUrl));
+      }
     }
   }
 
   // 2. Protect Staff Routes
-  if (path.startsWith('/staff') && path !== '/staff/login') {
-    if (!session || role !== 'scanner_staff') {
-      return NextResponse.redirect(new URL('/staff/login', request.nextUrl));
+  if (path.startsWith('/staff') || path.startsWith('/api/staff')) {
+    if (path !== '/staff/login' && path !== '/api/staff/login') {
+      if (!session || role !== 'scanner_staff') {
+        if (path.startsWith('/api/')) {
+          return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
+        return NextResponse.redirect(new URL('/staff/login', request.nextUrl));
+      }
     }
   }
 
   // 3. Protect Organizer Routes
-  if (path.startsWith('/organizer') && path !== '/organizer/login') {
-    if (!session || role !== 'organizer') {
-      return NextResponse.redirect(new URL('/organizer/login', request.nextUrl));
+  if (path.startsWith('/organizer') || path.startsWith('/api/organizer')) {
+    if (path !== '/organizer/login' && path !== '/api/organizer/login') {
+      if (!session || role !== 'organizer') {
+        if (path.startsWith('/api/')) {
+          return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
+        return NextResponse.redirect(new URL('/organizer/login', request.nextUrl));
+      }
     }
   }
 
@@ -47,7 +62,10 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/admin/:path*',
+    '/api/admin/:path*',
     '/staff/:path*',
-    '/organizer/:path*'
+    '/api/staff/:path*',
+    '/organizer/:path*',
+    '/api/organizer/:path*'
   ]
 };

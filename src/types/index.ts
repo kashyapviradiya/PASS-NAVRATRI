@@ -24,6 +24,7 @@ export interface TicketType {
   totalInventory: number;
   soldQuantity: number;
   remainingQuantity: number;
+  maxPerBooking: number;
   status: 'available' | 'sold_out' | 'hidden';
 }
 
@@ -37,15 +38,36 @@ export interface Order {
   amount: number;
   paymentStatus: 'pending' | 'paid' | 'failed';
   ticketCount: number;
-  passes: BookingPass[]; // Keep this to know what was purchased
+  ticketTypes: BookingPass[]; // Keep this to know what was purchased
+  paymentMode?: string;
+  status: 'confirmed' | 'cancelled' | 'refunded';
+  demo?: boolean;
+  notes?: string;
+  timeline?: TimelineEvent[];
   razorpayOrderId?: string;
   razorpayPaymentId?: string;
   createdAt: string;
 }
 
+export interface TimelineEvent {
+  action: string;
+  date: string;
+  actor: string;
+}
+
+export interface AdminLog {
+  id: string;
+  action: string;
+  targetId: string;
+  targetType: 'booking' | 'event' | 'ticket';
+  actor: string;
+  date: string;
+  details: string;
+}
+
 export interface BookingPass {
-  passTypeId: string;
-  passName: string;
+  ticketTypeId: string;
+  ticketTypeName: string;
   quantity: number;
   unitPrice: number;
   subtotal: number;
@@ -81,7 +103,7 @@ export interface ScanLog {
 
 export interface AdminStats {
   totalEvents: number;
-  totalPassesSold: number;
+  totalTicketsSold: number;
   totalRevenue: number;
   todaySales: number;
   totalCustomers: number;

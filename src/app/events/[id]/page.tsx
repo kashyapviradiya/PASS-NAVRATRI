@@ -15,6 +15,8 @@ export default function EventDetails({ params }: { params: { id: string } }) {
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [selectedPassId, setSelectedPassId] = useState<string>('');
+  const [quantity, setQuantity] = useState<number>(1);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,6 +39,30 @@ export default function EventDetails({ params }: { params: { id: string } }) {
     };
     fetchEvent();
   }, [params.id]);
+
+  useEffect(() => {
+    if (event && event.ticketTypes) {
+      const activeTickets = event.ticketTypes.filter(t => t.status === 'available');
+      if (activeTickets.length > 0 && !selectedPassId) {
+        setSelectedPassId(activeTickets[0].id);
+      }
+    }
+  }, [event, selectedPassId]);
+
+  useEffect(() => {
+    const selectedTicket = event?.ticketTypes?.find(t => t.id === selectedPassId);
+    if (selectedTicket) {
+      const maxQty = Math.min(selectedTicket.maxPerBooking, selectedTicket.remainingQuantity);
+      if (quantity > maxQty) setQuantity(1);
+    }
+  }, [selectedPassId, event]);
+
+  const activeTickets = event?.ticketTypes?.filter(t => t.status === 'available') || [];
+  const hasTickets = activeTickets.length > 0;
+  const minPrice = hasTickets ? Math.min(...activeTickets.map(t => t.price)) : 0;
+  const selectedTicket = activeTickets.find(t => t.id === selectedPassId);
+  const maxQty = selectedTicket ? Math.min(selectedTicket.maxPerBooking, selectedTicket.remainingQuantity) : 1;
+  const totalPrice = selectedTicket ? selectedTicket.price * quantity : 0;
 
   if (loading) {
     return (
@@ -234,39 +260,79 @@ export default function EventDetails({ params }: { params: { id: string } }) {
           <div className="space-y-6">
             <div className="lg:sticky lg:top-24">
               <div className="bg-white rounded-card p-8 shadow-card border border-navratri-lightGrey text-center">
-                <p className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">Tickets Starting From</p>
-                <h3 className="text-[36px] font-display font-[700] text-navratri-text mb-8 tracking-tight">₹499</h3>
+                <p className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">
+                  {hasTickets ? 'Tickets Starting From' : 'Status'}
+                </p>
+                <h3 className="text-[36px] font-display font-[700] text-navratri-text mb-8 tracking-tight">
+                  {hasTickets ? formatCurrency(minPrice) : 'No tickets available'}
+                </h3>
                 
                 <div className="space-y-5 mb-8 text-left">
                   <div>
-                    <label className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2 block">Select Date</label>
-                    <select className="w-full px-4 py-3.5 rounded-[14px] bg-navratri-bg border border-navratri-lightGrey font-[500] text-navratri-text outline-none text-[15px] appearance-none">
-                      <option>Oct 3, 2026</option>
-                      <option>Oct 4, 2026</option>
-                      <option>Oct 5, 2026</option>
-                    </select>
-                  </div>
-                  <div>
                     <label className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2 block">Select Ticket Type</label>
-                    <select className="w-full px-4 py-3.5 rounded-[14px] bg-navratri-bg border border-navratri-lightGrey font-[500] text-navratri-text outline-none text-[15px] appearance-none">
-                      <option>Regular Pass</option>
-                      <option>VIP Pass</option>
-                      <option>Couple Pass</option>
+                    <select 
+                      value={selectedPassId}
+                      onChange={(e) => setSelectedPassId(e.target.value)}
+                      disabled={!hasTickets}
+                      className="w-full px-4 py-3.5 rounded-[14px] bg-navratri-bg border border-navratri-lightGrey font-[500] text-navratri-text outline-none text-[15px] appearance-none disabled:opacity-50"
+                    >
+                      {activeTickets.map(tt => (
+                        <option key={tt.id} value={tt.id}>
+                          {tt.name} - {formatCurrency(tt.price)}
+                        </option>
+                      ))}
+                      {!hasTickets && <option value="">No Tickets Available</option>}
                     </select>
                   </div>
                   <div>
-                    <label className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2 block">Quantity</label>
+                    <div className="flex justify-between items-center mb-2">
+                      <label className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest block">Quantity</label>
+                      {selectedTicket && (
+                        <span className="text-[11px] font-[600] text-navratri-accent">Max {maxQty} per booking</span>
+                      )}
+                    </div>
                     <div className="flex items-center justify-between p-2 rounded-[14px] bg-navratri-bg border border-navratri-lightGrey">
-                      <button className="w-10 h-10 rounded-[10px] bg-white shadow-sm flex items-center justify-center font-[700] border border-navratri-lightGrey hover:bg-gray-50">-</button>
-                      <span className="font-[700] text-[18px]">2</span>
-                      <button className="w-10 h-10 rounded-[10px] bg-white shadow-sm flex items-center justify-center font-[700] border border-navratri-lightGrey hover:bg-gray-50">+</button>
+                      <button 
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        disabled={!hasTickets || quantity <= 1}
+                        className="w-10 h-10 rounded-[10px] bg-white shadow-sm flex items-center justify-center font-[700] border border-navratri-lightGrey hover:bg-gray-50 transition-colors disabled:opacity-50"
+                      >
+                        -
+                      </button>
+                      <span className="font-[700] text-[18px]">{quantity}</span>
+                      <button 
+                        onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
+                        disabled={!hasTickets || quantity >= maxQty}
+                        className="w-10 h-10 rounded-[10px] bg-white shadow-sm flex items-center justify-center font-[700] border border-navratri-lightGrey hover:bg-gray-50 transition-colors disabled:opacity-50"
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
                 </div>
 
-                <Link href={`/events/${event.id}/book`} className="w-full bg-navratri-accent text-white font-[700] py-4 rounded-button flex justify-center items-center gap-2 hover:bg-navratri-darkAccent transition-all shadow-sm hover:-translate-y-0.5 text-[16px]">
-                  Book Now
-                </Link>
+                {hasTickets && selectedTicket && (
+                  <div className="flex justify-between items-center bg-navratri-accent/5 p-4 rounded-[14px] border border-navratri-accent/20 mb-6">
+                    <span className="text-[13px] font-[600] text-navratri-muted">Total Amount</span>
+                    <span className="text-[20px] font-[700] text-navratri-text">{formatCurrency(totalPrice)}</span>
+                  </div>
+                )}
+
+                <button 
+                  onClick={() => {
+                    if (!selectedPassId || !hasTickets) {
+                      toast.error('Please select a ticket type');
+                      return;
+                    }
+                    localStorage.setItem('checkout_event', JSON.stringify(event));
+                    localStorage.setItem('checkout_ticketTypes', JSON.stringify({ [selectedPassId]: quantity }));
+                    router.push(`/checkout/${event.id}`);
+                  }}
+                  disabled={!hasTickets}
+                  className="w-full bg-navratri-accent text-white font-[700] py-4 rounded-button flex justify-center items-center gap-2 hover:bg-navratri-darkAccent transition-all shadow-sm hover:-translate-y-0.5 text-[16px] disabled:opacity-50 disabled:hover:translate-y-0"
+                >
+                  {hasTickets ? 'Book Now' : 'Sold Out'}
+                </button>
                 <p className="text-[11px] text-navratri-muted uppercase tracking-widest font-[700] mt-4 flex items-center justify-center gap-1">
                   <Shield className="w-3.5 h-3.5" /> Secure checkout
                 </p>
@@ -292,12 +358,28 @@ export default function EventDetails({ params }: { params: { id: string } }) {
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-navratri-lightGrey p-4 lg:hidden z-40 pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
         <div className="max-w-[1280px] mx-auto flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-[10px] text-navratri-muted uppercase tracking-widest font-[700]">Starting From</span>
-            <span className="text-[24px] font-display font-[700] text-navratri-text tracking-tight">₹499</span>
+            <span className="text-[10px] text-navratri-muted uppercase tracking-widest font-[700]">
+              {hasTickets ? 'Total Amount' : 'Status'}
+            </span>
+            <span className="text-[24px] font-display font-[700] text-navratri-text tracking-tight">
+              {hasTickets ? formatCurrency(totalPrice) : 'Unavailable'}
+            </span>
           </div>
-          <Link href={`/events/${event.id}/book`} className="bg-navratri-accent text-white font-[700] px-8 py-3.5 rounded-button flex items-center gap-2 shadow-sm hover:-translate-y-0.5 transition-transform text-[15px]">
-            Book Now
-          </Link>
+          <button 
+            onClick={() => {
+              if (!selectedPassId || !hasTickets) {
+                toast.error('Please select a ticket type');
+                return;
+              }
+              localStorage.setItem('checkout_event', JSON.stringify(event));
+              localStorage.setItem('checkout_ticketTypes', JSON.stringify({ [selectedPassId]: quantity }));
+              router.push(`/checkout/${event.id}`);
+            }}
+            disabled={!hasTickets}
+            className="bg-navratri-accent text-white font-[700] px-8 py-3.5 rounded-button flex items-center gap-2 shadow-sm hover:-translate-y-0.5 transition-transform text-[15px] disabled:opacity-50 disabled:hover:translate-y-0"
+          >
+            {hasTickets ? 'Book Now' : 'Sold Out'}
+          </button>
         </div>
       </div>
     </div>

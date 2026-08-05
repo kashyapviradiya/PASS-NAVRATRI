@@ -65,6 +65,7 @@ export default function EventForm({ initialData, isEdit }: EventFormProps) {
       totalInventory: 100,
       soldQuantity: 0,
       remainingQuantity: 100,
+      maxPerBooking: 6,
       status: 'available'
     }]);
   };
@@ -234,6 +235,10 @@ export default function EventForm({ initialData, isEdit }: EventFormProps) {
                     <div className="space-y-1">
                       <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Total Inventory</label>
                       <input type="number" value={tt.totalInventory} onChange={e => updateTicketType(tt.id, 'totalInventory', Number(e.target.value))} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium" />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Max Per Booking</label>
+                      <input type="number" value={tt.maxPerBooking} onChange={e => updateTicketType(tt.id, 'maxPerBooking', Number(e.target.value))} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium" />
                     </div>
                     <div className="space-y-1">
                       <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Status</label>

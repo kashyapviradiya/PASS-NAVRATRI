@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
       customerPhone,
       customerEmail,
       customerCity,
-      passes,
+      ticketTypes,
       totalAmount,
     } = body;
 
@@ -51,13 +51,13 @@ export async function POST(request: NextRequest) {
       let totalTicketCount = 0;
 
       // 3. Verify and deduct inventory
-      for (const reqPass of passes as BookingPass[]) {
-        const passIndex = updatedTicketTypes.findIndex(p => p.id === reqPass.passTypeId);
-        if (passIndex === -1) throw new Error(`Pass type ${reqPass.passName} not found`);
+      for (const reqPass of ticketTypes as BookingPass[]) {
+        const passIndex = updatedTicketTypes.findIndex(p => p.id === reqPass.ticketTypeId);
+        if (passIndex === -1) throw new Error(`Ticket type ${reqPass.ticketTypeName} not found`);
         
         const dbPass = updatedTicketTypes[passIndex];
         if (dbPass.remainingQuantity < reqPass.quantity) {
-          throw new Error(`Insufficient inventory for ${reqPass.passName}. Only ${dbPass.remainingQuantity} left.`);
+          throw new Error(`Insufficient inventory for ${reqPass.ticketTypeName}. Only ${dbPass.remainingQuantity} left.`);
         }
 
         // Deduct inventory
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
         amount: totalAmount,
         paymentStatus: 'paid',
         ticketCount: totalTicketCount,
-        passes,
+        ticketTypes,
         razorpayOrderId: razorpay_order_id || `order_mock_${Date.now()}`,
         razorpayPaymentId: razorpay_payment_id || `pay_mock_${Date.now()}`,
         createdAt: new Date().toISOString(),
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
 
       // 6. Generate Individual Tickets
       const generatedTickets: Ticket[] = [];
-      for (const pass of passes as BookingPass[]) {
+      for (const pass of ticketTypes as BookingPass[]) {
         for (let i = 0; i < pass.quantity; i++) {
           const ticketId = generateTicketId();
           const qrValue = generateSecureToken();
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
             customerName,
             mobile: customerPhone,
             email: customerEmail,
-            ticketType: pass.passName,
+            ticketType: pass.ticketTypeName,
             status: 'valid',
             checkedIn: false,
             qrValue,

@@ -168,7 +168,11 @@ export default function EventsPage() {
         </AnimatePresence>
 
         {/* EVENT GRID */}
-        {filteredEvents.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="w-10 h-10 border-4 border-navratri-primary border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : filteredEvents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {filteredEvents.map(event => (
               <EventCard key={event.id} event={event} />

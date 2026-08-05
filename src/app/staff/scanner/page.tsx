@@ -266,7 +266,7 @@ export default function ScannerDashboard() {
             )}
 
             {/* Actions */}
-            {scanResult === 'valid' && ticket && !ticket.isUsed && (
+            {scanResult === 'valid' && ticket && !ticket.checkedIn && (
               <button
                 onClick={handleAllowEntry}
                 disabled={processing}

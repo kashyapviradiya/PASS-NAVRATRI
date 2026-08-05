@@ -8,9 +8,9 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    const { eventId, passes, customer, paymentMode } = data;
+    const { eventId, ticketTypes, customer, paymentMode } = data;
 
-    if (!eventId || !passes || !customer) {
+    if (!eventId || !ticketTypes || !customer) {
       return NextResponse.json({ success: false, message: 'Missing required fields' }, { status: 400 });
     }
 
@@ -36,42 +36,44 @@ export async function POST(request: NextRequest) {
         throw new Error('Event is not published');
       }
 
-      // Check each requested pass
-      for (const passId of Object.keys(passes)) {
-        const qty = passes[passId];
+      let updatedTicketTypes = [...(eventData.ticketTypes || [])];
+
+      // Check each requested ticket type
+      for (const passId of Object.keys(ticketTypes)) {
+        const qty = ticketTypes[passId];
         if (qty <= 0) continue;
 
-        const passRef = eventRef.collection('ticketTypes').doc(passId);
-        const passDoc = await transaction.get(passRef);
-
-        if (!passDoc.exists) {
+        const passIndex = updatedTicketTypes.findIndex((t: any) => t.id === passId);
+        if (passIndex === -1) {
           throw new Error(`Ticket type ${passId} not found`);
         }
 
-        const passData = passDoc.data()!;
-        if (!passData.enabled) {
-          throw new Error(`Ticket type ${passData.name} is currently disabled`);
+        const passData = updatedTicketTypes[passIndex];
+
+        if (passData.status !== 'available') {
+          throw new Error(`Ticket type ${passData.name} is currently not available`);
         }
 
-        if (passData.available < qty) {
-          throw new Error(`Insufficient inventory for ${passData.name}. Only ${passData.available} left.`);
+        if (passData.remainingQuantity < qty) {
+          throw new Error(`Insufficient inventory for ${passData.name}. Only ${passData.remainingQuantity} left.`);
         }
 
         // Add to total
         totalAmount += passData.price * qty;
         passesSummary.push({
-          passTypeId: passId,
-          passName: passData.name,
+          ticketTypeId: passId,
+          ticketTypeName: passData.name,
           quantity: qty,
           unitPrice: passData.price,
           subtotal: passData.price * qty
         });
 
-        // Update inventory in transaction
-        transaction.update(passRef, {
-          available: passData.available - qty,
-          sold: passData.sold + qty
-        });
+        // Update inventory in array
+        updatedTicketTypes[passIndex] = {
+          ...passData,
+          remainingQuantity: passData.remainingQuantity - qty,
+          soldQuantity: (passData.soldQuantity || 0) + qty
+        };
 
         // Prepare ticket documents
         for (let i = 0; i < qty; i++) {
@@ -107,6 +109,9 @@ export async function POST(request: NextRequest) {
         }
       }
 
+      // Update event document ticketTypes array
+      transaction.update(eventRef, { ticketTypes: updatedTicketTypes });
+
       // We apply a 4% convenience fee in this system
       const convenienceFee = Math.round(totalAmount * 0.04);
       const grandTotal = totalAmount + convenienceFee;
@@ -123,7 +128,7 @@ export async function POST(request: NextRequest) {
         customerPhone: customer.phone,
         customerEmail: customer.email,
         customerCity: customer.city,
-        passes: passesSummary,
+        ticketTypes: passesSummary,
         totalAmount,
         convenienceFee,
         grandTotal,
@@ -143,7 +148,7 @@ export async function POST(request: NextRequest) {
       // Update Event overall stats (optional, but good for dashboard)
       const totalTicketsInThisOrder = ticketDocsToCreate.length;
       transaction.update(eventRef, {
-        totalPassesSold: (eventData.totalPassesSold || 0) + totalTicketsInThisOrder,
+        totalTicketsSold: (eventData.totalTicketsSold || 0) + totalTicketsInThisOrder,
         totalRevenue: (eventData.totalRevenue || 0) + grandTotal
       });
     });

@@ -25,7 +25,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     const eventData = localStorage.getItem('checkout_event');
-    const passesData = localStorage.getItem('checkout_passes');
+    const passesData = localStorage.getItem('checkout_ticketTypes') || localStorage.getItem('checkout_passes');
     if (eventData && passesData) {
       setEvent(JSON.parse(eventData));
       setSelectedPasses(JSON.parse(passesData));
@@ -36,7 +36,7 @@ export default function CheckoutPage() {
 
   if (!event) return null;
 
-  const ticketSubtotal = event.passes.reduce((sum, pass) => sum + pass.price * (selectedPasses[pass.id] || 0), 0);
+  const ticketSubtotal = event.ticketTypes.reduce((sum, pass) => sum + pass.price * (selectedPasses[pass.id] || 0), 0);
   const convenienceFee = calculateConvenienceFee(ticketSubtotal);
   const totalAmount = ticketSubtotal + convenienceFee;
 
@@ -62,7 +62,7 @@ export default function CheckoutPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             eventId: event.id,
-            passes: selectedPasses,
+            ticketTypes: selectedPasses,
             customer: formData,
             paymentMode: paymentMethod
           })
@@ -86,7 +86,7 @@ export default function CheckoutPage() {
     setTimeout(() => {
       localStorage.setItem('recent_order', JSON.stringify({
         event,
-        passes: selectedPasses,
+        ticketTypes: selectedPasses,
         customer: formData,
         amount: totalAmount
       }));
@@ -179,7 +179,7 @@ export default function CheckoutPage() {
                     <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-6">Order Confirmation</h2>
                     
                     <div className="bg-navratri-bg p-6 rounded-[20px] border border-navratri-lightGrey mb-6 space-y-4">
-                      {event.passes.map(pass => {
+                      {event.ticketTypes.map(pass => {
                         const qty = selectedPasses[pass.id] || 0;
                         if (qty === 0) return null;
                         return (

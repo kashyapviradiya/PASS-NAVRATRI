@@ -44,10 +44,12 @@ export default function AdminDashboard() {
 
   // KPI Cards
   const statCards = [
+    { label: 'Total Bookings', value: (kpis?.totalBookings || 0).toLocaleString(), icon: Ticket, color: 'bg-purple-600 text-white shadow-purple-600/20' },
+    { label: 'Total Tickets Sold', value: (kpis?.totalTicketsSold || 0).toLocaleString(), icon: Ticket, color: 'bg-navratri-darkAccent text-white shadow-navratri-darkAccent/20' },
     { label: 'Total Revenue', value: formatCurrency(kpis?.totalRevenue || 0), icon: IndianRupee, color: 'bg-green-500 text-white shadow-green-500/20' },
-    { label: "Today's Sales", value: formatCurrency(kpis?.todaySales || 0), icon: TrendingUp, color: 'bg-navratri-accent text-white shadow-navratri-accent/20' },
-    { label: 'Passes Sold', value: (kpis?.totalPassesSold || 0).toLocaleString(), icon: Ticket, color: 'bg-navratri-darkAccent text-white shadow-navratri-darkAccent/20' },
-    { label: 'Entries Done', value: (kpis?.entriesDone || 0).toLocaleString(), icon: CheckCircle2, color: 'bg-blue-600 text-white shadow-blue-600/20' },
+    { label: "Today's Bookings", value: (kpis?.todayBookings || 0).toLocaleString(), icon: TrendingUp, color: 'bg-indigo-500 text-white shadow-indigo-500/20' },
+    { label: 'Checked-in Guests', value: (kpis?.entriesDone || 0).toLocaleString(), icon: CheckCircle2, color: 'bg-blue-600 text-white shadow-blue-600/20' },
+    { label: 'Remaining Tickets', value: (kpis?.remainingTickets || 0).toLocaleString(), icon: Ticket, color: 'bg-amber-500 text-white shadow-amber-500/20' },
   ];
 
   // Dummy Chart Data until complex aggregations are built
@@ -100,7 +102,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {statCards.map((stat, idx) => (
           <div key={idx} className={`rounded-card p-6 shadow-sm border border-navratri-lightGrey ${stat.color} relative overflow-hidden`}>
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
@@ -213,10 +215,10 @@ export default function AdminDashboard() {
                         <p className="font-[700] text-navratri-text">{booking.customerName}</p>
                         <p className="text-[11px] text-navratri-muted font-mono mt-0.5">{booking.id}</p>
                       </td>
-                      <td className="px-6 py-4 font-[700] text-navratri-text">{formatCurrency(booking.totalAmount || booking.grandTotal || 0)}</td>
+                      <td className="px-6 py-4 font-[700] text-navratri-text">{formatCurrency(booking.amount || booking.totalAmount || booking.grandTotal || 0)}</td>
                       <td className="px-6 py-4">
-                        <span className={`px-2.5 py-1 rounded-[6px] text-[10px] font-[700] uppercase tracking-widest ${booking.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-navratri-lightGrey text-navratri-muted'}`}>
-                          {booking.status}
+                        <span className={`px-2.5 py-1 rounded-[6px] text-[10px] font-[700] uppercase tracking-widest ${booking.paymentStatus === 'paid' || booking.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-navratri-lightGrey text-navratri-muted'}`}>
+                          {booking.paymentStatus || booking.status || 'unknown'}
                         </span>
                       </td>
                     </tr>

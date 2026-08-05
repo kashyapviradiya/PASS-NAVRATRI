@@ -15,23 +15,34 @@ export async function GET() {
     const totalEvents = events.length;
     let totalRevenue = 0;
     let todaySales = 0;
+    let todayBookings = 0;
     
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     orders.forEach(order => {
-      if (order.status === 'confirmed') {
-        totalRevenue += order.totalAmount || order.grandTotal || 0;
+      if (order.paymentStatus === 'paid' || order.status === 'confirmed') {
+        const orderAmount = order.amount || order.totalAmount || order.grandTotal || 0;
+        totalRevenue += orderAmount;
         
         const orderDate = new Date(order.createdAt);
         if (orderDate >= today) {
-          todaySales += order.totalAmount || order.grandTotal || 0;
+          todaySales += orderAmount;
+          todayBookings++;
         }
       }
     });
 
-    const totalPassesSold = tickets.length;
-    const entriesDone = tickets.filter(t => t.status === 'used' || t.isUsed).length;
+    const totalTicketsSold = tickets.length;
+    const entriesDone = tickets.filter(t => t.status === 'used' || t.checkedIn).length;
+    
+    let totalInventory = 0;
+    events.forEach(event => {
+      (event.ticketTypes || []).forEach((tt: any) => {
+        totalInventory += (tt.totalInventory || 0);
+      });
+    });
+    const remainingTickets = Math.max(0, totalInventory - totalTicketsSold);
 
     return NextResponse.json({
       success: true,
@@ -39,8 +50,11 @@ export async function GET() {
         totalEvents,
         totalRevenue,
         todaySales,
-        totalPassesSold,
-        entriesDone
+        totalTicketsSold,
+        entriesDone,
+        totalBookings: orders.length,
+        todayBookings,
+        remainingTickets
       },
       events,
       bookings: orders,
