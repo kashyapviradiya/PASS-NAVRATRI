@@ -35,7 +35,8 @@ export default function CheckoutPage() {
 
   if (!event) return null;
 
-  const ticketSubtotal = event.ticketTypes.reduce((sum, pass) => sum + pass.price * (selectedPasses[pass.id] || 0), 0);
+  const ticketTypesList = event.ticketTypes || event.passes || [];
+  const ticketSubtotal = ticketTypesList.reduce((sum, pass) => sum + pass.price * (selectedPasses[pass.id] || 0), 0);
   const convenienceFee = calculateConvenienceFee(ticketSubtotal);
   const totalAmount = ticketSubtotal + convenienceFee;
 
@@ -166,7 +167,7 @@ export default function CheckoutPage() {
                   <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-6">Order Confirmation</h2>
                   
                   <div className="bg-slate-50 p-6 rounded-[20px] border border-slate-100 mb-6 space-y-4">
-                    {event.ticketTypes.map(pass => {
+                    {ticketTypesList.map(pass => {
                       const qty = selectedPasses[pass.id] || 0;
                       if (qty === 0) return null;
                       return (

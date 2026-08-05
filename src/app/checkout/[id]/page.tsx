@@ -4,10 +4,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { formatCurrency, calculateConvenienceFee, generateBookingId } from '@/lib/utils';
 import { CITIES } from '@/lib/demo-data';
-import { CreditCard, Shield, Lock, ChevronLeft, User, Phone, Mail, MapPin, Tag, Loader2, Sparkles, CheckCircle2, Calendar } from 'lucide-react';
+import { CreditCard, Shield, Lock, ChevronLeft, ChevronDown, User, Phone, Mail, MapPin, Tag, Loader2, Sparkles, CheckCircle2, Calendar } from 'lucide-react';
 import type { Event, BookingPass } from '@/types';
 import toast from 'react-hot-toast';
-import { motion } from 'framer-motion';
 
 declare global {
   interface Window {
@@ -46,7 +45,8 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
     );
   }
 
-  const bookingPasses: BookingPass[] = event.ticketTypes
+  const ticketTypesList = event.ticketTypes || event.passes || [];
+  const bookingPasses: BookingPass[] = ticketTypesList
     .filter(p => (selectedPasses[p.id] || 0) > 0)
     .map(p => ({
       ticketTypeId: p.id,
