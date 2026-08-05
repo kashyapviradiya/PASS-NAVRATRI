@@ -4,7 +4,7 @@ import { DEMO_EVENTS, DEMO_BOOKINGS, DEMO_TICKETS, DEMO_SCAN_LOGS } from '@/lib/
 
 export async function POST(req: Request) {
   try {
-    if (process.env.DEMO_MODE !== 'true') {
+    if (process.env.NEXT_PUBLIC_DEMO_MODE !== 'true' && process.env.DEMO_MODE !== 'true') {
       return NextResponse.json({ success: false, message: 'Seeding only allowed in DEMO_MODE' }, { status: 403 });
     }
 

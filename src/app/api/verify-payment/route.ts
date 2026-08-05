@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       totalAmount,
     } = body;
 
-    const isDemoMock = process.env.DEMO_MODE === 'true' && razorpay_order_id?.startsWith('order_mock_');
+    const isDemoMock = (process.env.NEXT_PUBLIC_DEMO_MODE === 'true' || process.env.DEMO_MODE === 'true') && razorpay_order_id?.startsWith('order_mock_');
 
     if (!isDemoMock) {
       // Verify signature

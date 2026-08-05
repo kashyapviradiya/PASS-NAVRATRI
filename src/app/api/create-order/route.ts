@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     const receiptId = generateBookingId(); // e.g. RP-2026-000001
 
-    if (process.env.DEMO_MODE === 'true' && (!process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_KEY_SECRET === 'mock_secret')) {
+    if ((process.env.NEXT_PUBLIC_DEMO_MODE === 'true' || process.env.DEMO_MODE === 'true') && (!process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_KEY_SECRET === 'mock_secret')) {
       // Return a mock order if no keys are provided and we're in DEMO_MODE
       return NextResponse.json({
         success: true,
