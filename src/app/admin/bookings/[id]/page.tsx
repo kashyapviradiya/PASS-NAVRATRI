@@ -98,8 +98,8 @@ export default function AdminBookingDetails({ params }: { params: { id: string }
     setSavingNotes(false);
   };
 
-  const copyTicketUrl = () => {
-    const url = `${window.location.origin}/ticket/${booking?.id}`;
+  const copyTicketUrl = (ticketId: string) => {
+    const url = `${window.location.origin}/ticket/${ticketId}`;
     navigator.clipboard.writeText(url);
     toast.success('Ticket link copied to clipboard');
   };
@@ -203,12 +203,6 @@ export default function AdminBookingDetails({ params }: { params: { id: string }
               <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                 <Ticket className="w-5 h-5 text-navratri-accent" /> Issued Tickets ({tickets.length})
               </h2>
-              <button 
-                onClick={copyTicketUrl}
-                className="flex items-center gap-2 text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg hover:bg-blue-100 transition-colors"
-              >
-                <LinkIcon className="w-4 h-4" /> Copy Ticket URL
-              </button>
             </div>
             
             {tickets.length > 0 ? (
@@ -225,7 +219,12 @@ export default function AdminBookingDetails({ params }: { params: { id: string }
                   <tbody className="divide-y divide-gray-50">
                     {tickets.map(ticket => (
                       <tr key={ticket.ticketId} className="hover:bg-gray-50/50">
-                        <td className="py-4 px-2 font-mono text-sm font-bold text-gray-900">{ticket.ticketId}</td>
+                        <td className="py-4 px-2 font-mono text-sm font-bold text-gray-900 flex items-center gap-2">
+                          {ticket.ticketId}
+                          <button onClick={() => copyTicketUrl(ticket.ticketId)} className="text-gray-400 hover:text-blue-600 transition-colors" title="Copy Ticket Link">
+                            <LinkIcon className="w-4 h-4" />
+                          </button>
+                        </td>
                         <td className="py-4 px-2 font-medium text-gray-700">{ticket.ticketType}</td>
                         <td className="py-4 px-2">
                           {ticket.status === 'valid' ? (

@@ -60,11 +60,8 @@ export default function BookingSuccessPage({ params }: { params: { id: string } 
         </div>
 
         <div className="space-y-4">
-          <Link href={`/ticket/${params.id}`} className="w-full bg-[#111111] text-white font-[800] py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-black transition-all shadow-lg hover:-translate-y-0.5">
-            <Ticket className="w-5 h-5" /> View QR Tickets
-          </Link>
-          <Link href="/my-tickets" className="w-full bg-white text-[#111111] font-[800] py-4 rounded-2xl flex items-center justify-center gap-2 border border-gray-200 hover:bg-gray-50 transition-all">
-            Go to My Tickets <ArrowRight className="w-5 h-5" />
+          <Link href="/my-tickets" className="w-full bg-[#111111] text-white font-[800] py-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-black transition-all shadow-lg hover:-translate-y-0.5">
+            <Ticket className="w-5 h-5" /> View My Tickets
           </Link>
         </div>
       </motion.div>
