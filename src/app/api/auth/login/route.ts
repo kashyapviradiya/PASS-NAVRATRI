@@ -20,6 +20,9 @@ export async function POST(request: NextRequest) {
       if (email === adminEmail && password === adminPass) {
         payload = { id: 'admin-1', role: 'admin', name: 'Super Admin', email };
       }
+    } else if (role === 'scanner_staff' && email === (process.env.DEMO_SCANNER_EMAIL || 'scanner@demo.raaspass.local') && password === (process.env.DEMO_SCANNER_PASSWORD || 'demo-password-123')) {
+      // Demo Scanner Bypass
+      payload = { id: 'staff-demo-1', role: 'scanner_staff', name: 'Demo Scanner', email };
     } else {
       // Verify Staff (Organizers have their own endpoint)
       const collectionName = role === 'scanner_staff' ? 'staff' : 'users';
