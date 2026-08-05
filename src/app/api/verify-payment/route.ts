@@ -95,7 +95,8 @@ export async function POST(request: NextRequest) {
       for (const pass of ticketTypes as BookingPass[]) {
         for (let i = 0; i < pass.quantity; i++) {
           const ticketId = generateTicketId();
-          const qrValue = generateSecureToken();
+          const secureToken = generateSecureToken();
+          const qrValue = JSON.stringify({ ticketId, token: secureToken });
           const ticketRef = adminDb.collection('tickets').doc(ticketId);
           
           const ticket: Ticket = {

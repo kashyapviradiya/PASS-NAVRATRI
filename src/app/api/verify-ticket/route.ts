@@ -19,7 +19,27 @@ export async function POST(request: NextRequest) {
 
     const ticket = ticketDoc.data() as Ticket;
 
-    if (ticket.secureToken !== token) {
+    let isValidToken = false;
+    
+    try {
+      // New format: qrValue is a JSON string {"ticketId":"...","token":"..."}
+      const parsedQr = JSON.parse(ticket.qrValue);
+      if (parsedQr.token === token) {
+        isValidToken = true;
+      }
+    } catch {
+      // Legacy format: qrValue is the raw token string
+      if (ticket.qrValue === token) {
+        isValidToken = true;
+      }
+    }
+
+    // Also support demo data where it was seeded as secureToken
+    if ((ticket as any).secureToken && (ticket as any).secureToken === token) {
+      isValidToken = true;
+    }
+
+    if (!isValidToken) {
       return NextResponse.json({ success: false, status: 'invalid', message: 'Security token mismatch. Counterfeit ticket.' }, { status: 403 });
     }
 
