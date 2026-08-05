@@ -6,6 +6,8 @@ export async function POST(request: NextRequest) {
   try {
     const { ticketId, token } = await request.json();
 
+    console.log(`[Scanner API] Verification requested for ticketId: ${ticketId}`);
+
     if (!ticketId || !token) {
       return NextResponse.json({ success: false, status: 'invalid', message: 'Invalid QR Code payload.' }, { status: 400 });
     }
@@ -14,46 +16,63 @@ export async function POST(request: NextRequest) {
     const ticketDoc = await ticketRef.get();
 
     if (!ticketDoc.exists) {
-      return NextResponse.json({ success: false, status: 'invalid', message: 'Ticket does not exist.' }, { status: 404 });
+      console.log(`[Scanner API] Ticket not found: ${ticketId}`);
+      return NextResponse.json({ success: false, status: 'invalid', message: 'TICKET_NOT_FOUND' }, { status: 404 });
+    }
+
+    const ticket = ticketDoc.data() as Ticket;
+    
+    console.log(`[Scanner API] Matched Ticket: id=${ticket.ticketId}, bookingId=${ticket.bookingId}, status=${ticket.status}, checkedIn=${ticket.checkedIn}, demo=${ticket.demo}`);
+
+    // Verify Booking/Order status
+    const orderDoc = await adminDb.collection('orders').doc(ticket.bookingId).get();
+    if (orderDoc.exists) {
+      const order = orderDoc.data() as any;
+      if (order.status !== 'confirmed' && order.bookingStatus !== 'confirmed') {
+         console.log(`[Scanner API] Order not confirmed: ${ticket.bookingId}`);
+         return NextResponse.json({ success: false, status: 'invalid', message: 'BOOKING_NOT_CONFIRMED' }, { status: 403 });
+      }
+      if (order.paymentStatus !== 'paid' && order.paymentStatus !== 'demo-paid') {
+         console.log(`[Scanner API] Order not paid: ${ticket.bookingId} - ${order.paymentStatus}`);
+         return NextResponse.json({ success: false, status: 'invalid', message: 'PAYMENT_NOT_PAID' }, { status: 403 });
+      }
     }
 
     let isValidToken = false;
     
-    // If no token was provided but the ticket exists, we assume it's a legacy or URL-extracted scan.
-    // In a real production environment, you might want to require the token. For this demo/fix,
-    // we allow it if the token is missing or explicitly matches the ticket ID (URL fallback).
     if (!token || token === ticketId) {
       isValidToken = true;
     } else {
       try {
-        // New format: qrValue is a JSON string {"ticketId":"...","token":"..."}
         const parsedQr = JSON.parse(ticket.qrValue);
         if (parsedQr.token === token) {
           isValidToken = true;
+        } else if (parsedQr.s === token) {
+          // Demo Format
+          isValidToken = true;
         }
       } catch {
-        // Legacy format: qrValue is the raw token string
         if (ticket.qrValue === token) {
           isValidToken = true;
         }
       }
     }
 
-    // Also support demo data where it was seeded as secureToken
     if (!isValidToken && (ticket as any).secureToken && (ticket as any).secureToken === token) {
       isValidToken = true;
     }
 
     if (!isValidToken) {
-      return NextResponse.json({ success: false, status: 'invalid', message: 'Security token mismatch. Counterfeit ticket.' }, { status: 403 });
+      console.log(`[Scanner API] Invalid signature for ticket: ${ticketId}`);
+      return NextResponse.json({ success: false, status: 'invalid', message: 'INVALID_SIGNATURE' }, { status: 403 });
     }
 
     if (ticket.status === 'cancelled') {
-      return NextResponse.json({ success: false, status: 'cancelled', message: 'Ticket has been cancelled.' }, { status: 403 });
+      return NextResponse.json({ success: false, status: 'cancelled', message: 'CANCELLED' }, { status: 403 });
     }
 
-    if (ticket.isUsed) {
-      return NextResponse.json({ success: false, status: 'already_used', message: `Ticket already scanned at ${ticket.entryTime ? new Date(ticket.entryTime).toLocaleString() : 'unknown time'}.`, ticket }, { status: 200 });
+    if (ticket.checkedIn || (ticket as any).isUsed) {
+      return NextResponse.json({ success: false, status: 'already_used', message: 'ALREADY_USED', ticket }, { status: 200 });
     }
 
     return NextResponse.json({ success: true, status: 'valid', message: 'Ticket is valid.', ticket });

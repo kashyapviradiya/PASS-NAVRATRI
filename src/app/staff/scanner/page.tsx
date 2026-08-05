@@ -139,8 +139,16 @@ export default function ScannerDashboard() {
       // 1. Try parsing as JSON
       try {
         const payload = JSON.parse(decodedText);
-        ticketId = payload.ticketId;
-        token = payload.token;
+        if (payload.p && payload.s) {
+          // Demo format: {"p":"{\"v\":1,\"ticketId\":\"...\"}","s":"..."}
+          const pObj = typeof payload.p === 'string' ? JSON.parse(payload.p) : payload.p;
+          ticketId = pObj.ticketId;
+          token = payload.s;
+        } else {
+          // Standard format: {"ticketId":"...","token":"..."}
+          ticketId = payload.ticketId;
+          token = payload.token;
+        }
       } catch (e) {
         // Not JSON
       }
@@ -190,7 +198,7 @@ export default function ScannerDashboard() {
         if (!isCorrectGate) {
           playBeep('error');
           setScanResult('wrong_gate');
-          setMessage(`Wrong Gate! This is a ${data.ticket.ticketType}. Please direct them to the correct gate.`);
+          setMessage('WRONG_GATE');
           setCounts(prev => ({ ...prev, total: prev.total + 1, invalid: prev.invalid + 1 }));
         } else {
           playBeep('success');
@@ -201,17 +209,27 @@ export default function ScannerDashboard() {
       } else if (data.status === 'already_used') {
         playBeep('error');
         setScanResult('already_used');
-        setMessage(data.message);
+        setMessage(data.message || 'ALREADY_USED');
         setCounts(prev => ({ ...prev, total: prev.total + 1, duplicate: prev.duplicate + 1 }));
       } else if (data.status === 'cancelled') {
         playBeep('error');
         setScanResult('cancelled');
-        setMessage(data.message);
+        setMessage(data.message || 'CANCELLED');
         setCounts(prev => ({ ...prev, total: prev.total + 1, invalid: prev.invalid + 1 }));
       } else {
         playBeep('error');
         setScanResult('invalid');
-        setMessage(data.message || 'Counterfeit or Invalid Ticket.');
+        
+        const reasonMap: Record<string, string> = {
+          'EVENT_MISMATCH': 'EVENT_MISMATCH (Wrong Event)',
+          'WRONG_GATE': 'WRONG_GATE (Incorrect Entry Point)',
+          'BOOKING_NOT_CONFIRMED': 'BOOKING_NOT_CONFIRMED',
+          'PAYMENT_NOT_PAID': 'PAYMENT_NOT_PAID',
+          'INVALID_SIGNATURE': 'INVALID_SIGNATURE (Counterfeit QR)',
+          'TICKET_NOT_FOUND': 'TICKET_NOT_FOUND'
+        };
+        
+        setMessage(reasonMap[data.message] || data.message || 'Counterfeit or Invalid Ticket.');
         setCounts(prev => ({ ...prev, total: prev.total + 1, invalid: prev.invalid + 1 }));
       }
     } catch (error) {
