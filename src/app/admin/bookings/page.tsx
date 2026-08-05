@@ -21,7 +21,7 @@ export default function AdminBookingsPage() {
   useEffect(() => {
     fetchBookings();
     fetchEvents();
-  }, [eventFilter, paymentFilter, statusFilter]);
+  }, [eventFilter, paymentFilter]);
 
   const fetchBookings = async () => {
     setLoading(true);
@@ -29,7 +29,6 @@ export default function AdminBookingsPage() {
       const queryParams = new URLSearchParams();
       if (eventFilter) queryParams.append('eventId', eventFilter);
       if (paymentFilter) queryParams.append('paymentStatus', paymentFilter);
-      if (statusFilter) queryParams.append('bookingStatus', statusFilter);
 
       const res = await fetch(`/api/admin/bookings?${queryParams.toString()}`);
       const data = await res.json();
