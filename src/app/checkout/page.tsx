@@ -95,7 +95,6 @@ export default function CheckoutPage() {
   };
 
   return (
-  return (
     <div className="bg-navratri-bg min-h-[calc(100vh-64px)] pb-32 font-sans selection:bg-navratri-accent selection:text-white">
       <div className="max-w-[1024px] mx-auto px-4 sm:px-6 lg:px-8 pt-12">
         
