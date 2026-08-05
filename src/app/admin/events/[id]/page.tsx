@@ -63,12 +63,12 @@ export default function EventAnalyticsPage({ params }: { params: { id: string } 
   }
 
   const statCards = [
-    { label: 'Total Revenue', value: formatCurrency(analytics.totalRevenue), icon: IndianRupee, color: 'text-green-600', bg: 'bg-green-50' },
-    { label: 'Tickets Sold', value: analytics.ticketsSold, icon: Ticket, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Remaining Tickets', value: analytics.remainingTickets, icon: Ticket, color: 'text-amber-600', bg: 'bg-amber-50' },
-    { label: 'Check-ins (Scanned)', value: analytics.checkIns, icon: Users, color: 'text-indigo-600', bg: 'bg-indigo-50' },
-    { label: 'Cancellations', value: analytics.cancellationCount, icon: Ban, color: 'text-red-600', bg: 'bg-red-50' },
-    { label: 'Occupancy Rate', value: `${analytics.occupancy}%`, icon: Percent, color: 'text-purple-600', bg: 'bg-purple-50' }
+    { label: 'Total Tickets Issued', value: analytics.totalTicketsIssued, icon: Ticket, color: 'text-purple-600', bg: 'bg-purple-50' },
+    { label: 'Valid / Unused', value: analytics.validTickets, icon: Ticket, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Scanned / Used', value: analytics.scannedTickets, icon: Users, color: 'text-green-600', bg: 'bg-green-50' },
+    { label: 'Cancelled Tickets', value: analytics.cancelledTickets, icon: Ban, color: 'text-red-600', bg: 'bg-red-50' },
+    { label: 'Check-in %', value: `${analytics.checkinPercentage}%`, icon: Percent, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+    { label: 'Duplicate Scans', value: analytics.duplicateScanAttempts, icon: Ticket, color: 'text-orange-600', bg: 'bg-orange-50' },
   ];
 
   return (

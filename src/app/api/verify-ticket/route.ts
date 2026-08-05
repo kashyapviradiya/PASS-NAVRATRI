@@ -83,7 +83,23 @@ export async function POST(request: NextRequest) {
     }
 
     if (ticket.checkedIn || (ticket as any).isUsed) {
-      return NextResponse.json({ success: false, status: 'already_used', message: 'ALREADY_USED', ticket }, { status: 200 });
+      // Async log duplicate scan attempt without blocking the response
+      adminDb.collection('scanLogs').add({
+          ticketId,
+          eventId: ticket.eventId,
+          result: 'already_used',
+          scannedBy: 'scanner-verify',
+          scannedAt: new Date().toISOString(),
+          gateName: 'verification-check',
+          isDuplicateAttempt: true
+      }).catch(console.error);
+
+      return NextResponse.json({ 
+        success: false, 
+        status: 'already_used', 
+        message: `Duplicate Scan - Ticket Already Used at ${new Date(ticket.checkedInAt || (ticket as any).entryTime || Date.now()).toLocaleString()} by ${ticket.scannedBy || 'unknown staff'} at ${ticket.gateName || 'unknown gate'}`, 
+        ticket 
+      }, { status: 200 });
     }
 
     return NextResponse.json({ success: true, status: 'valid', message: 'Ticket is valid.', ticket });

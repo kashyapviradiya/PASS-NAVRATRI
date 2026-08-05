@@ -44,12 +44,12 @@ export default function AdminDashboard() {
 
   // KPI Cards
   const statCards = [
-    { label: 'Total Bookings', value: (kpis?.totalBookings || 0).toLocaleString(), icon: Ticket, color: 'bg-purple-600 text-white shadow-purple-600/20' },
-    { label: 'Total Tickets Sold', value: (kpis?.totalTicketsSold || 0).toLocaleString(), icon: Ticket, color: 'bg-navratri-darkAccent text-white shadow-navratri-darkAccent/20' },
-    { label: 'Total Revenue', value: formatCurrency(kpis?.totalRevenue || 0), icon: IndianRupee, color: 'bg-green-500 text-white shadow-green-500/20' },
-    { label: "Today's Bookings", value: (kpis?.todayBookings || 0).toLocaleString(), icon: TrendingUp, color: 'bg-indigo-500 text-white shadow-indigo-500/20' },
-    { label: 'Checked-in Guests', value: (kpis?.entriesDone || 0).toLocaleString(), icon: CheckCircle2, color: 'bg-blue-600 text-white shadow-blue-600/20' },
-    { label: 'Remaining Tickets', value: (kpis?.remainingTickets || 0).toLocaleString(), icon: Ticket, color: 'bg-amber-500 text-white shadow-amber-500/20' },
+    { label: 'Total Issued Tickets', value: (kpis?.totalTicketsSold || 0).toLocaleString(), icon: Ticket, color: 'bg-purple-600 text-white shadow-purple-600/20' },
+    { label: 'Valid / Unused', value: (kpis?.validTickets || 0).toLocaleString(), icon: Ticket, color: 'bg-blue-500 text-white shadow-blue-500/20' },
+    { label: 'Scanned / Used', value: (kpis?.successfulEntries || 0).toLocaleString(), icon: CheckCircle2, color: 'bg-green-600 text-white shadow-green-600/20' },
+    { label: 'Cancelled Tickets', value: (kpis?.cancelledTickets || 0).toLocaleString(), icon: Ticket, color: 'bg-gray-500 text-white shadow-gray-500/20' },
+    { label: 'Check-in Percentage', value: `${kpis?.checkinPercentage || 0}%`, icon: TrendingUp, color: 'bg-navratri-darkAccent text-white shadow-navratri-darkAccent/20' },
+    { label: 'Duplicate Attempts', value: (kpis?.duplicateScanAttempts || 0).toLocaleString(), icon: Ticket, color: 'bg-red-500 text-white shadow-red-500/20' },
   ];
 
   // Dummy Chart Data until complex aggregations are built

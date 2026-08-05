@@ -24,16 +24,31 @@ export async function POST(request: NextRequest) {
         throw new Error('Ticket is cancelled.');
       }
 
-      if (ticketData.isUsed) {
-        throw new Error(`Ticket already marked as used at ${new Date(ticketData.entryTime).toLocaleString()}.`);
+      if (ticketData.checkedIn || ticketData.isUsed || ticketData.status === 'used') {
+        // Log duplicate attempt inside transaction
+        const scanLogRef = adminDb.collection('scanLogs').doc();
+        transaction.set(scanLogRef, {
+          id: scanLogRef.id,
+          ticketId,
+          eventId: ticketData.eventId,
+          result: 'already_used',
+          scannedBy,
+          scannedAt: new Date().toISOString(),
+          gateName,
+          isDuplicateAttempt: true
+        });
+        
+        throw new Error(`Ticket already marked as used at ${new Date(ticketData.checkedInAt || ticketData.entryTime || Date.now()).toLocaleString()} by ${ticketData.scannedBy || 'unknown staff'} at ${ticketData.gateName || 'unknown gate'}.`);
       }
 
-      const entryTime = new Date().toISOString();
+      const checkedInAt = new Date().toISOString();
 
       transaction.update(ticketRef, {
-        isUsed: true,
+        checkedIn: true,
+        isUsed: true, // keep for backward compatibility
         status: 'used',
-        entryTime,
+        checkedInAt,
+        entryTime: checkedInAt, // keep for backward compatibility
         scannedBy,
         gateName
       });
@@ -46,16 +61,20 @@ export async function POST(request: NextRequest) {
         eventId: ticketData.eventId,
         result: 'valid',
         scannedBy,
-        scannedAt: entryTime,
-        gateName
+        scannedAt: checkedInAt,
+        gateName,
+        isDuplicateAttempt: false
       });
 
-      return { ...ticketData, isUsed: true, status: 'used', entryTime, scannedBy, gateName };
+      return { ...ticketData, checkedIn: true, status: 'used', checkedInAt, scannedBy, gateName };
     });
 
     return NextResponse.json({ success: true, ticket: result, message: 'Entry successfully recorded.' });
   } catch (error: any) {
     console.error('Mark entry error:', error);
+    if (error.message.includes('already marked as used')) {
+       return NextResponse.json({ success: false, status: 'already_used', message: error.message }, { status: 400 });
+    }
     return NextResponse.json({ success: false, message: error.message || 'Internal server error' }, { status: 500 });
   }
 }

@@ -31,8 +31,31 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     });
 
     const tickets = ticketsSnap.docs.map(d => d.data());
-    const ticketsSold = tickets.filter(t => t.status !== 'cancelled').length;
-    const checkIns = tickets.filter(t => t.status === 'used' || t.checkedIn).length;
+    
+    let validTickets = 0;
+    let scannedTickets = 0;
+    let cancelledTickets = 0;
+
+    tickets.forEach((t: any) => {
+      const isScanned = t.status === 'used' || t.checkedIn === true || t.isUsed === true;
+      const isCancelled = t.status === 'cancelled';
+      const isValid = t.status === 'valid' && !isScanned && !isCancelled;
+
+      if (isScanned) scannedTickets++;
+      else if (isCancelled) cancelledTickets++;
+      else if (isValid) validTickets++;
+    });
+
+    const totalTickets = validTickets + scannedTickets + cancelledTickets;
+
+    const checkinPercentage = (validTickets + scannedTickets) > 0 
+      ? (scannedTickets / (validTickets + scannedTickets)) * 100 
+      : 0;
+
+    const scanLogsSnap = await adminDb.collection('scanLogs')
+      .where('eventId', '==', id)
+      .where('isDuplicateAttempt', '==', true).get();
+    const duplicateScanAttempts = scanLogsSnap.docs.length;
 
     let totalCapacity = 0;
     let remainingTickets = 0;
@@ -42,16 +65,21 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       remainingTickets += (tt.remainingQuantity || 0);
     });
 
-    const occupancy = totalCapacity > 0 ? (ticketsSold / totalCapacity) * 100 : 0;
+    const occupancy = totalCapacity > 0 ? (totalTickets / totalCapacity) * 100 : 0;
 
     return NextResponse.json({
       success: true,
       analytics: {
-        ticketsSold,
+        totalTicketsIssued: totalTickets,
+        validTickets,
+        scannedTickets,
+        cancelledTickets,
+        checkinPercentage: checkinPercentage.toFixed(1),
+        duplicateScanAttempts,
         remainingTickets,
         totalRevenue,
-        checkIns,
-        cancellationCount,
+        checkIns: scannedTickets,
+        cancellationCount: cancelledTickets,
         occupancy: Math.round(occupancy * 100) / 100,
         totalCapacity
       }
