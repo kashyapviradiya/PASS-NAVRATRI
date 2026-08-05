@@ -30,7 +30,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-navratri-bg font-sans flex flex-col md:flex-row selection:bg-navratri-accent selection:text-white">
       
       {/* Mobile Header & Menu Toggle */}
-      <div className="md:hidden bg-white border-b border-navratri-lightGrey p-4 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+      <div className="md:hidden bg-white/80 backdrop-blur-md border-b border-navratri-lightGrey/50 p-4 flex items-center justify-between sticky top-0 z-50 shadow-sm">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-navratri-accent/10 rounded-[8px] flex items-center justify-center border border-navratri-accent/20">
             <Sparkles className="w-4 h-4 text-navratri-accent" />
@@ -44,7 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar */}
       <div className={`
-        fixed md:sticky top-0 left-0 h-screen w-64 bg-white border-r border-navratri-lightGrey flex flex-col z-40 shadow-sm transition-transform duration-300
+        fixed md:sticky top-0 left-0 h-screen w-64 bg-white/80 backdrop-blur-md border-r border-navratri-lightGrey/50 flex flex-col z-40 shadow-sm transition-transform duration-300
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         <div className="p-6 border-b border-navratri-lightGrey hidden md:flex items-center gap-3">
@@ -65,13 +65,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 key={link.href} 
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-[12px] transition-all ${
+                className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-[12px] transition-all group ${
                   isActive 
-                  ? 'bg-navratri-accent text-white shadow-md shadow-navratri-accent/20' 
-                  : 'text-navratri-muted hover:bg-navratri-bg hover:text-navratri-accent'
+                  ? 'bg-gradient-premium text-white shadow-md shadow-navratri-primary/20' 
+                  : 'text-navratri-muted hover:bg-slate-50 hover:text-navratri-primary'
                 }`}
               >
-                <link.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-navratri-muted'}`} />
+                <link.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-navratri-muted group-hover:text-navratri-primary'}`} />
                 <span className="font-[600] text-[14px]">{link.name}</span>
               </Link>
             );
@@ -79,7 +79,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
         
         <div className="p-4 border-t border-navratri-lightGrey space-y-2">
-          <Link href="/" target="_blank" className="w-full flex items-center justify-center gap-2 bg-navratri-bg text-navratri-text px-4 py-3.5 rounded-[12px] text-[14px] font-[700] hover:bg-navratri-lightGrey/50 transition-colors border border-navratri-lightGrey">
+          <Link href="/" target="_blank" className="w-full flex items-center justify-center gap-2 bg-slate-50 text-navratri-text px-4 py-3.5 rounded-[12px] text-[14px] font-[700] hover:bg-slate-100 transition-colors border border-navratri-lightGrey">
             View Public Site
           </Link>
           <button onClick={() => router.push('/admin/login')} className="w-full flex items-center justify-center gap-2 bg-red-50 text-red-600 px-4 py-3.5 rounded-[12px] text-[14px] font-[700] hover:bg-red-100 hover:text-red-700 transition-colors border border-red-100">
@@ -92,8 +92,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         
         {/* Top Header */}
-        <header className="hidden md:flex h-20 bg-white/80 backdrop-blur-md border-b border-navratri-lightGrey px-8 items-center justify-between shrink-0 shadow-sm">
-          <div className="flex items-center bg-navratri-bg px-4 py-2.5 rounded-[14px] border border-navratri-lightGrey w-96 focus-within:ring-1 focus-within:ring-navratri-accent focus-within:border-navratri-accent transition-all">
+        <header className="hidden md:flex h-20 bg-white/80 backdrop-blur-md border-b border-navratri-lightGrey/50 px-8 items-center justify-between shrink-0 shadow-sm">
+          <div className="flex items-center bg-navratri-bg px-4 py-2.5 rounded-[16px] border border-navratri-lightGrey w-96 focus-within:ring-2 focus-within:ring-navratri-primary/30 focus-within:border-navratri-primary transition-all">
             <Search className="w-4 h-4 text-navratri-muted mr-3" />
             <input type="text" placeholder="Search events, bookings..." className="bg-transparent border-none outline-none text-[14px] w-full font-[500] placeholder:text-navratri-muted text-navratri-text" />
           </div>
@@ -109,8 +109,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <p className="text-[14px] font-[700] text-navratri-text leading-none">Super Admin</p>
                 <p className="text-[11px] text-navratri-muted font-[600] mt-1">admin@raspass.com</p>
               </div>
-              <div className="w-10 h-10 bg-navratri-accent/10 rounded-[12px] flex items-center justify-center border border-navratri-accent/20">
-                <span className="font-display font-[700] text-navratri-accent">A</span>
+              <div className="w-10 h-10 bg-gradient-premium rounded-[12px] flex items-center justify-center shadow-sm">
+                <span className="font-display font-[700] text-white">A</span>
               </div>
             </div>
           </div>

@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --background-rgb: 248, 247, 244; /* #F8F7F4 Warm White */
-  --foreground-rgb: 17, 17, 17;    /* #111111 */
+  --background-rgb: 248, 250, 252; /* #F8FAFC Light bg */
+  --foreground-rgb: 15, 23, 42;    /* #0F172A */
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -17,8 +21,76 @@ body {
 
 /* Base focus and selection styles */
 ::selection {
-  background-color: #E53935;
+  background-color: #7C3AED;
   color: white;
+}
+
+/* Premium utility classes */
+@layer utilities {
+  .glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-glass;
+  }
+  .glass-dark {
+    @apply bg-slate-900/70 backdrop-blur-md border border-slate-700/50 shadow-glass;
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-premium;
+  }
+  .text-gradient-cyan {
+    @apply bg-clip-text text-transparent bg-gradient-cyan;
+  }
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .shimmer-bg {
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+  .premium-border {
+    position: relative;
+  }
+  .premium-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(255,77,109,0.2), rgba(0,229,255,0.3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Hide scrollbar utility */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 @media print {

@@ -177,7 +177,7 @@ END:VCALENDAR`;
             </div>
 
             <div className="flex justify-center mb-8">
-              <div className={`p-4 bg-white rounded-2xl ${isValid ? 'shadow-[0_0_30px_rgba(224,36,84,0.3)]' : isCancelled ? 'opacity-30 grayscale' : 'opacity-80 grayscale'}`}>
+              <div className={`p-4 bg-white rounded-card ${isValid ? 'shadow-premium' : isCancelled ? 'opacity-30 grayscale' : 'opacity-80 grayscale'}`}>
                 {qrCodeUrl ? (
                   <img src={qrCodeUrl} alt="QR Code" className="w-48 h-48 md:w-56 md:h-56 print:w-48 print:h-48" />
                 ) : (
@@ -190,19 +190,19 @@ END:VCALENDAR`;
               
               <div>
                 <p className="text-gray-500 text-[10px] uppercase tracking-wider font-bold mb-1 print:text-gray-500">Name</p>
-                <p className="text-white font-medium text-sm truncate print:text-black">{ticket.customerName}</p>
+                <p className="text-white font-[500] text-sm truncate print:text-black">{ticket.customerName}</p>
               </div>
               
               <div>
                 <p className="text-gray-500 text-[10px] uppercase tracking-wider font-bold mb-1 print:text-gray-500">Date & Time</p>
-                <p className="text-white font-medium text-sm print:text-black">
+                <p className="text-white font-[500] text-sm print:text-black">
                   {new Date(ticket.eventDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} • 7:00 PM
                 </p>
               </div>
 
               <div className="col-span-2">
                 <p className="text-gray-500 text-[10px] uppercase tracking-wider font-bold mb-1 print:text-gray-500">Venue</p>
-                <p className="text-white font-medium text-sm print:text-black line-clamp-2">{ticket.venue}</p>
+                <p className="text-white font-[500] text-sm print:text-black line-clamp-2">{ticket.venue}</p>
               </div>
 
               <div>

@@ -43,45 +43,48 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-navratri-bg flex items-center justify-center p-4 font-sans relative overflow-hidden selection:bg-navratri-accent selection:text-white">
+    <div className="min-h-screen flex items-center justify-center p-4 font-sans relative overflow-hidden selection:bg-navratri-accent selection:text-white" style={{ background: 'linear-gradient(180deg, #0F172A 0%, #1E1B4B 60%, #312E81 100%)' }}>
       {/* Decorative background elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-navratri-accent/5 rounded-full blur-3xl"></div>
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-navratri-accent/20 rounded-full blur-[100px]"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-navratri-primary/20 rounded-full blur-[120px]"></div>
       
       <div className="w-full max-w-md relative z-10">
-        <div className="bg-white rounded-card shadow-sm border border-navratri-lightGrey p-8 sm:p-12">
+        <div className="bg-white/[0.03] backdrop-blur-xl rounded-[28px] shadow-glass border border-white/10 p-8 sm:p-12 relative overflow-hidden">
           
           <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-navratri-accent/10 rounded-[16px] flex items-center justify-center mx-auto mb-6 shadow-sm border border-navratri-accent/10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-10 h-10 bg-white/40 rounded-full blur-md"></div>
+            <div className="w-20 h-20 bg-white/[0.06] rounded-[16px] flex items-center justify-center mx-auto mb-6 shadow-sm border border-white/10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-10 h-10 bg-navratri-accent/20 rounded-full blur-md"></div>
               <Shield className="w-10 h-10 text-navratri-accent relative z-10" />
             </div>
-            <h1 className="text-[32px] font-display font-[700] text-navratri-text tracking-tight mb-2">Admin Portal</h1>
-            <p className="text-navratri-muted font-[500] text-[15px]">Enter your secure credentials</p>
+            <h1 className="text-[32px] font-display font-[800] text-white tracking-tight mb-2">Admin Portal</h1>
+            <p className="text-slate-300 font-[500] text-[15px]">Enter your secure credentials</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
+              <label className="block text-slate-300 text-[13px] font-[700] uppercase tracking-widest mb-2">Admin Email</label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <input 
                   type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Admin Email" 
-                  className="w-full pl-12 pr-4 py-4 bg-navratri-bg border border-navratri-lightGrey rounded-[14px] focus:outline-none focus:ring-1 focus:ring-navratri-accent focus:border-navratri-accent font-[500] text-navratri-text transition-all placeholder:text-navratri-muted text-[15px]"
+                  placeholder="admin@passnavratri.com" 
+                  className="w-full pl-12 pr-5 py-4 bg-white/[0.06] border border-white/10 rounded-[16px] focus:outline-none focus:ring-1 focus:ring-navratri-primary/30 focus:border-navratri-primary/50 font-[500] text-white transition-all placeholder-slate-500 text-[15px]"
                   required
                 />
               </div>
             </div>
             <div>
+              <label className="block text-slate-300 text-[13px] font-[700] uppercase tracking-widest mb-2">Password</label>
               <div className="relative">
-                <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
+                <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                 <input 
                   type="password" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password" 
-                  className="w-full pl-12 pr-4 py-4 bg-navratri-bg border border-navratri-lightGrey rounded-[14px] focus:outline-none focus:ring-1 focus:ring-navratri-accent focus:border-navratri-accent font-[500] text-navratri-text transition-all placeholder:text-navratri-muted text-[15px]"
+                  placeholder="••••••••" 
+                  className="w-full pl-12 pr-5 py-4 bg-white/[0.06] border border-white/10 rounded-[16px] focus:outline-none focus:ring-1 focus:ring-navratri-primary/30 focus:border-navratri-primary/50 font-[500] text-white transition-all placeholder-slate-500 text-[15px]"
                   required
                 />
               </div>
@@ -90,7 +93,7 @@ export default function AdminLogin() {
             <button 
               type="submit"
               disabled={loading}
-              className="w-full bg-navratri-accent text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 hover:bg-navratri-darkAccent hover:-translate-y-0.5 shadow-sm transition-all text-[15px] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 mt-6"
+              className="w-full bg-gradient-premium text-white font-[800] py-4 rounded-button flex items-center justify-center gap-2 hover:shadow-lg hover:-translate-y-0.5 shadow-premium transition-all text-[15px] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 mt-6"
             >
               {loading ? (
                 <><Loader2 className="w-5 h-5 animate-spin" /> Authenticating...</>
@@ -100,7 +103,7 @@ export default function AdminLogin() {
             </button>
           </form>
 
-          <div className="mt-8 text-center text-[12px] text-navratri-muted font-[600]">
+          <div className="mt-8 text-center text-[12px] text-slate-400 font-[600]">
             <p>&copy; {new Date().getFullYear()} RasPass Admin</p>
           </div>
         </div>

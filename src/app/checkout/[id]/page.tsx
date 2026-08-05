@@ -128,19 +128,19 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="bg-[#F8F7F4] min-h-screen pb-20 pt-[80px] font-sans selection:bg-navratri-primary selection:text-white">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <button onClick={() => router.back()} className="flex items-center gap-2 text-[#6B7280] hover:text-[#111111] mb-8 font-[600] transition-colors">
+    <div className="bg-navratri-bg min-h-screen pb-20 pt-[100px] font-sans selection:bg-navratri-primary selection:text-white">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+        <button onClick={() => router.back()} className="flex items-center gap-2 text-navratri-muted hover:text-navratri-text mb-8 font-[600] transition-colors hover:-translate-x-1 duration-300">
           <ChevronLeft className="w-5 h-5" /> Back to Event
         </button>
 
-        <div className="flex items-center gap-3 mb-10">
-          <div className="w-12 h-12 rounded-2xl bg-navratri-primary/10 flex items-center justify-center">
-            <Shield className="w-6 h-6 text-navratri-primary" />
+        <div className="flex items-center gap-4 mb-10">
+          <div className="w-14 h-14 rounded-[20px] bg-navratri-primary/10 flex items-center justify-center border border-navratri-primary/20 shadow-card">
+            <Shield className="w-7 h-7 text-navratri-primary" />
           </div>
           <div>
-            <h1 className="text-3xl font-sans font-[800] text-[#111111] tracking-tight">Secure Checkout</h1>
-            <p className="text-[#6B7280] text-sm font-[500]">Encrypted processing & instant delivery</p>
+            <h1 className="text-[32px] md:text-[40px] font-display font-[800] text-navratri-text tracking-tight">Secure Checkout</h1>
+            <p className="text-navratri-muted text-[15px] font-[500]">Encrypted processing & instant delivery</p>
           </div>
         </div>
 
@@ -148,130 +148,124 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
           <div className="lg:col-span-2 space-y-8">
             
             {/* Event Summary Card */}
-            <div className="bg-[#111111] rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-black/10">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-navratri-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-              <div className="relative z-10 space-y-2">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-navratri-primary/20 border border-navratri-primary/30 text-navratri-primary text-[10px] font-[800] tracking-widest uppercase mb-2">
-                  <Sparkles className="w-3 h-3" /> Selected Event
+            <div className="rounded-[24px] p-8 text-white relative overflow-hidden shadow-premium" style={{ background: 'linear-gradient(180deg, #0F172A 0%, #1E1B4B 60%, #312E81 100%)' }}>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-navratri-primary/30 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/3"></div>
+              <div className="relative z-10 space-y-3">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white text-[10px] font-[800] tracking-widest uppercase mb-2 backdrop-blur-md">
+                  <Sparkles className="w-3.5 h-3.5 text-navratri-accent" /> Selected Event
                 </div>
-                <h2 className="text-3xl font-sans font-[800] tracking-tight">{event.name}</h2>
-                <p className="text-white/80 flex items-center gap-2 font-[500]"><MapPin className="w-4 h-4 text-navratri-primary" /> {event.venue}, {event.city}</p>
-                <p className="text-white/80 flex items-center gap-2 font-[500]"><Calendar className="w-4 h-4 text-navratri-primary" /> {event.dates} &bull; {event.timings}</p>
+                <h2 className="text-[28px] md:text-[32px] font-display font-[800] tracking-tight">{event.name}</h2>
+                <p className="text-slate-300 flex items-center gap-2 font-[500] text-[15px]"><MapPin className="w-4 h-4 text-navratri-accent" /> {event.venue}, {event.city}</p>
+                <p className="text-slate-300 flex items-center gap-2 font-[500] text-[15px]"><Calendar className="w-4 h-4 text-navratri-accent" /> {event.dates} &bull; {event.timings}</p>
               </div>
             </div>
 
             {/* Guest Details */}
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
-              <h2 className="text-2xl font-sans font-[800] text-[#111111] mb-6">Guest Details</h2>
+            <div className="bg-white rounded-card p-8 shadow-card border border-navratri-lightGrey">
+              <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-6">Guest Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs font-[800] text-gray-400 uppercase tracking-widest mb-2">Full Name *</label>
+                  <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">Full Name *</label>
                   <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your full name" className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-navratri-primary focus:border-transparent bg-gray-50/50 font-[500]" />
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your full name" className="w-full pl-12 pr-4 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 bg-slate-50 font-[500] text-navratri-text transition-all" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-[800] text-gray-400 uppercase tracking-widest mb-2">Mobile Number *</label>
+                  <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">Mobile Number *</label>
                   <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))} placeholder="10-digit mobile number" className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-navratri-primary focus:border-transparent bg-gray-50/50 font-[500]" />
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
+                    <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))} placeholder="10-digit mobile number" className="w-full pl-12 pr-4 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 bg-slate-50 font-[500] text-navratri-text transition-all" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-[800] text-gray-400 uppercase tracking-widest mb-2">Email Address *</label>
+                  <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">Email Address *</label>
                   <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-navratri-primary focus:border-transparent bg-gray-50/50 font-[500]" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" className="w-full pl-12 pr-4 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 bg-slate-50 font-[500] text-navratri-text transition-all" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-[800] text-gray-400 uppercase tracking-widest mb-2">City *</label>
+                  <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">City *</label>
                   <div className="relative">
-                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                    <select value={city} onChange={(e) => setCity(e.target.value)} className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-navratri-primary focus:border-transparent appearance-none cursor-pointer bg-gray-50/50 text-[#111111] font-[500]">
+                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
+                    <select value={city} onChange={(e) => setCity(e.target.value)} className="w-full pl-12 pr-10 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 appearance-none cursor-pointer bg-slate-50 font-[500] text-navratri-text transition-all">
                       <option value="">Select city</option>
                       {CITIES.filter(c => c !== 'All Cities').map(c => (
                         <option key={c} value={c}>{c}</option>
                       ))}
                     </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted pointer-events-none" />
                   </div>
                 </div>
               </div>
             </div>
-
-            {/* Coupon */}
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
-              <h2 className="text-xl font-sans font-[800] text-[#111111] mb-4 flex items-center gap-2"><Tag className="w-5 h-5 text-navratri-primary" /> Gift Card or Coupon</h2>
-              <div className="flex gap-3">
-                <input type="text" value={coupon} onChange={(e) => setCoupon(e.target.value.toUpperCase())} placeholder="Enter code" className="flex-1 px-5 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-navratri-primary bg-gray-50/50 font-[500]" />
-                <button onClick={() => toast('Coupon feature coming soon!', { icon: '🎫' })} className="px-8 py-4 bg-gray-50 text-[#111111] font-[800] rounded-2xl border border-gray-200 hover:bg-gray-100 transition-colors">Apply</button>
-              </div>
-            </div>
-
-            {/* Terms */}
-            <label className="flex items-start gap-4 cursor-pointer bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:border-gray-200 transition-colors">
-              <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-1 w-5 h-5 accent-navratri-primary rounded border-gray-300" />
-              <span className="text-sm text-[#6B7280] font-[500] leading-relaxed">
-                By proceeding, I agree to the <span className="text-navratri-primary font-[800] underline">Terms & Conditions</span> and <span className="text-navratri-primary font-[800] underline">Privacy Policy</span>. I understand that tickets are non-transferable and subject to organizer guidelines.
-              </span>
-            </label>
           </div>
-
+          
           {/* Right Column: Order Summary */}
           <div>
-            <div className="lg:sticky lg:top-28 bg-white rounded-3xl p-8 shadow-xl border border-gray-100 space-y-8">
-              <h2 className="text-2xl font-sans font-[800] text-[#111111]">Order Summary</h2>
+            <div className="lg:sticky lg:top-28 bg-white rounded-card p-8 shadow-card hover:shadow-premium transition-shadow duration-500 border border-navratri-lightGrey space-y-8 relative overflow-hidden">
+              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-premium"></div>
+              <h2 className="text-[24px] font-display font-[700] text-navratri-text">Order Summary</h2>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 {bookingPasses.map(pass => (
-                  <div key={pass.ticketTypeId} className="flex justify-between items-start text-sm">
+                  <div key={pass.ticketTypeId} className="flex justify-between items-start text-[15px]">
                     <div>
-                      <span className="text-[#111111] font-[800]">{pass.ticketTypeName}</span>
-                      <p className="text-[#6B7280] mt-1 font-[500]">Qty: {pass.quantity}</p>
+                      <span className="text-navratri-text font-[700]">{pass.ticketTypeName}</span>
+                      <p className="text-navratri-muted mt-1.5 font-[500]">Qty: {pass.quantity}</p>
                     </div>
-                    <span className="font-[800] text-[#111111]">{formatCurrency(pass.subtotal)}</span>
+                    <span className="font-[700] text-navratri-text">{formatCurrency(pass.subtotal)}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="border-t border-gray-100 pt-6 space-y-4">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-[#6B7280] font-[600]">Subtotal</span>
-                  <span className="font-[800] text-[#111111]">{formatCurrency(totalAmount)}</span>
+              <div className="border-t border-navratri-lightGrey pt-6 space-y-4">
+                <div className="flex justify-between items-center text-[15px]">
+                  <span className="text-navratri-muted font-[600]">Subtotal</span>
+                  <span className="font-[700] text-navratri-text">{formatCurrency(totalAmount)}</span>
                 </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-[#6B7280] font-[600] flex items-center gap-1">Convenience Fee <span className="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400">i</span></span>
-                  <span className="font-[800] text-[#111111]">{formatCurrency(convenienceFee)}</span>
+                <div className="flex justify-between items-center text-[15px]">
+                  <span className="text-navratri-muted font-[600] flex items-center gap-1.5">Convenience Fee <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-navratri-muted">i</span></span>
+                  <span className="font-[700] text-navratri-text">{formatCurrency(convenienceFee)}</span>
                 </div>
               </div>
 
-              <div className="border-t border-gray-100 pt-6">
+              <div className="border-t border-navratri-lightGrey pt-6 pb-2">
                 <div className="flex justify-between items-end">
-                  <span className="text-sm font-[800] text-gray-400 uppercase tracking-widest">Total Amount</span>
-                  <span className="text-4xl font-sans font-[800] text-navratri-primary tracking-tight">{formatCurrency(grandTotal)}</span>
+                  <span className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">Total Amount</span>
+                  <span className="text-[32px] font-display font-[800] text-transparent bg-clip-text bg-gradient-premium tracking-tight">{formatCurrency(grandTotal)}</span>
                 </div>
               </div>
+
+              {/* Terms */}
+              <label className="flex items-start gap-4 cursor-pointer bg-slate-50 p-5 rounded-[20px] border border-navratri-lightGrey hover:border-navratri-primary/30 transition-colors">
+                <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 w-5 h-5 accent-navratri-primary rounded border-navratri-lightGrey" />
+                <span className="text-[12px] text-navratri-muted font-[500] leading-relaxed">
+                  I agree to the <span className="text-navratri-primary font-[700] underline">Terms & Conditions</span>. Tickets are non-transferable.
+                </span>
+              </label>
 
               <button
                 onClick={handlePayment}
                 disabled={processing}
-                className="w-full bg-navratri-primary text-white font-[800] py-5 rounded-2xl flex items-center justify-center gap-2 hover:bg-navratri-primary-dark hover:shadow-[0_10px_20px_-10px_rgba(229,57,53,0.5)] hover:-translate-y-0.5 transition-all text-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-premium text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 hover:shadow-premium transition-all hover:-translate-y-1 text-[16px] disabled:opacity-60 disabled:cursor-not-allowed group relative overflow-hidden"
               >
+                <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                 {processing ? (
-                  <><Loader2 className="w-6 h-6 animate-spin" /> Processing...</>
+                  <span className="relative z-10 flex items-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Processing...</span>
                 ) : (
-                  <><Lock className="w-5 h-5" /> Confirm & Pay</>
+                  <span className="relative z-10 flex items-center gap-2"><Lock className="w-4 h-4" /> Confirm & Pay</span>
                 )}
               </button>
 
-              <div className="bg-gray-50 rounded-xl p-4 flex flex-col gap-3">
-                <div className="flex items-center gap-2 text-xs text-[#6B7280] font-[600]">
-                  <Shield className="w-4 h-4 text-green-500" />
+              <div className="bg-green-50 rounded-[16px] p-4 flex flex-col gap-3 border border-green-100">
+                <div className="flex items-center gap-2 text-[12px] text-green-700 font-[600]">
+                  <Shield className="w-4 h-4" />
                   100% Safe & Secure Payments
                 </div>
-                <div className="flex items-center gap-2 text-xs text-[#6B7280] font-[600]">
-                  <CheckCircle2 className="w-4 h-4 text-green-500" />
+                <div className="flex items-center gap-2 text-[12px] text-green-700 font-[600]">
+                  <CheckCircle2 className="w-4 h-4" />
                   Instant QR Ticket Generation
                 </div>
               </div>

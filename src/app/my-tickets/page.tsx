@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Ticket, Phone, ArrowRight, ShieldCheck, Search, Loader2, Calendar, MapPin, ChevronRight, Lock } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { formatCurrency } from '@/lib/utils';
 import toast from 'react-hot-toast';
 
@@ -106,13 +105,10 @@ export default function MyTicketsPage() {
 
     return (
       <div className="min-h-screen bg-navratri-bg flex items-center justify-center p-4 selection:bg-navratri-accent selection:text-white pt-[60px]">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white max-w-md w-full rounded-card p-8 md:p-10 shadow-sm border border-navratri-lightGrey relative"
-        >
+        <div className="bg-white max-w-md w-full rounded-card p-8 md:p-10 shadow-card border border-navratri-lightGrey relative overflow-hidden animate-fade-in-up">
+          <div className="absolute top-0 inset-x-0 h-[2px]" style={{ background: 'linear-gradient(90deg, #7C3AED, #FF4D6D, #00E5FF)' }}></div>
           <div className="w-16 h-16 bg-navratri-accent/5 rounded-[16px] flex items-center justify-center mb-8 relative border border-navratri-accent/10">
-            <Lock className="w-8 h-8 text-navratri-accent" />
+            <Lock className="w-8 h-8 text-navratri-primary" />
             {isDemo && (
               <span className="absolute -top-2 -right-12 bg-orange-50 text-orange-600 text-[10px] font-[700] px-2 py-0.5 rounded-full uppercase border border-orange-100 tracking-wider">
                 DEMO
@@ -132,9 +128,9 @@ export default function MyTicketsPage() {
             }
           </p>
 
-          <AnimatePresence mode="wait">
+          <>
             {step === 'phone' || isDemo ? (
-              <motion.form key="phone" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} onSubmit={isDemo ? handleVerifyOTP : handleRequestOTP} className="space-y-6">
+              <form onSubmit={isDemo ? handleVerifyOTP : handleRequestOTP} className="space-y-6">
                 <div>
                   <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">Mobile Number</label>
                   <div className="relative">
@@ -160,12 +156,12 @@ export default function MyTicketsPage() {
                     />
                   </div>
                 )}
-                <button type="submit" disabled={loading || phone.length !== 10 || (isDemo && !otp)} className="w-full bg-navratri-accent text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 hover:bg-navratri-darkAccent hover:-translate-y-0.5 shadow-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 text-[15px]">
+                <button type="submit" disabled={loading || phone.length !== 10 || (isDemo && !otp)} className="w-full bg-gradient-premium text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 hover:shadow-lg hover:-translate-y-0.5 shadow-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 text-[15px]">
                   {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isDemo ? <>View Tickets <ArrowRight className="w-5 h-5" /></> : <>Request OTP <ArrowRight className="w-5 h-5" /></>)}
                 </button>
-              </motion.form>
+              </form>
             ) : (
-              <motion.form key="otp" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} onSubmit={handleVerifyOTP} className="space-y-6">
+              <form onSubmit={handleVerifyOTP} className="space-y-6">
                 <div>
                   <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">6-Digit OTP</label>
                   <input 
@@ -177,16 +173,16 @@ export default function MyTicketsPage() {
                     autoFocus
                   />
                 </div>
-                <button type="submit" disabled={loading || otp.length !== 6} className="w-full bg-navratri-primary text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 hover:bg-black transition-all disabled:opacity-60 shadow-sm hover:-translate-y-0.5 disabled:hover:translate-y-0 text-[15px]">
+                <button type="submit" disabled={loading || otp.length !== 6} className="w-full bg-gradient-premium text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 transition-all disabled:opacity-60 shadow-sm hover:shadow-lg hover:-translate-y-0.5 disabled:hover:translate-y-0 text-[15px]">
                   {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Verify & Login <ShieldCheck className="w-5 h-5" /></>}
                 </button>
                 <button type="button" onClick={() => setStep('phone')} className="w-full text-center text-[14px] text-navratri-muted font-[600] hover:text-navratri-text transition-colors pt-2">
                   Change mobile number
                 </button>
-              </motion.form>
+              </form>
             )}
-          </AnimatePresence>
-        </motion.div>
+          </>
+        </div>
       </div>
     );
   }
@@ -197,7 +193,7 @@ export default function MyTicketsPage() {
       <div className="max-w-[1024px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 mt-8">
           <div>
-            <h1 className="text-[40px] font-display font-[700] text-navratri-text tracking-tight mb-2">My Tickets</h1>
+            <h1 className="text-[36px] font-display font-[800] text-navratri-text tracking-tight mb-2">My Tickets</h1>
             <p className="text-navratri-muted font-[500] text-[18px]">Manage your event bookings and QR passes.</p>
           </div>
           <button onClick={handleLogout} className="text-[13px] font-[600] text-navratri-muted hover:text-navratri-accent bg-white px-5 py-2.5 rounded-button border border-navratri-lightGrey transition-colors self-start sm:self-auto shadow-sm hover:shadow-md">
@@ -212,7 +208,7 @@ export default function MyTicketsPage() {
             </div>
             <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-2">No Bookings Found</h2>
             <p className="text-navratri-muted font-[500] max-w-sm mb-8 text-[15px]">You haven't booked any tickets yet. Explore our premium events and book your passes.</p>
-            <button onClick={() => router.push('/')} className="bg-navratri-accent text-white font-[700] px-8 py-3.5 rounded-button shadow-sm hover:bg-navratri-darkAccent hover:-translate-y-0.5 transition-all text-[15px]">
+            <button onClick={() => router.push('/')} className="bg-gradient-premium text-white font-[700] px-8 py-3.5 rounded-button shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all text-[15px]">
               Explore Events
             </button>
           </div>
@@ -222,7 +218,7 @@ export default function MyTicketsPage() {
               const totalTickets = booking.tickets ? booking.tickets.length : 0;
               
               return (
-                <div key={booking.id} onClick={() => router.push(`/tickets/${booking.id}`)} className="bg-white rounded-card p-6 border border-navratri-lightGrey shadow-sm hover:shadow-md hover:border-gray-200 transition-all cursor-pointer group flex flex-col md:flex-row gap-6 md:items-center">
+                <div key={booking.id} onClick={() => router.push(`/tickets/${booking.id}`)} className="bg-white rounded-card p-6 border border-navratri-lightGrey shadow-card hover:shadow-card-hover transition-all cursor-pointer group flex flex-col md:flex-row gap-6 md:items-center">
                   
                   <div className="w-24 h-24 bg-navratri-bg rounded-[16px] border border-navratri-lightGrey flex items-center justify-center shrink-0 overflow-hidden">
                     {booking.tickets[0]?.eventBanner ? (
@@ -249,7 +245,7 @@ export default function MyTicketsPage() {
                       <p className="text-[11px] text-navratri-muted uppercase tracking-widest font-[700] mb-0.5">Tickets</p>
                       <p className="font-[700] text-navratri-text text-[18px]">{totalTickets} Pass{totalTickets > 1 ? 'es' : ''}</p>
                     </div>
-                    <div className="w-10 h-10 bg-navratri-bg border border-navratri-lightGrey rounded-full flex items-center justify-center group-hover:bg-navratri-accent transition-colors">
+                    <div className="w-10 h-10 bg-navratri-bg border border-navratri-lightGrey rounded-full flex items-center justify-center group-hover:bg-navratri-primary transition-colors">
                       <ChevronRight className="w-5 h-5 text-navratri-muted group-hover:text-white transition-colors" />
                     </div>
                   </div>

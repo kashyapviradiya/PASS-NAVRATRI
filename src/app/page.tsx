@@ -39,10 +39,11 @@ export default function Home() {
     <div className="bg-navratri-bg pb-24 overflow-x-hidden">
       
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[calc(100vh-64px)] flex items-center justify-center bg-navratri-primary pt-10 pb-24 overflow-hidden border-b border-white/5">
+      <section className="relative min-h-[calc(100vh-64px)] flex items-center justify-center bg-navratri-darkBg pt-10 pb-24 overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-navratri-accent/10 rounded-full blur-[100px]"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-navratri-darkAccent/5 rounded-full blur-[80px]"></div>
+          <div className="absolute top-1/4 right-1/4 w-[800px] h-[800px] bg-navratri-primary/20 rounded-full blur-[140px] animate-pulse-slow"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-[700px] h-[700px] bg-navratri-accent/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-navratri-secondary/10 rounded-full blur-[100px] animate-pulse-slow"></div>
         </div>
         
         <div className="relative z-10 w-full max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,32 +56,41 @@ export default function Home() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-7 text-left space-y-8"
             >
-              <h1 className="text-[56px] md:text-[72px] lg:text-[84px] font-display font-[700] text-white leading-[1.05] tracking-tight">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/15 backdrop-blur-md shadow-inner-glow">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-navratri-accent opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-navratri-accent"></span>
+                </span>
+                <span className="text-white text-[12px] font-[600] tracking-wider uppercase">Premium Ticketing Experience</span>
+              </div>
+
+              <h1 className="text-[52px] md:text-[68px] lg:text-[80px] font-display font-[800] text-white leading-[1.05] tracking-tight">
                 Your Pass to <br/>
-                <span className="text-navratri-accent">Unforgettable</span> Events
+                <span className="text-transparent bg-clip-text bg-gradient-premium">Unforgettable</span> Events
               </h1>
               
-              <p className="text-[18px] md:text-[20px] text-navratri-muted font-[500] max-w-xl leading-relaxed">
+              <p className="text-[17px] md:text-[19px] text-slate-400 font-[500] max-w-xl leading-relaxed">
                 Discover premium events, book your pass, and enter seamlessly with secure digital QR tickets.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Link href="/events" className="px-8 py-4 bg-navratri-accent text-white font-[700] rounded-button hover:bg-navratri-darkAccent hover:-translate-y-0.5 transition-all shadow-sm text-[16px] text-center flex items-center justify-center gap-2">
-                  Explore Events
+                <Link href="/events" className="px-8 py-4 bg-gradient-premium text-white font-[700] rounded-button shadow-premium active:scale-[0.98] hover:-translate-y-1 transition-all text-[16px] text-center flex items-center justify-center gap-2 relative overflow-hidden group">
+                  <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+                  <span className="relative z-10">Explore Events</span>
                 </Link>
-                <Link href="/my-tickets" className="px-8 py-4 bg-transparent border border-white/20 text-white font-[700] rounded-button hover:bg-white/5 transition-all text-[16px] text-center">
+                <Link href="/my-tickets" className="px-8 py-4 glass-dark text-white font-[700] rounded-button border border-white/15 hover:bg-white/10 transition-all text-[16px] text-center">
                   View My Tickets
                 </Link>
               </div>
 
-              <div className="flex flex-wrap items-center gap-6 pt-8 border-t border-white/10">
+              <div className="flex flex-wrap items-center gap-8 pt-8 border-t border-white/10">
                 {[
                   { text: 'Secure Booking', icon: Shield },
                   { text: 'Instant QR Ticket', icon: QrCode },
                   { text: 'Fast Entry', icon: Zap },
                 ].map((badge, i) => (
-                  <div key={i} className="flex items-center gap-2.5 text-[14px] text-navratri-muted font-[600]">
-                    <badge.icon className="w-5 h-5 text-navratri-accent" />
+                  <div key={i} className="flex items-center gap-2.5 text-[14px] text-slate-300 font-[600]">
+                    <badge.icon className="w-4 h-4 text-navratri-accent" />
                     <span>{badge.text}</span>
                   </div>
                 ))}
@@ -96,25 +106,29 @@ export default function Home() {
             >
               <div className="relative w-full max-w-[340px] aspect-[9/18] min-h-[550px]">
                 {/* Main Phone Mockup */}
-                <div className="absolute inset-0 bg-navratri-secondary rounded-[40px] shadow-2xl border-[8px] border-navratri-primary overflow-hidden flex flex-col z-10 ring-1 ring-white/10">
-                  <div className="h-[40%] bg-[#0A0A0A] relative shrink-0">
-                    <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&q=80&w=1000" alt="Event Banner" className="w-full h-full object-cover opacity-60" />
-                    <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                      <div className="flex justify-between items-center">
-                        <span className="text-white text-[10px] font-[800] uppercase tracking-widest bg-navratri-accent px-3 py-1.5 rounded-full">VIP PASS</span>
+                <div className="absolute inset-0 bg-slate-900 rounded-[40px] shadow-2xl border-[8px] border-slate-800 overflow-hidden flex flex-col z-10 ring-1 ring-white/10 relative">
+                  <div className="absolute top-0 inset-x-0 h-6 bg-gradient-to-b from-black/20 to-transparent z-20"></div>
+                  <div className="h-[45%] bg-[#0A0A0A] relative shrink-0">
+                    <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&q=80&w=1000" alt="Event Banner" className="w-full h-full object-cover opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+                    <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
+                      <div className="flex justify-between items-center mt-4">
+                        <span className="text-white text-[10px] font-[800] uppercase tracking-widest bg-gradient-premium px-3 py-1.5 rounded-full shadow-lg">VIP PASS</span>
                       </div>
-                      <h3 className="text-white font-display font-[700] text-[24px] tracking-tight leading-tight line-clamp-2">Sunburn Arena</h3>
+                      <h3 className="text-white font-display font-[700] text-[28px] tracking-tight leading-tight line-clamp-2 drop-shadow-md">Sunburn Arena</h3>
                     </div>
                   </div>
-                  <div className="flex-1 bg-navratri-bg p-6 relative flex flex-col items-center justify-center min-h-0">
-                    <div className="bg-white w-full rounded-[24px] p-6 shadow-sm border border-navratri-lightGrey text-center relative flex-1 flex flex-col items-center justify-center">
-                      <div className="w-16 h-16 bg-navratri-bg rounded-full absolute -top-8 -left-8 border border-navratri-lightGrey"></div>
-                      <div className="w-16 h-16 bg-navratri-bg rounded-full absolute -top-8 -right-8 border border-navratri-lightGrey"></div>
-                      <div className="w-32 h-32 mx-auto bg-navratri-bg rounded-[20px] flex items-center justify-center mb-6 shrink-0 border border-navratri-lightGrey">
-                        <QrCode className="w-20 h-20 text-navratri-text" />
+                  <div className="flex-1 bg-slate-900 p-6 relative flex flex-col items-center justify-center min-h-0">
+                    <div className="bg-white w-full rounded-[24px] p-6 shadow-xl text-center relative flex-1 flex flex-col items-center justify-center border-t-4 border-navratri-primary overflow-hidden">
+                      <div className="absolute -right-10 -top-10 w-32 h-32 bg-navratri-secondary/10 rounded-full blur-xl"></div>
+                      <div className="w-8 h-8 bg-slate-900 rounded-full absolute -left-4 top-1/2 -translate-y-1/2"></div>
+                      <div className="w-8 h-8 bg-slate-900 rounded-full absolute -right-4 top-1/2 -translate-y-1/2"></div>
+                      
+                      <div className="w-32 h-32 mx-auto bg-slate-50 rounded-[20px] flex items-center justify-center mb-6 shrink-0 shadow-inner">
+                        <QrCode className="w-20 h-20 text-slate-800" />
                       </div>
-                      <p className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-1 mt-auto">Booking ID</p>
-                      <p className="font-mono text-[18px] font-[700] text-navratri-text tracking-wider">TK-849201</p>
+                      <p className="text-[11px] font-[700] text-slate-400 uppercase tracking-widest mb-1 mt-auto">Booking ID</p>
+                      <p className="font-mono text-[18px] font-[700] text-slate-800 tracking-wider">TK-849201</p>
                     </div>
                   </div>
                 </div>
@@ -123,10 +137,10 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                  className="absolute -left-12 top-32 z-20 bg-white rounded-[16px] p-4 shadow-elevated border border-navratri-lightGrey flex items-center gap-4 w-64"
+                  className="absolute -left-12 top-32 z-20 glass rounded-card p-4 shadow-glass flex items-center gap-4 w-64"
                 >
-                  <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-5 h-5 text-green-600" />
+                  <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg shadow-green-500/30">
+                    <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <p className="text-[14px] font-[700] text-navratri-text">Payment Success</p>
@@ -138,14 +152,14 @@ export default function Home() {
                 <motion.div 
                   animate={{ y: [0, 10, 0] }}
                   transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
-                  className="absolute -right-16 bottom-32 z-20 bg-navratri-secondary rounded-[16px] p-4 shadow-elevated border border-white/10 flex items-center gap-4 w-56"
+                  className="absolute -right-16 bottom-32 z-20 glass-dark rounded-card p-4 shadow-glass flex items-center gap-4 w-56"
                 >
                   <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
                     <QrCode className="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <p className="text-[14px] font-[700] text-white">Entry Pass</p>
-                    <p className="text-[12px] font-[500] text-navratri-muted">Ready to scan</p>
+                    <p className="text-[12px] font-[500] text-slate-400">Ready to scan</p>
                   </div>
                 </motion.div>
               </div>
@@ -159,10 +173,10 @@ export default function Home() {
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-[1280px] mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <h2 className="text-[36px] font-display font-[700] text-navratri-text mb-4 tracking-tight">Popular Events Near You</h2>
+            <h2 className="text-[36px] font-display font-[800] text-navratri-text mb-4 tracking-tight">Popular Events Near You</h2>
             <p className="text-navratri-muted font-[500] text-[18px]">Discover the events everyone is talking about.</p>
           </div>
-          <Link href="/events" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-navratri-lightGrey text-navratri-text font-[700] rounded-button hover:bg-navratri-bg transition-colors shadow-sm text-[15px]">
+          <Link href="/events" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white border border-navratri-lightGrey text-navratri-text font-[700] rounded-button hover:bg-slate-50 transition-colors shadow-sm text-[15px]">
             View All Events &rarr;
           </Link>
         </div>
@@ -175,15 +189,16 @@ export default function Home() {
       </section>
 
       {/* 3. HOW IT WORKS SECTION */}
-      <section className="py-24 bg-white border-y border-navratri-lightGrey">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-white border-y border-navratri-lightGrey relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-navratri-primary/5 rounded-full blur-[120px] -z-10"></div>
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-20">
-            <h2 className="text-[36px] font-display font-[700] text-navratri-text mb-4 tracking-tight">Book Your Entry in 3 Simple Steps</h2>
+            <h2 className="text-[36px] font-display font-[800] text-navratri-text mb-4 tracking-tight">Book Your Entry in 3 Simple Steps</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 relative">
             {/* Desktop Connectors */}
-            <div className="hidden md:block absolute top-[44px] left-[15%] right-[15%] h-px bg-navratri-lightGrey z-0"></div>
+            <div className="hidden md:block absolute top-[44px] left-[15%] right-[15%] h-px bg-gradient-to-r from-transparent via-navratri-primary/20 to-transparent z-0"></div>
 
             {[
               { 
@@ -206,11 +221,11 @@ export default function Home() {
               }
             ].map((s, i) => (
               <div key={i} className="text-center relative z-10 group">
-                <div className="w-[88px] h-[88px] mx-auto bg-white rounded-[24px] border border-navratri-lightGrey flex items-center justify-center mb-8 shadow-sm group-hover:-translate-y-2 group-hover:shadow-elevated transition-all duration-300">
-                  <s.icon className="w-8 h-8 text-navratri-accent" />
+                <div className="w-20 h-20 mx-auto bg-white rounded-card border border-navratri-lightGrey flex items-center justify-center mb-8 shadow-sm group-hover:-translate-y-2 group-hover:shadow-premium group-hover:border-navratri-primary/30 transition-all duration-500">
+                  <s.icon className="w-8 h-8 text-navratri-primary group-hover:scale-110 transition-transform duration-500" />
                 </div>
-                <p className="text-[12px] font-[700] text-navratri-accent uppercase tracking-widest mb-3">{s.step}</p>
-                <h3 className="text-[24px] font-display font-[700] text-navratri-text mb-4">{s.title}</h3>
+                <p className="text-[12px] font-[700] text-transparent bg-clip-text bg-gradient-premium uppercase tracking-[0.2em] mb-3">{s.step}</p>
+                <h3 className="text-[22px] font-display font-[700] text-navratri-text mb-4">{s.title}</h3>
                 <p className="text-navratri-muted font-[500] leading-relaxed text-[16px] max-w-sm mx-auto">{s.desc}</p>
               </div>
             ))}
@@ -221,7 +236,7 @@ export default function Home() {
       {/* 4. WHY RASPASS SECTION */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-[1280px] mx-auto">
         <div className="mb-16">
-          <h2 className="text-[36px] font-display font-[700] text-navratri-text tracking-tight">A Better Way to Attend Events</h2>
+          <h2 className="text-[36px] font-display font-[800] text-navratri-text tracking-tight">A Better Way to Attend Events</h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -229,30 +244,38 @@ export default function Home() {
             { 
               title: 'Instant Digital Pass', 
               icon: Zap, 
-              desc: 'Receive your QR ticket immediately after successful booking.' 
+              desc: 'Receive your QR ticket immediately after successful booking.',
+              color: 'text-navratri-primary',
+              bg: 'bg-purple-50'
             },
             { 
               title: 'Secure Booking', 
               icon: Shield, 
-              desc: 'Your payment and booking information stay protected.' 
+              desc: 'Your payment and booking information stay protected.',
+              color: 'text-navratri-success',
+              bg: 'bg-green-50'
             },
             { 
               title: 'Faster Entry', 
               icon: QrCode, 
-              desc: 'Skip manual verification and enter with one quick scan.' 
+              desc: 'Skip manual verification and enter with one quick scan.',
+              color: 'text-navratri-secondary',
+              bg: 'bg-pink-50'
             },
             { 
               title: 'Easy Ticket Access', 
               icon: Smartphone, 
-              desc: 'View all upcoming and past bookings inside My Tickets.' 
+              desc: 'View all upcoming and past bookings inside My Tickets.',
+              color: 'text-navratri-accent',
+              bg: 'bg-cyan-50'
             }
           ].map((feature, i) => (
-            <div key={i} className="bg-white rounded-[24px] p-8 md:p-10 border border-navratri-lightGrey flex flex-col sm:flex-row gap-8 hover:shadow-card transition-shadow">
-              <div className="w-16 h-16 bg-navratri-bg rounded-[20px] flex items-center justify-center shrink-0 border border-navratri-lightGrey/50">
-                <feature.icon className="w-8 h-8 text-navratri-accent" />
+            <div key={i} className="bg-white rounded-card p-8 md:p-10 border border-navratri-lightGrey flex flex-col sm:flex-row gap-8 hover:shadow-premium transition-all duration-500 hover:-translate-y-1 group">
+              <div className={`w-16 h-16 ${feature.bg} rounded-[20px] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-500`}>
+                <feature.icon className={`w-8 h-8 ${feature.color}`} />
               </div>
               <div>
-                <h3 className="text-[22px] font-display font-[700] text-navratri-text mb-3">{feature.title}</h3>
+                <h3 className="text-[22px] font-display font-[700] text-navratri-text mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-premium transition-all">{feature.title}</h3>
                 <p className="text-navratri-muted font-[500] text-[16px] leading-relaxed">{feature.desc}</p>
               </div>
             </div>
@@ -261,18 +284,19 @@ export default function Home() {
       </section>
 
       {/* 5. STATS SECTION */}
-      <section className="py-24 bg-navratri-primary text-white border-y border-white/5">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 divide-x divide-white/10">
+      <section className="py-24 text-white relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #0F172A 0%, #1E1B4B 60%, #312E81 100%)' }}>
+        <div className="absolute inset-0 bg-gradient-premium opacity-10"></div>
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { label: 'Tickets Booked', value: '50,000+' },
               { label: 'Events Hosted', value: '100+' },
               { label: 'Cities Covered', value: '10+' },
               { label: 'Customer Rating', value: '4.8/5' },
             ].map((stat, i) => (
-              <div key={i} className="text-center px-4">
-                <p className="text-[40px] md:text-[56px] font-display font-[700] mb-4">{stat.value}</p>
-                <p className="text-navratri-muted font-[600] text-[12px] uppercase tracking-widest">{stat.label}</p>
+              <div key={i} className="text-center px-4 bg-white/5 backdrop-blur-sm rounded-card p-8 border border-white/10">
+                <p className="text-[36px] md:text-[48px] font-display font-[800] mb-4 text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70">{stat.value}</p>
+                <p className="text-slate-400 font-[700] text-[12px] uppercase tracking-widest">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -280,12 +304,13 @@ export default function Home() {
       </section>
 
       {/* 6. APP-LIKE PREVIEW */}
-      <section className="py-32 bg-white">
+      <section className="py-32 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-navratri-primary/5 rounded-full blur-[120px] -z-10"></div>
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="space-y-12">
               <div>
-                <h2 className="text-[40px] font-display font-[700] text-navratri-text mb-6 tracking-tight leading-[1.1]">Made for Seamless Event Experiences</h2>
+                <h2 className="text-[40px] md:text-[48px] font-display font-[800] text-navratri-text mb-6 tracking-tight leading-[1.1]">Made for Seamless Event Experiences</h2>
                 <p className="text-[18px] text-navratri-muted font-[500] leading-relaxed max-w-lg">
                   From booking to entry, RasPass keeps every step fast, simple and secure. Access everything from your phone.
                 </p>
@@ -299,8 +324,8 @@ export default function Home() {
                   { text: 'Dedicated Support', icon: Heart }
                 ].map((item, i) => (
                   <div key={i} className="flex flex-col gap-4">
-                    <div className="w-12 h-12 bg-navratri-bg rounded-[16px] border border-navratri-lightGrey flex items-center justify-center">
-                      <item.icon className="w-6 h-6 text-navratri-accent" />
+                    <div className="w-12 h-12 bg-white rounded-[16px] border border-navratri-lightGrey shadow-sm flex items-center justify-center">
+                      <item.icon className="w-6 h-6 text-navratri-primary" />
                     </div>
                     <span className="font-display font-[700] text-navratri-text text-[16px]">{item.text}</span>
                   </div>
@@ -308,16 +333,17 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-navratri-bg rounded-[40px] p-16 text-center border border-navratri-lightGrey relative overflow-hidden">
+            <div className="bg-slate-50 rounded-card p-12 md:p-16 text-center border border-navratri-lightGrey relative overflow-hidden shadow-sm">
+              <div className="absolute inset-0 bg-gradient-premium opacity-5"></div>
               <div className="relative z-10">
-                <div className="w-24 h-24 bg-white rounded-[24px] mx-auto flex items-center justify-center mb-10 shadow-sm border border-navratri-lightGrey">
-                  <Smartphone className="w-12 h-12 text-navratri-text" />
+                <div className="w-24 h-24 bg-white rounded-card mx-auto flex items-center justify-center mb-10 shadow-premium border border-white">
+                  <Smartphone className="w-12 h-12 text-navratri-primary" />
                 </div>
-                <h2 className="text-[32px] font-display font-[700] text-navratri-text mb-6 tracking-tight">Your Pass, Always With You</h2>
+                <h2 className="text-[32px] font-display font-[800] text-navratri-text mb-6 tracking-tight">Your Pass, Always With You</h2>
                 <p className="text-navratri-muted font-[500] mb-12 max-w-md mx-auto text-[16px] leading-relaxed">
                   Access your booking, event details and secure QR pass anytime from your phone.
                 </p>
-                <Link href="/my-tickets" className="inline-flex items-center justify-center px-8 py-4 bg-navratri-text text-white font-[700] rounded-button hover:bg-black transition-all shadow-sm hover:-translate-y-0.5 text-[16px]">
+                <Link href="/my-tickets" className="inline-flex items-center justify-center px-8 py-4 bg-gradient-premium text-white font-[700] rounded-button transition-all shadow-lg hover:-translate-y-1 text-[16px]">
                   View My Tickets
                 </Link>
               </div>
@@ -327,19 +353,19 @@ export default function Home() {
       </section>
 
       {/* 7. FAQ SECTION */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-[800px] mx-auto border-t border-navratri-lightGrey">
+      <section className="py-28 px-4 sm:px-6 lg:px-8 max-w-[800px] mx-auto border-t border-navratri-lightGrey">
         <div className="text-center mb-16">
-          <h2 className="text-[36px] font-display font-[700] text-navratri-text tracking-tight">Frequently Asked Questions</h2>
+          <h2 className="text-[36px] font-display font-[800] text-navratri-text tracking-tight">Frequently Asked Questions</h2>
         </div>
         <div className="space-y-4">
           {faqs.map((faq, idx) => (
-            <div key={idx} className="bg-white rounded-[20px] overflow-hidden border border-navratri-lightGrey hover:border-[#D4D4D4] transition-colors shadow-sm">
+            <div key={idx} className="bg-white rounded-card overflow-hidden border border-navratri-lightGrey hover:border-navratri-primary/50 transition-colors shadow-card">
               <button
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                className="w-full flex items-center justify-between p-6 md:p-8 text-left"
+                className="w-full flex items-center justify-between p-7 md:p-8 text-left"
               >
                 <span className="font-display font-[700] text-navratri-text text-[18px]">{faq.q}</span>
-                {openFaq === idx ? <ChevronUp className="w-6 h-6 text-navratri-accent" /> : <ChevronDown className="w-6 h-6 text-navratri-muted" />}
+                {openFaq === idx ? <ChevronUp className="w-6 h-6 text-navratri-primary" /> : <ChevronDown className="w-6 h-6 text-slate-400" />}
               </button>
               <AnimatePresence>
                 {openFaq === idx && (

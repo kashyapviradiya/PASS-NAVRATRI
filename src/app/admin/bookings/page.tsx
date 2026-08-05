@@ -116,32 +116,36 @@ export default function AdminBookingsPage() {
   };
 
   return (
-    <div className="p-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+    <div className="p-6 lg:p-8 space-y-8 max-w-[1400px] mx-auto selection:bg-navratri-accent selection:text-white">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-display font-[800] text-navratri-text flex items-center gap-2">
-            <Ticket className="w-6 h-6 text-navratri-accent" /> Bookings
+          <h1 className="text-[32px] font-display font-[800] text-navratri-text tracking-tight flex items-center gap-3">
+            <div className="w-12 h-12 bg-navratri-primary/10 rounded-[14px] flex items-center justify-center border border-navratri-primary/20">
+              <Ticket className="w-6 h-6 text-navratri-primary" />
+            </div>
+            Bookings
           </h1>
-          <p className="text-[#6B7280] font-[500] mt-1">Manage and track all customer orders</p>
+          <p className="text-navratri-muted font-[500] text-[15px] mt-2">Manage and track all customer orders</p>
         </div>
         <button 
           onClick={exportCSV}
-          className="bg-white border border-gray-200 text-[#111111] px-4 py-2.5 rounded-[12px] font-[600] flex items-center gap-2 hover:bg-gray-50 transition-colors shadow-sm"
+          className="bg-white border border-navratri-lightGrey text-navratri-text px-5 py-2.5 rounded-[12px] font-[800] flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-sm hover:shadow-md hover:-translate-y-0.5"
         >
           <Download className="w-4 h-4" /> Export CSV
         </button>
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm mb-6 flex flex-col md:flex-row gap-4 flex-wrap">
+      <div className="bg-white/80 backdrop-blur-md p-5 rounded-card border border-slate-100 shadow-card flex flex-col md:flex-row gap-4 flex-wrap relative overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-premium"></div>
         <div className="flex-1 relative min-w-[200px]">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
           <input 
             type="text" 
             placeholder="Search name, phone, email, or ID..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-[12px] focus:outline-none focus:ring-2 focus:ring-navratri-accent focus:border-transparent font-[500] text-sm"
+            className="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-[16px] focus:outline-none focus:ring-2 focus:ring-navratri-primary/30 focus:border-navratri-primary font-[600] text-[14px] transition-all shadow-sm"
           />
         </div>
         
@@ -149,7 +153,7 @@ export default function AdminBookingsPage() {
           <select 
             value={eventFilter}
             onChange={(e) => setEventFilter(e.target.value)}
-            className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-[12px] focus:outline-none focus:ring-2 focus:ring-navratri-accent font-[500] text-sm min-w-[150px]"
+            className="px-4 py-3.5 bg-white border border-slate-200 rounded-[16px] focus:outline-none focus:ring-2 focus:ring-navratri-primary/30 focus:border-navratri-primary font-[600] text-[14px] min-w-[150px] transition-all cursor-pointer shadow-sm"
           >
             <option value="">All Events</option>
             {events.map(e => <option key={e.id} value={e.id}>{e.title}</option>)}
@@ -158,7 +162,7 @@ export default function AdminBookingsPage() {
           <select 
             value={scanFilter}
             onChange={(e) => setScanFilter(e.target.value)}
-            className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-[12px] focus:outline-none focus:ring-2 focus:ring-navratri-accent font-[500] text-sm min-w-[150px]"
+            className="px-4 py-3.5 bg-white border border-slate-200 rounded-[16px] focus:outline-none focus:ring-2 focus:ring-navratri-primary/30 focus:border-navratri-primary font-[600] text-[14px] min-w-[150px] transition-all cursor-pointer shadow-sm"
           >
             <option value="">All Ticket States</option>
             <option value="valid">Has Valid Tickets</option>
@@ -170,7 +174,7 @@ export default function AdminBookingsPage() {
           <select 
             value={paymentFilter}
             onChange={(e) => setPaymentFilter(e.target.value)}
-            className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-[12px] focus:outline-none focus:ring-2 focus:ring-navratri-accent font-[500] text-sm min-w-[150px]"
+            className="px-4 py-3.5 bg-white border border-slate-200 rounded-[16px] focus:outline-none focus:ring-2 focus:ring-navratri-primary/30 focus:border-navratri-primary font-[600] text-[14px] min-w-[150px] transition-all cursor-pointer shadow-sm"
           >
             <option value="">All Payments</option>
             <option value="paid">Paid</option>
@@ -181,89 +185,94 @@ export default function AdminBookingsPage() {
       </div>
 
       {/* Bookings Table */}
-      <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-card border border-slate-100 shadow-card hover:shadow-card-hover transition-all overflow-hidden group">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-            <Loader2 className="w-8 h-8 animate-spin mb-4 text-navratri-accent" />
-            <p className="font-[600]">Loading bookings...</p>
+          <div className="flex flex-col items-center justify-center py-24 text-navratri-muted">
+            <Loader2 className="w-10 h-10 animate-spin mb-4 text-navratri-primary" />
+            <p className="font-[700] tracking-widest uppercase text-[12px]">Loading bookings...</p>
           </div>
         ) : filteredBookings.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-            <Ticket className="w-12 h-12 mb-4 text-gray-200" />
-            <p className="font-[600]">No bookings found</p>
+          <div className="flex flex-col items-center justify-center py-24 text-navratri-muted">
+            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-slate-100">
+              <Ticket className="w-10 h-10 text-navratri-primary/50" />
+            </div>
+            <p className="font-[800] text-[16px] text-navratri-text">No bookings found</p>
+            <p className="font-[500] text-[14px] mt-1">Try adjusting your filters</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-100 text-xs font-[800] text-gray-500 uppercase tracking-wider">
-                  <th className="px-6 py-4">Booking ID & Date</th>
-                  <th className="px-6 py-4">Customer</th>
-                  <th className="px-6 py-4">Event</th>
-                  <th className="px-6 py-4">Tickets (Stats)</th>
-                  <th className="px-6 py-4">Amount</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4"></th>
+                <tr className="bg-slate-50/50 border-b border-slate-100 text-[11px] font-[800] text-slate-400 uppercase tracking-wider">
+                  <th className="px-6 py-5">Booking ID & Date</th>
+                  <th className="px-6 py-5">Customer</th>
+                  <th className="px-6 py-5">Event</th>
+                  <th className="px-6 py-5">Tickets (Stats)</th>
+                  <th className="px-6 py-5">Amount</th>
+                  <th className="px-6 py-5">Status</th>
+                  <th className="px-6 py-5"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-navratri-lightGrey">
                 {filteredBookings.map((booking: any) => (
                   <tr 
                     key={booking.id} 
                     onClick={() => router.push(`/admin/bookings/${booking.id}`)}
-                    className="hover:bg-gray-50/50 cursor-pointer transition-colors group"
+                    className="hover:bg-slate-50/40 cursor-pointer transition-all duration-200 group/row"
                   >
-                    <td className="px-6 py-4">
-                      <p className="font-[800] text-[#111111] font-mono text-sm">{booking.id}</p>
-                      <p className="text-xs text-gray-500 font-[500] mt-1">{formatDate(booking.createdAt)}</p>
-                      {booking.demo && <span className="inline-block mt-1 px-2 py-0.5 bg-yellow-100 text-yellow-800 text-[10px] font-bold rounded-sm">DEMO</span>}
+                    <td className="px-6 py-5">
+                      <p className="font-[800] text-navratri-text font-mono text-[14px]">{booking.id}</p>
+                      <p className="text-[12px] text-navratri-muted font-[600] mt-1">{formatDate(booking.createdAt)}</p>
+                      {booking.demo && <span className="inline-block mt-1.5 px-2.5 py-1 bg-yellow-50 text-yellow-700 text-[10px] font-[800] rounded-[6px] border border-yellow-200 tracking-widest uppercase">DEMO</span>}
                     </td>
-                    <td className="px-6 py-4">
-                      <p className="font-[700] text-[#111111]">{booking.customerName}</p>
-                      <p className="text-xs text-gray-500 font-[500] mt-1">{booking.mobile}</p>
+                    <td className="px-6 py-5">
+                      <p className="font-[800] text-navratri-text text-[15px]">{booking.customerName}</p>
+                      <p className="text-[13px] text-navratri-muted font-[600] mt-1">{booking.mobile}</p>
                     </td>
-                    <td className="px-6 py-4">
-                      <p className="font-[600] text-[#111111] text-sm max-w-[200px] truncate">
+                    <td className="px-6 py-5">
+                      <p className="font-[700] text-navratri-text text-[14px] max-w-[200px] truncate">
                         {events.find(e => e.id === booking.eventId)?.title || booking.eventId}
                       </p>
                     </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <div className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-gray-100 text-gray-700 font-[800] text-xs" title="Total Tickets">
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="inline-flex items-center justify-center w-7 h-7 rounded-[8px] bg-slate-100 text-slate-700 font-[800] text-[12px] border border-slate-200" title="Total Tickets">
                           {booking.stats?.total || booking.ticketCount || 0}
                         </div>
                       </div>
-                      <div className="flex gap-1.5 text-[10px] font-bold uppercase tracking-wider">
-                         <span className="text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded" title="Valid">V: {booking.stats?.valid || 0}</span>
-                         <span className="text-green-600 bg-green-50 px-1.5 py-0.5 rounded" title="Scanned">S: {booking.stats?.scanned || 0}</span>
+                      <div className="flex gap-2 text-[10px] font-[800] uppercase tracking-widest">
+                         <span className="text-blue-700 bg-blue-50 px-2 py-1 rounded-[6px] border border-blue-100" title="Valid">V: {booking.stats?.valid || 0}</span>
+                         <span className="text-green-700 bg-green-50 px-2 py-1 rounded-[6px] border border-green-100" title="Scanned">S: {booking.stats?.scanned || 0}</span>
                          {(booking.stats?.cancelled || 0) > 0 && (
-                            <span className="text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded" title="Cancelled">C: {booking.stats.cancelled}</span>
+                            <span className="text-slate-700 bg-slate-100 px-2 py-1 rounded-[6px] border border-slate-200" title="Cancelled">C: {booking.stats.cancelled}</span>
                          )}
                       </div>
                     </td>
-                    <td className="px-6 py-4 font-[800] text-[#111111]">
+                    <td className="px-6 py-5 font-[800] text-navratri-text text-[15px]">
                       {formatCurrency(booking.amount || booking.totalAmount || booking.grandTotal || 0)}
                     </td>
-                    <td className="px-6 py-4 space-y-2">
+                    <td className="px-6 py-5 space-y-2.5">
                       <div>
                         {booking.paymentStatus === 'paid' ? (
-                          <span className="inline-flex items-center gap-1 text-xs font-[700] text-green-700 bg-green-50 px-2.5 py-1 rounded-full"><CheckCircle2 className="w-3.5 h-3.5"/> Paid</span>
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-[800] tracking-widest uppercase text-emerald-700 bg-emerald-50/80 px-3 py-1.5 rounded-full border border-emerald-100/50 backdrop-blur-sm"><CheckCircle2 className="w-3.5 h-3.5"/> Paid</span>
                         ) : booking.paymentStatus === 'pending' ? (
-                          <span className="inline-flex items-center gap-1 text-xs font-[700] text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full"><Clock className="w-3.5 h-3.5"/> Pending</span>
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-[800] tracking-widest uppercase text-amber-700 bg-amber-50/80 px-3 py-1.5 rounded-full border border-amber-100/50 backdrop-blur-sm"><Clock className="w-3.5 h-3.5"/> Pending</span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-xs font-[700] text-red-700 bg-red-50 px-2.5 py-1 rounded-full"><XCircle className="w-3.5 h-3.5"/> Failed</span>
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-[800] tracking-widest uppercase text-red-700 bg-red-50/80 px-3 py-1.5 rounded-full border border-red-100/50 backdrop-blur-sm"><XCircle className="w-3.5 h-3.5"/> Failed</span>
                         )}
                       </div>
                       <div>
                         {(booking.status === 'confirmed' || !booking.status) ? (
-                          <span className="inline-flex items-center gap-1 text-xs font-[700] text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full">Confirmed</span>
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-[800] tracking-widest uppercase text-blue-700 bg-blue-50/80 px-3 py-1.5 rounded-full border border-blue-100/50 backdrop-blur-sm">Confirmed</span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-xs font-[700] text-gray-700 bg-gray-100 px-2.5 py-1 rounded-full capitalize">{booking.status}</span>
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-[800] tracking-widest uppercase text-slate-700 bg-slate-100/80 px-3 py-1.5 rounded-full border border-slate-200/50 backdrop-blur-sm capitalize">{booking.status}</span>
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-right">
-                      <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-navratri-accent transition-colors" />
+                    <td className="px-6 py-5 text-right">
+                      <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm group-hover/row:border-navratri-primary group-hover/row:bg-navratri-primary/5 transition-all ml-auto">
+                        <ChevronRight className="w-4 h-4 text-slate-400 group-hover/row:text-navratri-primary transition-colors" />
+                      </div>
                     </td>
                   </tr>
                 ))}
