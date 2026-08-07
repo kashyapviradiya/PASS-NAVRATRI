@@ -7,7 +7,6 @@ import { formatCurrency, calculateConvenienceFee } from '@/lib/utils';
 import { MapPin, Calendar, Clock, ChevronRight, AlertCircle, Ticket, Info } from 'lucide-react';
 import type { Event, PassType } from '@/types';
 import toast from 'react-hot-toast';
-import { motion } from 'framer-motion';
 
 export default function TicketSelectionPage({ params }: { params: { id: string } }) {
   const [event, setEvent] = useState<Event | null>(null);
@@ -95,11 +94,9 @@ export default function TicketSelectionPage({ params }: { params: { id: string }
           {/* LEFT: TICKET OPTIONS */}
           <div className="lg:col-span-2 space-y-6">
             {(event.passes || []).filter(p => p.enabled !== false).map((pass) => (
-              <motion.div 
+              <div 
                 key={pass.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`bg-white rounded-card p-6 md:p-8 border ${selectedPasses[pass.id] > 0 ? 'border-navratri-accent shadow-sm' : 'border-navratri-lightGrey'} transition-all`}
+                className={`bg-white rounded-card p-6 md:p-8 border ${selectedPasses[pass.id] > 0 ? 'border-navratri-accent shadow-sm' : 'border-navratri-lightGrey'} hover:shadow-premium transition-all duration-300 animate-fade-in-up`}
               >
                 <div className="flex flex-col md:flex-row justify-between gap-6">
                   <div className="flex-1">
@@ -141,7 +138,7 @@ export default function TicketSelectionPage({ params }: { params: { id: string }
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
 

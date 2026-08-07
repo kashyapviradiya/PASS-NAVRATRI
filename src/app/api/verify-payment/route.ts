@@ -50,8 +50,14 @@ export async function POST(request: NextRequest) {
       let updatedTicketTypes = [...(eventData.ticketTypes || [])];
       let totalTicketCount = 0;
 
-      // 3. Verify and deduct inventory
-      for (const reqPass of ticketTypes as BookingPass[]) {
+      // 3. Verify and deduct inventory, and enrich pass data with gate info
+      const enrichedTicketTypes: BookingPass[] = [];
+      const passInfoMap: Record<string, any> = {}; // Helper to keep access to dbPass for ticket generation
+
+      // Support fallback if body has passes instead of ticketTypes
+      const resolvedTicketTypes = ticketTypes || body.passes || [];
+
+      for (const reqPass of resolvedTicketTypes as BookingPass[]) {
         const passIndex = updatedTicketTypes.findIndex(p => p.id === reqPass.ticketTypeId);
         if (passIndex === -1) throw new Error(`Ticket type ${reqPass.ticketTypeName} not found`);
         
@@ -67,6 +73,20 @@ export async function POST(request: NextRequest) {
           soldQuantity: (dbPass.soldQuantity || 0) + reqPass.quantity
         };
         totalTicketCount += reqPass.quantity;
+
+        // Keep record of gate/capacity details for ticket generation
+        passInfoMap[reqPass.ticketTypeId] = dbPass;
+
+        // Enrich the pass details for booking record
+        enrichedTicketTypes.push({
+          ...reqPass,
+          gateRestriction: dbPass.gateRestriction || false,
+          gateId: dbPass.gateId || '',
+          gateName: dbPass.gateName || '',
+          gateNumber: dbPass.gateNumber || '',
+          gateInstructions: dbPass.gateInstructions || '',
+          entryCount: dbPass.entryCount || 1,
+        });
       }
 
       // 4. Update Event Document Inventory
@@ -83,7 +103,7 @@ export async function POST(request: NextRequest) {
         amount: totalAmount,
         paymentStatus: 'paid',
         ticketCount: totalTicketCount,
-        ticketTypes,
+        ticketTypes: enrichedTicketTypes,
         razorpayOrderId: razorpay_order_id || `order_mock_${Date.now()}`,
         razorpayPaymentId: razorpay_payment_id || `pay_mock_${Date.now()}`,
         createdAt: new Date().toISOString(),
@@ -92,7 +112,8 @@ export async function POST(request: NextRequest) {
 
       // 6. Generate Individual Tickets
       const generatedTickets: Ticket[] = [];
-      for (const pass of ticketTypes as BookingPass[]) {
+      for (const pass of resolvedTicketTypes as BookingPass[]) {
+        const dbPass = passInfoMap[pass.ticketTypeId] || {};
         for (let i = 0; i < pass.quantity; i++) {
           const ticketId = generateTicketId();
           const secureToken = generateSecureToken();
@@ -105,6 +126,7 @@ export async function POST(request: NextRequest) {
             eventId,
             eventName: eventData.title,
             eventDate: eventData.startDate,
+            eventEndDate: eventData.endDate || eventData.startDate,
             venue: eventData.venue,
             eventBanner: eventData.bannerImage || '',
             customerName,
@@ -115,6 +137,13 @@ export async function POST(request: NextRequest) {
             checkedIn: false,
             qrValue,
             createdAt: new Date().toISOString(),
+            // Copy gate and entry count info from dbPass
+            gateRestriction: dbPass.gateRestriction || false,
+            gateId: dbPass.gateId || '',
+            gateName: dbPass.gateName || '',
+            gateNumber: dbPass.gateNumber || '',
+            gateInstructions: dbPass.gateInstructions || '',
+            entryCount: dbPass.entryCount || ((pass.ticketTypeName || '').toLowerCase().includes('couple') || (pass.ticketTypeName || '').toLowerCase().includes('pair') ? 2 : 1),
           };
           transaction.set(ticketRef, ticket);
           generatedTickets.push(ticket);

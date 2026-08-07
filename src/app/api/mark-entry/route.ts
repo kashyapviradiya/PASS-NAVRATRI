@@ -24,6 +24,13 @@ export async function POST(request: NextRequest) {
         throw new Error('Ticket is cancelled.');
       }
 
+      // Enforce Gate Restriction check
+      if (ticketData.gateRestriction) {
+        if (ticketData.gateName && ticketData.gateName !== gateName) {
+          throw new Error(`Wrong Gate – Please go to ${ticketData.gateName}`);
+        }
+      }
+
       if (ticketData.checkedIn || ticketData.isUsed || ticketData.status === 'used') {
         // Log duplicate attempt inside transaction
         const scanLogRef = adminDb.collection('scanLogs').doc();

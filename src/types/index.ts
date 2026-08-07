@@ -14,6 +14,18 @@ export interface Event {
   ticketTypes: TicketType[];
   createdAt: string;
   updatedAt: string;
+  // Extended Event Details
+  mapLink?: string;
+  reportingTime?: string;
+  organizerPhone?: string;
+  emergencyPhone?: string;
+  venueInstructions?: string;
+  amenities?: {
+    parking?: boolean;
+    food?: boolean;
+    washroom?: boolean;
+    security?: boolean;
+  };
 }
 
 export interface TicketType {
@@ -26,6 +38,13 @@ export interface TicketType {
   remainingQuantity: number;
   maxPerBooking: number;
   status: 'available' | 'sold_out' | 'hidden';
+  // Gate Details
+  gateRestriction?: boolean;
+  gateId?: string;
+  gateName?: string;
+  gateNumber?: string;
+  gateInstructions?: string;
+  entryCount?: number;
 }
 
 export interface Order {
@@ -71,6 +90,13 @@ export interface BookingPass {
   quantity: number;
   unitPrice: number;
   subtotal: number;
+  // Gate Details
+  gateRestriction?: boolean;
+  gateId?: string;
+  gateName?: string;
+  gateNumber?: string;
+  gateInstructions?: string;
+  entryCount?: number;
 }
 
 export interface Ticket {
@@ -79,6 +105,7 @@ export interface Ticket {
   eventId: string;
   eventName: string;
   eventDate: string;
+  eventEndDate?: string; // Stored end date for expiration checks
   venue: string;
   eventBanner: string;
   customerName: string;
@@ -89,6 +116,13 @@ export interface Ticket {
   checkedIn: boolean;
   qrValue: string; // The secure value encoded in QR
   createdAt: string;
+  // Gate Details
+  gateRestriction?: boolean;
+  gateId?: string;
+  gateName?: string;
+  gateNumber?: string;
+  gateInstructions?: string;
+  entryCount?: number;
 }
 
 export interface ScanLog {

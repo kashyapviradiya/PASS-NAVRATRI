@@ -59,6 +59,12 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       startDate: data.startDate,
       endDate: data.endDate,
       ticketTypes: data.ticketTypes || [],
+      mapLink: data.mapLink || '',
+      reportingTime: data.reportingTime || '',
+      organizerPhone: data.organizerPhone || '',
+      emergencyPhone: data.emergencyPhone || '',
+      venueInstructions: data.venueInstructions || '',
+      amenities: data.amenities || { parking: false, food: false, washroom: false, security: false },
       updatedAt: new Date().toISOString(),
     };
 

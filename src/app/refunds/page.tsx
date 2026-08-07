@@ -15,7 +15,7 @@ export default function RefundsPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-10">
         <div className="bg-white rounded-card p-8 md:p-12 border border-slate-100 shadow-card hover:shadow-card-hover transition-all duration-300">
           <div className="space-y-10 text-navratri-muted font-[500] leading-relaxed text-[16px]">
-            <p className="text-lg text-navratri-text font-[600] leading-relaxed">At RasPass, we aim to provide a transparent and seamless ticketing experience.</p>
+            <p className="text-lg text-navratri-text font-[600] leading-relaxed">At RaasPass, we aim to provide a transparent and seamless ticketing experience.</p>
             
             <section>
               <h2 className="text-[22px] font-display font-[800] text-navratri-text mb-4">1. General Cancellation</h2>

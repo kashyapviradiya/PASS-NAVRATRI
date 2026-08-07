@@ -18,7 +18,7 @@ export default function RefundPolicyPage() {
             <section>
               <h2 className="text-[22px] font-display font-[800] text-navratri-text mb-4">1. General Rule</h2>
               <p>
-                As a general rule, all ticket sales are final and non-refundable. Please carefully review your order before confirming your purchase. RasPass acts as a ticketing platform for various organizers, and we must adhere to their individual policies.
+                As a general rule, all ticket sales are final and non-refundable. Please carefully review your order before confirming your purchase. RaasPass acts as a ticketing platform for various organizers, and we must adhere to their individual policies.
               </p>
             </section>
 
@@ -46,7 +46,7 @@ export default function RefundPolicyPage() {
             <section>
               <h2 className="text-[22px] font-display font-[800] text-navratri-text mb-4">5. How to Request a Refund</h2>
               <p>
-                For any eligible refund requests, please contact our support team at support@raspass.com with your Booking ID and the registered email address. We will process your request in coordination with the event organizer.
+                For any eligible refund requests, please contact our support team at support@raaspass.com with your Booking ID and the registered email address. We will process your request in coordination with the event organizer.
               </p>
             </section>
           </div>

@@ -18,7 +18,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-[22px] font-display font-[800] text-navratri-text mb-4">1. Agreement to Terms</h2>
               <p>
-                By accessing our website and booking tickets through RasPass, you agree to be bound by these Terms and Conditions and agree that you are responsible for the agreement with any applicable local laws.
+                By accessing our website and booking tickets through RaasPass, you agree to be bound by these Terms and Conditions and agree that you are responsible for the agreement with any applicable local laws.
               </p>
             </section>
 
@@ -28,14 +28,14 @@ export default function TermsPage() {
                 <li>All tickets are subject to availability and the specific event's capacity.</li>
                 <li>A valid ID may be required at the venue to verify the ticket holder's identity.</li>
                 <li>Tickets are generally non-transferable unless explicitly stated by the event organizer.</li>
-                <li>RasPass reserves the right to cancel any booking if fraud or illegal activity is suspected.</li>
+                <li>RaasPass reserves the right to cancel any booking if fraud or illegal activity is suspected.</li>
               </ul>
             </section>
 
             <section>
               <h2 className="text-[22px] font-display font-[800] text-navratri-text mb-4">3. Event Cancellation and Changes</h2>
               <p>
-                RasPass acts as an intermediary platform between you and the event organizers. We are not responsible for event cancellations, postponements, or changes to the lineup. In such cases, the organizer's refund policy will apply.
+                RaasPass acts as an intermediary platform between you and the event organizers. We are not responsible for event cancellations, postponements, or changes to the lineup. In such cases, the organizer's refund policy will apply.
               </p>
             </section>
 
@@ -49,7 +49,7 @@ export default function TermsPage() {
             <section>
               <h2 className="text-[22px] font-display font-[800] text-navratri-text mb-4">5. Modifications</h2>
               <p>
-                RasPass may revise these terms of service for its website at any time without notice. By using this website you are agreeing to be bound by the then current version of these terms of service.
+                RaasPass may revise these terms of service for its website at any time without notice. By using this website you are agreeing to be bound by the then current version of these terms of service.
               </p>
             </section>
           </div>

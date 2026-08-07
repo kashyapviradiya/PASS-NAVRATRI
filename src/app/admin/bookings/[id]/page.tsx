@@ -212,6 +212,7 @@ export default function AdminBookingDetails({ params }: { params: { id: string }
                     <tr className="border-b border-gray-100 text-xs font-bold text-gray-400 uppercase tracking-wider">
                       <th className="py-3 px-2">Ticket ID</th>
                       <th className="py-3 px-2">Type</th>
+                      <th className="py-3 px-2">Assigned Gate</th>
                       <th className="py-3 px-2">QR Status</th>
                       <th className="py-3 px-2">Check-In</th>
                     </tr>
@@ -226,6 +227,9 @@ export default function AdminBookingDetails({ params }: { params: { id: string }
                           </button>
                         </td>
                         <td className="py-4 px-2 font-medium text-gray-700">{ticket.ticketType}</td>
+                        <td className="py-4 px-2 font-medium text-gray-600 text-xs">
+                          {ticket.gateName ? `${ticket.gateName} (Gate ${ticket.gateNumber || 'N/A'})` : 'No Restriction'}
+                        </td>
                         <td className="py-4 px-2">
                           {ticket.status === 'valid' ? (
                             <span className="inline-flex items-center gap-1 text-xs font-bold text-green-700 bg-green-50 px-2 py-1 rounded-full"><CheckCircle2 className="w-3.5 h-3.5"/> Valid</span>
@@ -289,8 +293,15 @@ export default function AdminBookingDetails({ params }: { params: { id: string }
             <div className="space-y-3 mb-6">
               <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Order Items</p>
               {(booking.ticketTypes || []).map(pass => (
-                <div key={pass.ticketTypeId} className="flex justify-between text-sm">
-                  <span className="text-gray-700 font-medium">{pass.quantity}x {pass.ticketTypeName}</span>
+                <div key={pass.ticketTypeId} className="flex justify-between text-sm items-start">
+                  <span className="text-gray-700 font-medium">
+                    {pass.quantity}x {pass.ticketTypeName}
+                    {pass.gateName ? (
+                      <span className="text-xs text-gray-500 font-semibold block mt-0.5">
+                        Gate: {pass.gateName} (Gate {pass.gateNumber || 'N/A'})
+                      </span>
+                    ) : ''}
+                  </span>
                   <span className="font-bold text-gray-900">{formatCurrency(pass.subtotal)}</span>
                 </div>
               ))}

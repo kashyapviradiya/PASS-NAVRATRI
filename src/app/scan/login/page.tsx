@@ -54,7 +54,7 @@ export default function ScannerLogin() {
           </div>
         </div>
         <h2 className="text-center text-[28px] font-display font-[700] leading-9 tracking-tight text-white">
-          RasPass Scanner
+          RaasPass Scanner
         </h2>
         <p className="mt-2 text-center text-[15px] text-white/60 font-[500]">
           Staff Entry Validation System

@@ -104,7 +104,7 @@ export default function StaffLogin() {
           </form>
 
           <div className="mt-8 text-center text-[12px] text-slate-400 font-[600]">
-            <p>&copy; {new Date().getFullYear()} RasPass Staff</p>
+            <p>&copy; {new Date().getFullYear()} RaasPass Staff</p>
           </div>
         </div>
       </div>

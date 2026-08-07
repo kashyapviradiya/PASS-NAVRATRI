@@ -42,27 +42,68 @@ export default function AdminDashboard() {
 
   const { stats: kpis, events = [], bookings = [], tickets = [] } = stats || {};
 
+  // Computed metrics
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const todaysRevenue = bookings
+    .filter((b: any) => new Date(b.createdAt) >= today)
+    .reduce((sum: number, b: any) => sum + (b.amount || b.totalAmount || b.grandTotal || 0), 0);
+
+  const todaysCheckins = tickets
+    .filter((t: any) => {
+      if (!t.checkedIn && !t.scanned) return false;
+      const entryTime = new Date(t.scannedAt || t.checkedInAt || t.updatedAt || t.createdAt);
+      return entryTime >= today;
+    }).length;
+
+  const checkedInCount = tickets.filter((t: any) => t.checkedIn || t.scanned).length;
+  const totalTicketsCount = tickets.length || 1; 
+  const occupancyPct = ((checkedInCount / totalTicketsCount) * 100).toFixed(1);
+
   // KPI Cards
   const statCards = [
+    { label: "Today's Revenue", value: formatCurrency(todaysRevenue), icon: IndianRupee, gradient: 'bg-gradient-premium' },
+    { label: "Today's Check-ins", value: todaysCheckins.toLocaleString(), icon: CheckCircle2, gradient: 'bg-gradient-cyan' },
+    { label: "Occupancy %", value: `${occupancyPct}%`, icon: TrendingUp, gradient: 'bg-gradient-dark' },
     { label: 'Total Issued Tickets', value: (kpis?.totalTicketsSold || 0).toLocaleString(), icon: Ticket, gradient: 'bg-gradient-premium' },
     { label: 'Valid / Unused', value: (kpis?.validTickets || 0).toLocaleString(), icon: Ticket, gradient: 'bg-gradient-cyan' },
     { label: 'Scanned / Used', value: (kpis?.successfulEntries || 0).toLocaleString(), icon: CheckCircle2, gradient: 'bg-emerald-500' },
-    { label: 'Cancelled Tickets', value: (kpis?.cancelledTickets || 0).toLocaleString(), icon: Ticket, gradient: 'bg-slate-400' },
-    { label: 'Check-in Percentage', value: `${kpis?.checkinPercentage || 0}%`, icon: TrendingUp, gradient: 'bg-gradient-dark' },
-    { label: 'Duplicate Attempts', value: (kpis?.duplicateScanAttempts || 0).toLocaleString(), icon: Ticket, gradient: 'bg-red-500' },
   ];
 
-  // Dummy Chart Data until complex aggregations are built
-  const revenueData = [
-    { name: 'Mon', revenue: 15000 }, { name: 'Tue', revenue: 20000 },
-    { name: 'Wed', revenue: 45000 }, { name: 'Thu', revenue: 30000 },
-    { name: 'Fri', revenue: 65000 }, { name: 'Sat', revenue: 85000 }, { name: 'Sun', revenue: 55000 }
-  ];
+  // Advanced Pass Distribution logic
+  const passDistributionMap = tickets.reduce((acc: Record<string, number>, t: any) => {
+    const type = t.passType || t.ticketType || t.name || 'Regular';
+    acc[type] = (acc[type] || 0) + 1;
+    return acc;
+  }, {});
+  
+  const chartColors = ['#7C3AED', '#FF4D6D', '#3B82F6', '#10B981', '#F59E0B', '#6366F1', '#EC4899'];
+  const passDistribution = Object.keys(passDistributionMap).map((key, idx) => ({
+    name: key,
+    value: passDistributionMap[key],
+    color: chartColors[idx % chartColors.length]
+  }));
 
-  const passDistribution = tickets.length > 0 ? [
-    { name: 'VIP', value: tickets.filter((t: any) => t.passType?.includes('VIP')).length || 10, color: '#E53935' },
-    { name: 'Regular', value: tickets.filter((t: any) => !t.passType?.includes('VIP')).length || 40, color: '#B71C1C' }
-  ] : [];
+  // Computed Revenue Chart Data
+  const last7DaysData = Array.from({ length: 7 }).map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    return { 
+      dateStrKey: d.toDateString(), 
+      name: d.toLocaleDateString('en-US', { weekday: 'short' }), 
+      revenue: 0 
+    };
+  });
+
+  bookings.forEach((b: any) => {
+    const bDate = new Date(b.createdAt).toDateString();
+    const dayObj = last7DaysData.find(d => d.dateStrKey === bDate);
+    if (dayObj) {
+      dayObj.revenue += (b.amount || b.totalAmount || b.grandTotal || 0);
+    }
+  });
+  const revenueData = last7DaysData.map(d => ({ name: d.name, revenue: d.revenue }));
 
   const exportCSV = () => {
     if (bookings.length === 0) return toast.error('No bookings to export');
@@ -171,7 +212,7 @@ export default function AdminDashboard() {
               <PieChart>
                 <Pie data={passDistribution} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5}>
                   {passDistribution.map((entry, idx) => (
-                    <Cell key={`cell-${idx}`} fill={entry.name === 'VIP' ? '#7C3AED' : '#FF4D6D'} />
+                    <Cell key={`cell-${idx}`} fill={entry.color} />
                   ))}
                 </Pie>
                 <Tooltip contentStyle={{ borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.05)', backdropFilter: 'blur(12px)', backgroundColor: 'rgba(255, 255, 255, 0.9)' }} itemStyle={{ fontWeight: 700 }} />
@@ -179,10 +220,10 @@ export default function AdminDashboard() {
             </ResponsiveContainer>
           )}
           {passDistribution.length > 0 && (
-             <div className="flex justify-center gap-6 mt-4">
+             <div className="flex flex-wrap justify-center gap-4 mt-4">
                {passDistribution.map(d => (
                  <div key={d.name} className="flex items-center gap-2 text-[12px] font-[800] text-navratri-muted uppercase tracking-widest">
-                   <div className="w-3.5 h-3.5 rounded-[4px]" style={{ backgroundColor: d.name === 'VIP' ? '#7C3AED' : '#FF4D6D' }}></div>
+                   <div className="w-3.5 h-3.5 rounded-[4px]" style={{ backgroundColor: d.color }}></div>
                    {d.name}
                  </div>
                ))}

@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Download, Share2, MapPin, Calendar, Clock, Loader2, ShieldCheck, ShieldAlert, CheckCircle2, Navigation } from 'lucide-react';
+import { Download, Share2, Calendar, Clock, Loader2, ShieldCheck, ShieldAlert, CheckCircle2, Navigation, AlertCircle } from 'lucide-react';
 import QRCode from 'qrcode';
-import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 
 export default function TicketPage({ params }: { params: { ticketId: string } }) {
@@ -11,6 +10,7 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
   const [loading, setLoading] = useState(true);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
   const [statusState, setStatusState] = useState<'valid' | 'used' | 'cancelled' | 'invalid'>('valid');
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     fetchTicket();
@@ -26,9 +26,9 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
         setStatusState(data.ticket.status);
         
         // Generate QR Code data URL
-        const qr = await QRCode.toDataURL(data.ticket.qrValue, {
-          width: 300,
-          margin: 1,
+        const qr = await QRCode.toDataURL(data.ticket.qrValue || data.ticket.ticketId, {
+          width: 320,
+          margin: 2,
           color: {
             dark: '#000000',
             light: '#ffffff',
@@ -46,8 +46,301 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
     }
   };
 
-  const handleDownloadPdf = () => {
-    window.print();
+  const handleDownloadPass = async () => {
+    if (downloading) return;
+    setDownloading(true);
+    const toastId = toast.loading('Preparing pass...');
+
+    try {
+      // 1. Create canvas
+      const canvas = document.createElement('canvas');
+      canvas.width = 900;
+      canvas.height = 1600;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('Could not get canvas context');
+
+      // 2. Load QR Code Image
+      const qrImg = new Image();
+      await new Promise<void>((resolve, reject) => {
+        qrImg.onload = () => resolve();
+        qrImg.onerror = () => reject(new Error('Failed to load QR image'));
+        qrImg.src = qrCodeUrl;
+      });
+
+      // 3. Draw Background Gradient
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      bgGrad.addColorStop(0, '#0F172A');
+      bgGrad.addColorStop(0.5, '#1E1B4B');
+      bgGrad.addColorStop(1, '#312E81');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw subtle glow particles (translucent circles)
+      ctx.fillStyle = 'rgba(0, 229, 255, 0.06)';
+      ctx.beginPath(); ctx.arc(200, 300, 400, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(255, 77, 109, 0.06)';
+      ctx.beginPath(); ctx.arc(700, 1200, 450, 0, Math.PI * 2); ctx.fill();
+
+      // Draw Main Ticket Container (Boarding Pass Card)
+      const ticketX = 50;
+      const ticketY = 80;
+      const ticketW = 800;
+      const ticketH = 1440;
+      const ticketR = 40; // border radius
+
+      // Draw Rounded Ticket Shape
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+      ctx.shadowBlur = 40;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 20;
+      
+      const notchY = 700; // Y position of cutout notches
+      const notchR = 30; // notch radius
+      
+      ctx.beginPath();
+      ctx.moveTo(ticketX + ticketR, ticketY);
+      ctx.lineTo(ticketX + ticketW - ticketR, ticketY);
+      ctx.arcTo(ticketX + ticketW, ticketY, ticketX + ticketW, ticketY + ticketR, ticketR);
+      
+      // Right notch cutout
+      ctx.lineTo(ticketX + ticketW, notchY - notchR);
+      ctx.arc(ticketX + ticketW, notchY, notchR, -Math.PI / 2, Math.PI / 2, true);
+      
+      ctx.lineTo(ticketX + ticketW, ticketY + ticketH - ticketR);
+      ctx.arcTo(ticketX + ticketW, ticketY + ticketH, ticketX + ticketW - ticketR, ticketY + ticketH, ticketR);
+      ctx.lineTo(ticketX + ticketR, ticketY + ticketH);
+      ctx.arcTo(ticketX, ticketY + ticketH, ticketX, ticketY + ticketH - ticketR, ticketR);
+      
+      // Left notch cutout
+      ctx.lineTo(ticketX, notchY + notchR);
+      ctx.arc(ticketX, notchY, notchR, Math.PI / 2, -Math.PI / 2, true);
+      
+      ctx.lineTo(ticketX, ticketY + ticketR);
+      ctx.arcTo(ticketX, ticketY, ticketX + ticketR, ticketY, ticketR);
+      ctx.closePath();
+      ctx.fill();
+
+      // Reset shadow
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // 4. Header: Draw Logo
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 42px "Inter", "Plus Jakarta Sans", sans-serif';
+      ctx.fillText('RaasPass', ticketX + 60, ticketY + 80);
+      
+      // Logo Dot
+      ctx.fillStyle = '#FF4D6D';
+      ctx.beginPath();
+      ctx.arc(ticketX + 235, ticketY + 68, 8, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Status Badge
+      const isExpired = new Date(ticket.eventEndDate || ticket.eventDate) < new Date();
+      const statusText = isExpired ? 'EXPIRED' : ticket.status.toUpperCase();
+      let badgeBg = '#22C55E';
+      if (statusText === 'USED' || statusText === 'CHECKED IN') badgeBg = '#3B82F6';
+      else if (statusText === 'CANCELLED') badgeBg = '#EF4444';
+      else if (statusText === 'EXPIRED') badgeBg = '#6B7280';
+      
+      ctx.fillStyle = badgeBg;
+      ctx.beginPath();
+      ctx.roundRect(ticketX + ticketW - 240, ticketY + 45, 180, 50, 25);
+      ctx.fill();
+      
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(statusText === 'USED' ? 'USED' : statusText, ticketX + ticketW - 150, ticketY + 76);
+      ctx.textAlign = 'left';
+
+      // 5. Event Title
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '800 40px sans-serif';
+      
+      const eventName = ticket.eventName || 'Navratri Event';
+      let eventLines = [];
+      if (eventName.length > 25) {
+        eventLines = [eventName.slice(0, 25) + '...', eventName.slice(25)];
+      } else {
+        eventLines = [eventName];
+      }
+      ctx.fillText(eventLines[0], ticketX + 60, ticketY + 160);
+      
+      ctx.fillStyle = '#7C3AED'; // Purple
+      ctx.font = 'bold 24px sans-serif';
+      ctx.fillText(ticket.ticketType?.toUpperCase() || 'PASS', ticketX + 60, ticketY + 220);
+
+      // Quantity / Total Entry
+      ctx.fillStyle = '#475569';
+      ctx.font = '600 22px sans-serif';
+      const isCouple = ticket.ticketType?.toLowerCase().includes('couple');
+      const entryCountNum = ticket.entryCount || (isCouple ? 2 : 1);
+      const quantityText = `Total Entry: ${entryCountNum} ${entryCountNum > 1 ? 'People' : 'Person'}`;
+      ctx.fillText(quantityText, ticketX + 60, ticketY + 260);
+
+      // 6. Draw QR Code Area
+      const qrW = 300;
+      const qrH = 300;
+      const qrX = ticketX + (ticketW - qrW) / 2;
+      const qrY = ticketY + 310;
+
+      // Container Card
+      ctx.fillStyle = '#F8FAFC';
+      ctx.shadowColor = 'rgba(0,0,0,0.06)';
+      ctx.shadowBlur = 15;
+      ctx.beginPath();
+      ctx.roundRect(qrX - 30, qrY - 30, qrW + 60, qrH + 90, 28);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Draw QR Image
+      ctx.drawImage(qrImg, qrX, qrY, qrW, qrH);
+
+      // QR Labels
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('SCAN AT ENTRY', qrX + qrW / 2, qrY + qrH + 25);
+      
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText(ticket.ticketId, qrX + qrW / 2, qrY + qrH + 50);
+      ctx.textAlign = 'left';
+
+      // 7. Perforated line
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([14, 12]);
+      ctx.beginPath();
+      ctx.moveTo(ticketX + notchR + 10, notchY);
+      ctx.lineTo(ticketX + ticketW - notchR - 10, notchY);
+      ctx.stroke();
+      ctx.setLineDash([]); // Reset
+
+      // 8. Meta Fields
+      const metaY = notchY + 70;
+      
+      // Column 1
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.fillText('GUEST NAME', ticketX + 60, metaY);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.fillText(ticket.customerName, ticketX + 60, metaY + 35);
+
+      // Column 2
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.fillText('BOOKING ID', ticketX + 440, metaY);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.fillText(ticket.bookingId, ticketX + 440, metaY + 35);
+
+      // Date / Time
+      const timeY = metaY + 110;
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.fillText('DATE & TIME', ticketX + 60, timeY);
+      
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 24px sans-serif';
+      const formattedDate = new Date(ticket.eventDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      ctx.fillText(`${formattedDate} • 7:00 PM`, ticketX + 60, timeY + 35);
+
+      // Gate details
+      const gateY = timeY + 110;
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.fillText('GATE ASSIGNMENT', ticketX + 60, gateY);
+      
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 24px sans-serif';
+      const gateText = ticket.gateName ? `${ticket.gateName} (Gate ${ticket.gateNumber || 'N/A'})` : 'Gate Announced at Venue';
+      ctx.fillText(gateText, ticketX + 60, gateY + 35);
+
+      // Venue Row
+      const venueY = gateY + 110;
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.fillText('VENUE LOCATION', ticketX + 60, venueY);
+      
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 20px sans-serif';
+      const venueStr = ticket.venue || '';
+      let venueLines = [];
+      if (venueStr.length > 40) {
+        venueLines = [venueStr.slice(0, 40), venueStr.slice(40)];
+      } else {
+        venueLines = [venueStr];
+      }
+      ctx.fillText(venueLines[0], ticketX + 60, venueY + 35);
+      if (venueLines[1]) {
+        ctx.fillText(venueLines[1], ticketX + 60, venueY + 65);
+      }
+
+      // Instructions block
+      const instY = venueY + 110;
+      ctx.fillStyle = '#F8FAFC';
+      ctx.beginPath();
+      ctx.roundRect(ticketX + 40, instY, ticketW - 80, 160, 20);
+      ctx.fill();
+      
+      ctx.fillStyle = '#475569';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.fillText('IMPORTANT INSTRUCTIONS', ticketX + 65, instY + 40);
+      
+      ctx.font = '14px sans-serif';
+      ctx.fillStyle = '#64748B';
+      const instructions = [
+        '• Keep screen brightness high during scanning',
+        '• Carry a valid government ID',
+        '• QR code can be scanned only once',
+        '• Screenshot of QR is not recommended',
+        '• Reach venue 30 minutes before event time'
+      ];
+      
+      instructions.forEach((inst, idx) => {
+        ctx.fillText(inst, ticketX + 65, instY + 70 + (idx * 20));
+      });
+
+      // Hologram gradient band
+      const holoY = ticketY + ticketH - 12;
+      const holoGrad = ctx.createLinearGradient(ticketX, holoY, ticketX + ticketW, holoY);
+      holoGrad.addColorStop(0, '#7C3AED');
+      holoGrad.addColorStop(0.5, '#00E5FF');
+      holoGrad.addColorStop(1, '#FF4D6D');
+      
+      ctx.fillStyle = holoGrad;
+      ctx.beginPath();
+      ctx.roundRect(ticketX + ticketR, holoY, ticketW - (ticketR * 2), 12, {bl: ticketR, br: ticketR});
+      ctx.fill();
+
+      // 9. Trigger file download
+      const dataUrl = canvas.toDataURL('image/png');
+      const blob = await (await fetch(dataUrl)).blob();
+      const url = URL.createObjectURL(blob);
+      
+      const cleanEventName = ticket.eventName.replace(/[^a-zA-Z0-9]/g, '-');
+      const filename = `RaasPass-${cleanEventName}-${ticket.ticketId}.png`;
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast.success('Pass downloaded successfully!', { id: toastId });
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to generate image pass.', { id: toastId });
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const handleShare = async () => {
@@ -69,9 +362,8 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
 
   const handleDownloadIcs = () => {
     const eventDate = new Date(ticket.eventDate);
-    // Simple ICS format builder
     const startStr = eventDate.toISOString().replace(/-|:|\.\d+/g, '');
-    const endStr = new Date(eventDate.getTime() + 6 * 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, ''); // Assume 6 hours
+    const endStr = new Date(eventDate.getTime() + 6 * 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, '');
     
     const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
@@ -101,7 +393,7 @@ END:VCALENDAR`;
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-navratri-accent">
+      <div className="flex flex-col items-center justify-center min-h-screen text-navratri-accent bg-[#07070F]">
         <Loader2 className="w-10 h-10 animate-spin mb-4" />
         <p className="text-white font-medium">Verifying Secure Ticket...</p>
       </div>
@@ -110,137 +402,234 @@ END:VCALENDAR`;
 
   if (statusState === 'invalid' || !ticket) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-[#07070F]">
         <ShieldAlert className="w-16 h-16 text-red-500 mb-6" />
         <h1 className="text-3xl font-display font-bold text-white mb-2">Invalid Ticket</h1>
-        <p className="text-gray-400 max-w-md">This ticket link is invalid or the ticket could not be found in the system. Please contact the organizer.</p>
+        <p className="text-gray-400 max-w-md">This ticket link is invalid or the ticket could not be found. Please contact the organizer.</p>
       </div>
     );
   }
 
-  const isValid = statusState === 'valid';
-  const isUsed = statusState === 'used';
-  const isCancelled = statusState === 'cancelled';
+  const isExpired = new Date(ticket.eventEndDate || ticket.eventDate) < new Date();
+  const isUsed = ticket.status === 'used' || ticket.checkedIn;
+  const isCancelled = ticket.status === 'cancelled';
+  const isValid = ticket.status === 'valid' && !isExpired && !isUsed;
+
+  const isCouple = ticket.ticketType?.toLowerCase().includes('couple');
+  const entryCountNum = ticket.entryCount || (isCouple ? 2 : 1);
+  const formattedDate = new Date(ticket.eventDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
   return (
-    <div className="min-h-screen pb-20 pt-8 px-4 flex flex-col items-center print:bg-white print:p-0 print:m-0">
+    <div className="min-h-screen pb-28 pt-8 px-4 flex flex-col items-center bg-[#07070F] print:bg-white print:p-0 print:m-0 relative overflow-hidden">
       
+      {/* Decorative Blur Orbs */}
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-1/2 -right-40 w-96 h-96 bg-[#00E5FF]/10 rounded-full blur-[100px] pointer-events-none"></div>
+      
+      {/* Hologram style styles inside component */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes shimmer {
+          0% { background-position: 200% center; }
+          100% { background-position: -200% center; }
+        }
+        .animate-shimmer {
+          background: linear-gradient(90deg, #7C3AED 0%, #00E5FF 25%, #FF4D6D 50%, #00E5FF 75%, #7C3AED 100%);
+          background-size: 200% auto;
+          animation: shimmer 4s linear infinite;
+        }
+      `}} />
+
       {/* Wallet Pass Container */}
-      <motion.div 
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md relative print:w-full print:max-w-none print:shadow-none"
-      >
+      <div className="w-full max-w-md relative print:w-full print:max-w-none print:shadow-none animate-slide-up">
+        
         {/* Glow Effect */}
         {isValid && (
-          <div className="absolute -inset-1 bg-gradient-to-r from-amber-300 via-navratri-accent to-purple-600 rounded-[2.5rem] blur-xl opacity-30 animate-pulse print:hidden"></div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-[#00E5FF] to-pink-500 rounded-[2.5rem] blur-xl opacity-20 animate-pulse print:hidden"></div>
         )}
 
-        <div className="relative bg-[#111111] border border-gray-800 rounded-[2rem] overflow-hidden shadow-2xl print:border-none print:bg-white print:shadow-none">
+        {/* Boarding Pass Ticket Card */}
+        <div className="relative bg-[#ffffff] text-slate-900 rounded-[2.5rem] overflow-hidden shadow-premium border border-slate-100 print:border-none print:bg-white print:shadow-none flex flex-col">
           
-          {/* Banner Image */}
-          <div className="h-48 w-full bg-gray-900 relative">
-            <img src={ticket.eventBanner || '/images/hero-bg.jpg'} alt="Event Banner" className="w-full h-full object-cover opacity-80 print:opacity-100" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-[#111111] print:hidden"></div>
-            
-            {/* Status Badge */}
-            <div className="absolute top-4 right-4">
-              {isValid && (
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500/90 backdrop-blur-md text-white rounded-full text-xs font-bold shadow-lg print:bg-green-500 print:text-white">
-                  <ShieldCheck className="w-3.5 h-3.5" /> VALID PASS
-                </div>
-              )}
-              {isUsed && (
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-600/90 backdrop-blur-md text-white rounded-full text-xs font-bold shadow-lg">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> CHECKED IN
-                </div>
-              )}
-              {isCancelled && (
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600/90 backdrop-blur-md text-white rounded-full text-xs font-bold shadow-lg">
-                  <ShieldAlert className="w-3.5 h-3.5" /> CANCELLED
-                </div>
-              )}
+          {/* Event Banner */}
+          {ticket.eventBanner && (
+            <div className="h-40 w-full relative">
+              <img src={ticket.eventBanner} alt="Event Banner" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent pointer-events-none"></div>
             </div>
-          </div>
+          )}
 
-          <div className="p-6 md:p-8 relative">
+          {/* Top Half of Boarding Pass */}
+          <div className="p-6 md:p-8 flex flex-col bg-[#FDFDFF] border-b border-dashed border-slate-200 relative">
             
-            {/* Ticket Cutouts / Notches (Visual only) */}
-            <div className="absolute -left-4 top-0 w-8 h-8 bg-[#0a0a0a] rounded-full print:hidden"></div>
-            <div className="absolute -right-4 top-0 w-8 h-8 bg-[#0a0a0a] rounded-full print:hidden"></div>
-            <div className="absolute left-0 right-0 top-4 h-px border-t-2 border-dashed border-gray-800 print:hidden"></div>
-
-            <div className="text-center mt-6 mb-8">
-              <h1 className="text-2xl md:text-3xl font-display font-[800] text-white print:text-black leading-tight mb-1">{ticket.eventName}</h1>
-              <p className="text-navratri-accent font-bold uppercase tracking-widest text-sm">{ticket.ticketType}</p>
-            </div>
-
-            <div className="flex justify-center mb-8">
-              <div className={`p-4 bg-white rounded-card ${isValid ? 'shadow-premium' : isCancelled ? 'opacity-30 grayscale' : 'opacity-80 grayscale'}`}>
-                {qrCodeUrl ? (
-                  <img src={qrCodeUrl} alt="QR Code" className="w-48 h-48 md:w-56 md:h-56 print:w-48 print:h-48" />
-                ) : (
-                  <div className="w-48 h-48 bg-gray-200 animate-pulse rounded-lg"></div>
+            {/* Top Row: Brand & Status */}
+            <div className="flex items-center justify-between mb-6">
+              <span className="text-xl font-display font-[850] text-[#0F172A] tracking-tight flex items-center gap-1.5">
+                RaasPass<span className="w-2 h-2 rounded-full bg-pink-500"></span>
+              </span>
+              
+              {/* Dynamic Status Badge */}
+              <div>
+                {isValid && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 rounded-full text-xs font-[800] tracking-wider uppercase">
+                    <ShieldCheck className="w-3.5 h-3.5" /> VALID PASS
+                  </span>
+                )}
+                {isUsed && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 text-blue-600 border border-blue-500/20 rounded-full text-xs font-[800] tracking-wider uppercase">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> CHECKED IN
+                  </span>
+                )}
+                {isCancelled && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-500/10 text-red-600 border border-red-500/20 rounded-full text-xs font-[800] tracking-wider uppercase">
+                    <ShieldAlert className="w-3.5 h-3.5" /> CANCELLED
+                  </span>
+                )}
+                {isExpired && (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-500/10 text-gray-600 border border-gray-500/20 rounded-full text-xs font-[800] tracking-wider uppercase">
+                    <ShieldAlert className="w-3.5 h-3.5" /> EXPIRED
+                  </span>
                 )}
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-y-6 gap-x-4 text-left border-t border-gray-800 pt-6 print:border-gray-200">
-              
+            {/* Event Info */}
+            <div className="mb-8 text-left">
+              <h1 className="text-[26px] md:text-[32px] font-display font-[850] text-slate-900 leading-tight mb-3 tracking-tight">{ticket.eventName}</h1>
+              <div className="flex items-center gap-3">
+                <span className="px-3 py-1 bg-purple-50 text-purple-700 text-[12px] font-[800] uppercase tracking-wider rounded-md border border-purple-100">
+                  {ticket.ticketType}
+                </span>
+                <span className="text-[13px] text-slate-500 font-semibold">
+                  Total Entry: {entryCountNum} {entryCountNum > 1 ? 'People' : 'Person'}
+                </span>
+              </div>
+            </div>
+
+            {/* QR Section */}
+            <div className="flex flex-col items-center justify-center py-8 bg-slate-50 rounded-[24px] border border-slate-100 relative group overflow-hidden">
+              <div className="p-3 bg-white rounded-[20px] shadow-sm border border-slate-200/60">
+                {qrCodeUrl ? (
+                  <img src={qrCodeUrl} alt="QR Code" className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] object-contain block" />
+                ) : (
+                  <div className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] bg-slate-100 animate-pulse rounded-xl"></div>
+                )}
+              </div>
+              <p className="text-[11px] text-slate-400 font-[800] uppercase tracking-widest mt-4">Scan at Entry</p>
+              <p className="font-mono text-[13px] font-[800] text-slate-700 tracking-wider mt-1.5">{ticket.ticketId}</p>
+            </div>
+            
+            {/* Cutout notches */}
+            <div className="absolute -left-4 bottom-0 w-8 h-8 bg-[#07070F] rounded-full transform translate-y-1/2 border-r border-slate-100 print:hidden"></div>
+            <div className="absolute -right-4 bottom-0 w-8 h-8 bg-[#07070F] rounded-full transform translate-y-1/2 border-l border-slate-100 print:hidden"></div>
+          </div>
+
+          {/* Bottom Half of Boarding Pass */}
+          <div className="p-6 md:p-8 bg-[#FFFFFF] space-y-6">
+            
+            <div className="grid grid-cols-2 gap-x-6 gap-y-5 text-left text-sm">
               <div>
-                <p className="text-gray-500 text-[10px] uppercase tracking-wider font-bold mb-1 print:text-gray-500">Name</p>
-                <p className="text-white font-[500] text-sm truncate print:text-black">{ticket.customerName}</p>
+                <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Guest Name</p>
+                <p className="text-slate-900 font-semibold truncate text-[15px]">{ticket.customerName}</p>
               </div>
               
               <div>
-                <p className="text-gray-500 text-[10px] uppercase tracking-wider font-bold mb-1 print:text-gray-500">Date & Time</p>
-                <p className="text-white font-[500] text-sm print:text-black">
-                  {new Date(ticket.eventDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} • 7:00 PM
+                <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Booking ID</p>
+                <p className="text-slate-900 font-semibold truncate font-mono text-[15px]">{ticket.bookingId}</p>
+              </div>
+
+              <div>
+                <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Date & Time</p>
+                <p className="text-slate-900 font-semibold text-[15px]">
+                  {formattedDate} • 7:00 PM
                 </p>
               </div>
 
+              <div>
+                <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Gate Assignment</p>
+                <p className="text-slate-900 font-semibold text-[15px]">
+                  {ticket.gateName ? \`\${ticket.gateName} (Gate \${ticket.gateNumber || 'N/A'})\` : 'Gate Announced at Venue'}
+                </p>
+              </div>
+
+              {ticket.gateInstructions && (
+                <div className="col-span-2 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                  <p className="text-slate-500 text-[10px] uppercase tracking-widest font-[800] mb-1">Gate Instructions</p>
+                  <p className="text-slate-700 text-xs font-[500] leading-relaxed">{ticket.gateInstructions}</p>
+                </div>
+              )}
+
               <div className="col-span-2">
-                <p className="text-gray-500 text-[10px] uppercase tracking-wider font-bold mb-1 print:text-gray-500">Venue</p>
-                <p className="text-white font-[500] text-sm print:text-black line-clamp-2">{ticket.venue}</p>
+                <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Venue</p>
+                <p className="text-slate-900 font-semibold text-[14px] leading-snug">{ticket.venue}</p>
               </div>
-
-              <div>
-                <p className="text-gray-500 text-[10px] uppercase tracking-wider font-bold mb-1 print:text-gray-500">Ticket ID</p>
-                <p className="text-gray-300 font-mono text-xs print:text-gray-800">{ticket.ticketId}</p>
+              
+              <div className="col-span-2 flex items-center justify-between text-[11px] text-slate-500 pt-2">
+                <span>Reporting Time: Arrive 30 min before event</span>
+                <span>support@raaspass.in</span>
               </div>
-
-              <div>
-                <p className="text-gray-500 text-[10px] uppercase tracking-wider font-bold mb-1 print:text-gray-500">Booking ID</p>
-                <p className="text-gray-300 font-mono text-xs print:text-gray-800">{ticket.bookingId}</p>
-              </div>
-
             </div>
 
+            {/* Checked In Info */}
+            {isUsed && ticket.checkedInAt && (
+              <div className="bg-blue-50 text-blue-700 rounded-2xl p-4 border border-blue-100 text-xs font-semibold flex items-center gap-2">
+                <Clock className="w-4 h-4" /> Checked in on {new Date(ticket.checkedInAt).toLocaleString('en-IN')}
+              </div>
+            )}
+            
+            {/* Important Instructions Section */}
+            <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 mt-4">
+              <h3 className="text-[11px] uppercase tracking-widest font-[800] text-slate-600 mb-2 flex items-center gap-1.5">
+                <AlertCircle className="w-3.5 h-3.5" /> Important Instructions
+              </h3>
+              <ul className="text-[11px] text-slate-500 space-y-1.5 font-medium">
+                <li>• Keep screen brightness high during scanning</li>
+                <li>• Carry a valid government ID</li>
+                <li>• QR code can be scanned only once</li>
+                <li>• Screenshot of QR is not recommended</li>
+                <li>• Reach venue 30 minutes before event time</li>
+              </ul>
+            </div>
           </div>
+          
+          {/* Hologram / Security Strip */}
+          <div className="h-2 w-full animate-shimmer print:hidden"></div>
         </div>
-      </motion.div>
-
-      {/* Action Buttons (Hidden when printing) */}
-      <div className="w-full max-w-md mt-6 grid grid-cols-4 gap-3 print:hidden">
-        <button onClick={handleDownloadPdf} className="flex flex-col items-center justify-center bg-[#111111] border border-gray-800 rounded-2xl p-3 hover:bg-gray-900 transition-colors">
-          <Download className="w-5 h-5 text-gray-300 mb-1" />
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Save PDF</span>
-        </button>
-        <button onClick={handleShare} className="flex flex-col items-center justify-center bg-[#111111] border border-gray-800 rounded-2xl p-3 hover:bg-gray-900 transition-colors">
-          <Share2 className="w-5 h-5 text-gray-300 mb-1" />
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Share</span>
-        </button>
-        <button onClick={handleDownloadIcs} className="flex flex-col items-center justify-center bg-[#111111] border border-gray-800 rounded-2xl p-3 hover:bg-gray-900 transition-colors">
-          <Calendar className="w-5 h-5 text-gray-300 mb-1" />
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Add Cal</span>
-        </button>
-        <button onClick={openMaps} className="flex flex-col items-center justify-center bg-[#111111] border border-gray-800 rounded-2xl p-3 hover:bg-gray-900 transition-colors">
-          <Navigation className="w-5 h-5 text-navratri-accent mb-1" />
-          <span className="text-[10px] font-bold text-navratri-accent uppercase tracking-wider">Maps</span>
-        </button>
       </div>
 
+      {/* Sticky Bottom Actions Bar */}
+      <div className="fixed bottom-0 inset-x-0 bg-slate-950/80 backdrop-blur-md border-t border-white/10 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] flex justify-center z-40 print:hidden shadow-[0_-8px_30px_rgb(0,0,0,0.5)]">
+        <div className="w-full max-w-md flex items-center justify-between gap-3">
+          
+          <button 
+            onClick={handleDownloadPass} 
+            disabled={downloading || isCancelled}
+            className="flex-1 bg-gradient-to-r from-purple-600 to-pink-500 hover:scale-[1.02] active:scale-[0.98] transition-transform text-white font-[800] py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm shadow-lg shadow-purple-500/20 disabled:opacity-55 disabled:hover:scale-100"
+          >
+            {downloading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" /> Preparing...
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4" /> Download Pass
+              </>
+            )}
+          </button>
+
+          <div className="flex gap-2">
+            <button onClick={handleShare} disabled={isCancelled} className="p-3.5 bg-white/10 hover:bg-white/15 text-white rounded-xl border border-white/10 transition-colors" title="Share Pass">
+              <Share2 className="w-4 h-4" />
+            </button>
+            <button onClick={handleDownloadIcs} className="p-3.5 bg-white/10 hover:bg-white/15 text-white rounded-xl border border-white/10 transition-colors" title="Add to Calendar">
+              <Calendar className="w-4 h-4" />
+            </button>
+            <button onClick={openMaps} className="p-3.5 bg-white/10 hover:bg-white/15 text-[#00E5FF] rounded-xl border border-[#00E5FF]/20 transition-colors" title="Directions">
+              <Navigation className="w-4 h-4" />
+            </button>
+          </div>
+
+        </div>
+      </div>
     </div>
   );
 }

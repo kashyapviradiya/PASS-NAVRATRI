@@ -128,6 +128,7 @@ export default function EventAnalyticsPage({ params }: { params: { id: string } 
               <tr className="bg-slate-50/80 border-b border-slate-100 text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">
                 <th className="px-6 py-5">Ticket Name</th>
                 <th className="px-6 py-5">Price</th>
+                <th className="px-6 py-5">Assigned Gate</th>
                 <th className="px-6 py-5">Sold</th>
                 <th className="px-6 py-5">Remaining</th>
                 <th className="px-6 py-5">Total Capacity</th>
@@ -138,6 +139,9 @@ export default function EventAnalyticsPage({ params }: { params: { id: string } 
                 <tr key={tt.id} className="hover:bg-slate-50/30 transition-colors">
                   <td className="px-6 py-5 font-[800] text-navratri-text text-[15px]">{tt.name}</td>
                   <td className="px-6 py-5 font-[700] text-navratri-primary text-[15px]">₹{tt.price}</td>
+                  <td className="px-6 py-5 font-[500] text-slate-500 text-[14px]">
+                    {tt.gateRestriction && tt.gateName ? `${tt.gateName} (Gate ${tt.gateNumber || 'N/A'})` : 'No Restriction'}
+                  </td>
                   <td className="px-6 py-5 font-[800] text-emerald-600 text-[15px]">{tt.soldQuantity || 0}</td>
                   <td className="px-6 py-5 font-[800] text-amber-600 text-[15px]">{tt.remainingQuantity || 0}</td>
                   <td className="px-6 py-5 font-[600] text-navratri-muted text-[15px]">{tt.totalInventory || 0}</td>

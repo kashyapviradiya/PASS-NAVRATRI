@@ -37,6 +37,7 @@ export async function GET(request: NextRequest, { params }: { params: { ticketId
       eventId: ticketData.eventId,
       eventName: ticketData.eventName,
       eventDate: ticketData.eventDate,
+      eventEndDate: ticketData.eventEndDate || ticketData.eventDate,
       venue: ticketData.venue,
       eventBanner: ticketData.eventBanner,
       customerName: ticketData.customerName,
@@ -44,7 +45,17 @@ export async function GET(request: NextRequest, { params }: { params: { ticketId
       status: finalStatus,
       qrValue: ticketData.qrValue, // This is the cryptographic token encoded into the QR
       paymentStatus,
-      orderStatus
+      orderStatus,
+      gateId: ticketData.gateId || '',
+      gateName: ticketData.gateName || '',
+      gateNumber: ticketData.gateNumber || '',
+      gateInstructions: ticketData.gateInstructions || '',
+      gateRestriction: ticketData.gateRestriction || false,
+      entryCount: ticketData.entryCount || ((ticketData.ticketType || '').toLowerCase().includes('couple') || (ticketData.ticketType || '').toLowerCase().includes('pair') ? 2 : 1),
+      checkedIn: ticketData.checkedIn || false,
+      checkedInAt: ticketData.checkedInAt || ticketData.entryTime || '',
+      scannedBy: ticketData.scannedBy || '',
+      checkInGateName: ticketData.gateName || '',
     };
 
     return NextResponse.json({ success: true, ticket: sanitizedTicket });

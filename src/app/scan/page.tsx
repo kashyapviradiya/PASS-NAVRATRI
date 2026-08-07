@@ -7,7 +7,7 @@ import { CheckCircle, XCircle, LogOut, Camera, X, ScanLine, Clock, Ticket, Calen
 import toast from 'react-hot-toast';
 
 type ScanResult = {
-  status: 'valid' | 'used' | 'invalid' | 'wrong_event';
+  status: 'valid' | 'used' | 'invalid' | 'wrong_event' | 'wrong_gate';
   ticket?: any;
   message?: string;
   timestamp: string;
@@ -167,6 +167,9 @@ export default function ScannerDashboard() {
       } else if (data.code === 'ALREADY_USED') {
         playSound('error');
         result = { status: 'used', ticket: data.ticket, message: data.message, timestamp: new Date().toISOString() };
+      } else if (data.code === 'WRONG_GATE') {
+        playSound('error');
+        result = { status: 'wrong_gate', message: `Wrong Gate – Please go to ${data.ticket?.correctGate || 'the assigned gate'}`, ticket: data.ticket, timestamp: new Date().toISOString() };
       } else if (data.code === 'WRONG_EVENT') {
         playSound('error');
         result = { status: 'wrong_event', message: data.message, timestamp: new Date().toISOString() };
@@ -289,6 +292,39 @@ export default function ScannerDashboard() {
       );
     }
 
+    if (scanResult.status === 'wrong_gate') {
+      return (
+        <div className="fixed inset-0 bg-orange-600 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
+          <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_24px_rgba(255,255,255,0.2)]">
+            <AlertTriangle className="w-16 h-16 text-white" />
+          </div>
+          <h1 className="text-[40px] font-display font-[850] tracking-tight mb-2">Wrong Gate</h1>
+          <p className="text-[18px] font-[500] opacity-90 mb-10">{scanResult.message}</p>
+          
+          <div className="bg-white/10 backdrop-blur-md rounded-[24px] p-6 w-full max-w-sm space-y-4 text-left border border-white/25 shadow-premium">
+            <div>
+              <p className="text-orange-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Customer</p>
+              <p className="font-display font-[800] text-[24px]">{scanResult.ticket?.customerName}</p>
+            </div>
+            <div className="flex justify-between pt-4 border-t border-white/20">
+               <div>
+                  <p className="text-orange-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Pass Type</p>
+                  <p className="font-display font-[800] text-[16px]">{scanResult.ticket?.ticketType}</p>
+               </div>
+               <div className="text-right">
+                  <p className="text-orange-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Correct Gate</p>
+                  <p className="font-display font-[800] text-[16px]">{scanResult.ticket?.correctGate || 'N/A'}</p>
+               </div>
+            </div>
+          </div>
+          
+          <button onClick={dismissResult} className="mt-12 bg-white text-orange-600 px-10 py-4 rounded-button font-[800] text-[16px] shadow-premium hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
+            Dismiss
+          </button>
+        </div>
+      );
+    }
+
     return (
       <div className="fixed inset-0 bg-rose-700 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
         <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mb-6 border border-white/25">
@@ -310,7 +346,7 @@ export default function ScannerDashboard() {
       <header className="bg-gradient-to-b from-[#0F172A] to-[#1E1B4B] text-white px-4 py-4 flex flex-col shadow-premium z-10 w-full relative shrink-0 border-b border-white/10">
         <div className="flex items-center justify-between mb-4">
           <h1 className="font-display font-[800] text-[22px] flex items-center gap-2 tracking-tight">
-            <ScanLine className="w-6 h-6 text-[#00E5FF] animate-pulse" /> RasPass Scanner
+            <ScanLine className="w-6 h-6 text-[#00E5FF] animate-pulse" /> RaasPass Scanner
           </h1>
           <button onClick={handleLogout} className="px-3.5 py-2 bg-white/10 rounded-[12px] text-white/80 hover:text-white hover:bg-white/20 flex items-center gap-2 text-[12px] font-[700] transition-all border border-white/10">
             <LogOut className="w-3.5 h-3.5" /> Logout

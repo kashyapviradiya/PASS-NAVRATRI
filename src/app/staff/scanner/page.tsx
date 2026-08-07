@@ -124,10 +124,9 @@ export default function ScannerDashboard() {
     }, 100);
   };
 
-  const checkGateMatch = (ticketType: string, currentGate: string) => {
-    const isVipTicket = ticketType.toLowerCase().includes('vip');
-    const isVipGate = currentGate.toLowerCase().includes('vip');
-    return isVipTicket === isVipGate;
+  const checkGateMatch = (ticket: any, currentGate: string) => {
+    if (!ticket.gateRestriction) return true;
+    return ticket.gateName === currentGate;
   };
 
   const handleScanResult = async (decodedText: string) => {
@@ -182,7 +181,7 @@ export default function ScannerDashboard() {
       const res = await fetch('/api/verify-ticket', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ticketId, token }),
+        body: JSON.stringify({ ticketId, token, gateName }),
       });
 
       const data = await res.json();
@@ -192,12 +191,12 @@ export default function ScannerDashboard() {
       setVerifying(false);
       
       if (data.status === 'valid') {
-        const isCorrectGate = checkGateMatch(data.ticket.ticketType, gateName);
+        const isCorrectGate = checkGateMatch(data.ticket, gateName);
         
         if (!isCorrectGate) {
           playBeep('error');
           setScanResult('wrong_gate');
-          setMessage('WRONG_GATE');
+          setMessage(`Wrong Gate – Please go to ${data.ticket.gateName || 'the assigned gate'}`);
           setCounts(prev => ({ ...prev, total: prev.total + 1, invalid: prev.invalid + 1 }));
         } else {
           playBeep('success');
@@ -205,6 +204,11 @@ export default function ScannerDashboard() {
           setMessage('Ticket is Valid. Ready for Check-in.');
           setCounts(prev => ({ ...prev, total: prev.total + 1, valid: prev.valid + 1 }));
         }
+      } else if (data.status === 'wrong_gate') {
+        playBeep('error');
+        setScanResult('wrong_gate');
+        setMessage(data.message || `Wrong Gate – Please go to ${data.ticket?.gateName || 'the assigned gate'}`);
+        setCounts(prev => ({ ...prev, total: prev.total + 1, invalid: prev.invalid + 1 }));
       } else if (data.status === 'already_used') {
         playBeep('error');
         setScanResult('already_used');
@@ -277,6 +281,7 @@ export default function ScannerDashboard() {
       case 'already_used': return 'from-blue-500 to-blue-600 shadow-blue-500/20';
       case 'cancelled': return 'from-gray-600 to-gray-700 shadow-gray-500/20';
       case 'wrong_gate': return 'from-orange-500 to-orange-600 shadow-orange-500/20';
+      case 'expired': return 'from-slate-500 to-slate-600 shadow-slate-500/20';
       default: return 'from-navratri-primary to-navratri-text shadow-navratri-primary/20';
     }
   };
@@ -288,6 +293,7 @@ export default function ScannerDashboard() {
       case 'already_used': return <CheckCircle2 className="w-16 h-16 text-white drop-shadow-md" />; // Using check for used because it's technically valid just already redeemed
       case 'cancelled': return <Ban className="w-16 h-16 text-white drop-shadow-md" />;
       case 'wrong_gate': return <AlertOctagon className="w-16 h-16 text-white drop-shadow-md" />;
+      case 'expired': return <Clock className="w-16 h-16 text-white drop-shadow-md" />;
       default: return <QrCode className="w-16 h-16 text-white drop-shadow-md" />;
     }
   };
@@ -324,7 +330,7 @@ export default function ScannerDashboard() {
               <option>Main Entrance A</option>
               <option>Main Entrance B</option>
               <option>VIP Gate 1</option>
-              <option>VIP Gate 2</option>
+              <option>Gate 3</option>
               <option>Artists & Crew</option>
             </select>
           </div>
@@ -387,6 +393,7 @@ export default function ScannerDashboard() {
                     {scanResult === 'already_used' && 'Already Checked In'}
                     {scanResult === 'cancelled' && 'Pass Cancelled'}
                     {scanResult === 'wrong_gate' && 'Wrong Gate'}
+                    {scanResult === 'expired' && 'Pass Expired'}
                   </h2>
                   <p className="text-white/90 font-[600] text-[16px]">{message}</p>
                 </div>
@@ -425,13 +432,54 @@ export default function ScannerDashboard() {
                         <p className="font-[700] text-navratri-text text-[15px] line-clamp-1">{ticket.eventName}</p>
                       </div>
                     </div>
+
+                    {/* Entry Count */}
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center border border-purple-100 shrink-0">
+                        <User className="w-5 h-5 text-purple-500" />
+                      </div>
+                      <div className="pt-0.5">
+                        <p className="text-[11px] text-navratri-muted uppercase tracking-widest font-[800] mb-1">Entry Count</p>
+                        <p className="font-[700] text-navratri-text text-[15px]">
+                          {(() => {
+                            const count = (ticket as any).entryCount || ((ticket.ticketType || '').toLowerCase().includes('couple') ? 2 : 1);
+                            return `${count} ${count > 1 ? 'People' : 'Person'}`;
+                          })()}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Gate Assignment */}
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center border border-amber-100 shrink-0">
+                        <MapPin className="w-5 h-5 text-amber-500" />
+                      </div>
+                      <div className="pt-0.5">
+                        <p className="text-[11px] text-navratri-muted uppercase tracking-widest font-[800] mb-1">Gate Assignment</p>
+                        <p className="font-[700] text-navratri-text text-[15px]">
+                          {(ticket as any).gateName ? `${(ticket as any).gateName}${(ticket as any).gateNumber ? ` (Gate ${(ticket as any).gateNumber})` : ''}` : 'No Gate Restriction'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Scan Timestamp */}
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-10 h-10 rounded-full bg-cyan-50 flex items-center justify-center border border-cyan-100 shrink-0">
+                        <Clock className="w-5 h-5 text-cyan-500" />
+                      </div>
+                      <div className="pt-0.5">
+                        <p className="text-[11px] text-navratri-muted uppercase tracking-widest font-[800] mb-1">Scan Time</p>
+                        <p className="font-[700] text-navratri-text text-[15px]">{new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</p>
+                      </div>
+                    </div>
+
                     {(ticket as any).entryTime && (
                       <div className="flex items-start gap-3.5">
                         <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center border border-blue-100 shrink-0">
                           <Clock className="w-5 h-5 text-blue-500" />
                         </div>
                         <div className="pt-0.5">
-                          <p className="text-[11px] text-navratri-muted uppercase tracking-widest font-[800] mb-1">Time of Entry</p>
+                          <p className="text-[11px] text-navratri-muted uppercase tracking-widest font-[800] mb-1">Original Entry Time</p>
                           <p className="font-[700] text-navratri-text text-[15px]">{new Date((ticket as any).entryTime).toLocaleString('en-IN')}</p>
                         </div>
                       </div>

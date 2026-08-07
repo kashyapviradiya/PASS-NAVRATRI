@@ -71,6 +71,12 @@ export async function POST(request: NextRequest) {
       endDate: data.endDate || '',
       status: data.status || 'draft',
       ticketTypes: data.ticketTypes || [],
+      mapLink: data.mapLink || '',
+      reportingTime: data.reportingTime || '',
+      organizerPhone: data.organizerPhone || '',
+      emergencyPhone: data.emergencyPhone || '',
+      venueInstructions: data.venueInstructions || '',
+      amenities: data.amenities || { parking: false, food: false, washroom: false, security: false },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

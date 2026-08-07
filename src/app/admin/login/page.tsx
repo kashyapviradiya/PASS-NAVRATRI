@@ -104,7 +104,7 @@ export default function AdminLogin() {
           </form>
 
           <div className="mt-8 text-center text-[12px] text-slate-400 font-[600]">
-            <p>&copy; {new Date().getFullYear()} RasPass Admin</p>
+            <p>&copy; {new Date().getFullYear()} RaasPass Admin</p>
           </div>
         </div>
       </div>

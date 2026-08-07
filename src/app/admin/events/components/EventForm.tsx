@@ -25,6 +25,13 @@ export default function EventForm({ initialData, isEdit }: EventFormProps) {
   const [endDate, setEndDate] = useState(initialData?.endDate || '');
   const [status, setStatus] = useState<Event['status']>(initialData?.status || 'draft');
 
+  const [mapLink, setMapLink] = useState(initialData?.mapLink || '');
+  const [reportingTime, setReportingTime] = useState(initialData?.reportingTime || '');
+  const [organizerPhone, setOrganizerPhone] = useState(initialData?.organizerPhone || '');
+  const [emergencyPhone, setEmergencyPhone] = useState(initialData?.emergencyPhone || '');
+  const [venueInstructions, setVenueInstructions] = useState(initialData?.venueInstructions || '');
+  const [amenities, setAmenities] = useState(initialData?.amenities || { parking: false, food: false, washroom: false, security: false });
+
   // Media
   const [bannerImage, setBannerImage] = useState<string>(initialData?.bannerImage || '');
   const [gallery, setGallery] = useState<string[]>(initialData?.gallery || []);
@@ -66,7 +73,13 @@ export default function EventForm({ initialData, isEdit }: EventFormProps) {
       soldQuantity: 0,
       remainingQuantity: 100,
       maxPerBooking: 6,
-      status: 'available'
+      status: 'available',
+      gateRestriction: false,
+      gateId: `gate_${Date.now()}`,
+      gateName: '',
+      gateNumber: '',
+      gateInstructions: '',
+      entryCount: 1
     }]);
   };
 
@@ -75,6 +88,11 @@ export default function EventForm({ initialData, isEdit }: EventFormProps) {
       if (tt.id === id) {
         if (field === 'totalInventory') {
           return { ...tt, totalInventory: value, remainingQuantity: value - tt.soldQuantity };
+        }
+        if (field === 'name') {
+          const lowerName = value.toLowerCase();
+          const autoEntry = (lowerName.includes('couple') || lowerName.includes('pair')) ? 2 : 1;
+          return { ...tt, name: value, entryCount: (tt.entryCount === undefined || tt.entryCount === 1) ? autoEntry : tt.entryCount };
         }
         return { ...tt, [field]: value };
       }
@@ -93,11 +111,26 @@ export default function EventForm({ initialData, isEdit }: EventFormProps) {
       return;
     }
 
+    // Validate Gate Management settings
+    for (const tt of ticketTypes) {
+      if (tt.gateRestriction) {
+        if (!tt.gateName || !tt.gateName.trim()) {
+          toast.error(`Gate Name is required for ticket type "${tt.name || 'Unnamed'}" because gate restriction is active.`);
+          return;
+        }
+        if (!tt.gateNumber || !tt.gateNumber.toString().trim()) {
+          toast.error(`Gate Number is required for ticket type "${tt.name || 'Unnamed'}" because gate restriction is active.`);
+          return;
+        }
+      }
+    }
+
     setLoading(true);
     const toastId = toast.loading(isEdit ? 'Updating event...' : 'Creating event...');
 
     const payload = {
       title, description, city, venue, address, startDate, endDate, status,
+      mapLink, reportingTime, organizerPhone, emergencyPhone, venueInstructions, amenities,
       bannerImage, gallery, ticketTypes
     };
 
@@ -210,6 +243,60 @@ export default function EventForm({ initialData, isEdit }: EventFormProps) {
           </div>
 
           <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-6">
+            <h2 className="text-lg font-bold text-gray-900 border-b border-gray-100 pb-4">Venue & Contact Details</h2>
+            
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Google Maps Link</label>
+              <div className="relative">
+                <input type="url" value={mapLink} onChange={e => setMapLink(e.target.value)} placeholder="https://maps.google.com/..." className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none font-medium text-gray-900" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Reporting Time</label>
+                <input type="time" value={reportingTime} onChange={e => setReportingTime(e.target.value)} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none font-medium text-gray-900" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Organizer Phone</label>
+                <input type="tel" value={organizerPhone} onChange={e => setOrganizerPhone(e.target.value)} placeholder="+91..." className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none font-medium text-gray-900" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Emergency Phone</label>
+                <input type="tel" value={emergencyPhone} onChange={e => setEmergencyPhone(e.target.value)} placeholder="+91..." className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none font-medium text-gray-900" />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">Venue Instructions</label>
+              <textarea value={venueInstructions} onChange={e => setVenueInstructions(e.target.value)} rows={3} placeholder="Any specific instructions for reaching the venue..." className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none text-sm text-gray-900"></textarea>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-6">
+            <h2 className="text-lg font-bold text-gray-900 border-b border-gray-100 pb-4">Amenities</h2>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex items-center gap-2 py-2">
+                <input type="checkbox" id="amenity-parking" checked={amenities.parking || false} onChange={e => setAmenities({...amenities, parking: e.target.checked})} className="rounded text-navratri-primary focus:ring-navratri-primary w-4 h-4" />
+                <label htmlFor="amenity-parking" className="text-sm font-bold text-gray-700">Parking Available</label>
+              </div>
+              <div className="flex items-center gap-2 py-2">
+                <input type="checkbox" id="amenity-food" checked={amenities.food || false} onChange={e => setAmenities({...amenities, food: e.target.checked})} className="rounded text-navratri-primary focus:ring-navratri-primary w-4 h-4" />
+                <label htmlFor="amenity-food" className="text-sm font-bold text-gray-700">Food Available</label>
+              </div>
+              <div className="flex items-center gap-2 py-2">
+                <input type="checkbox" id="amenity-washroom" checked={amenities.washroom || false} onChange={e => setAmenities({...amenities, washroom: e.target.checked})} className="rounded text-navratri-primary focus:ring-navratri-primary w-4 h-4" />
+                <label htmlFor="amenity-washroom" className="text-sm font-bold text-gray-700">Washroom Available</label>
+              </div>
+              <div className="flex items-center gap-2 py-2">
+                <input type="checkbox" id="amenity-security" checked={amenities.security || false} onChange={e => setAmenities({...amenities, security: e.target.checked})} className="rounded text-navratri-primary focus:ring-navratri-primary w-4 h-4" />
+                <label htmlFor="amenity-security" className="text-sm font-bold text-gray-700">Security Available</label>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-6">
             <div className="flex justify-between items-center border-b border-gray-100 pb-4">
               <h2 className="text-lg font-bold text-gray-900">Ticket Types</h2>
               <button type="button" onClick={addTicketType} className="flex items-center gap-1 text-sm font-bold text-navratri-primary hover:text-red-700 bg-red-50 px-3 py-1.5 rounded-lg">
@@ -248,6 +335,30 @@ export default function EventForm({ initialData, isEdit }: EventFormProps) {
                         <option value="hidden">Hidden</option>
                       </select>
                     </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">People per Pass (Entry Count)</label>
+                      <input type="number" min={1} value={tt.entryCount || 1} onChange={e => updateTicketType(tt.id, 'entryCount', Number(e.target.value))} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium" />
+                    </div>
+                    <div className="md:col-span-2 flex items-center gap-2 py-1 border-t border-gray-200/50 mt-2 pt-2">
+                      <input type="checkbox" id={`gate-restriction-${tt.id}`} checked={tt.gateRestriction || false} onChange={e => updateTicketType(tt.id, 'gateRestriction', e.target.checked)} className="rounded text-navratri-primary focus:ring-navratri-primary w-4 h-4" />
+                      <label htmlFor={`gate-restriction-${tt.id}`} className="text-xs font-bold text-gray-700">Enable Gate Restriction</label>
+                    </div>
+                    {tt.gateRestriction && (
+                      <>
+                        <div className="space-y-1 animate-fade-in-up">
+                          <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Gate Name *</label>
+                          <input type="text" value={tt.gateName || ''} onChange={e => updateTicketType(tt.id, 'gateName', e.target.value)} placeholder="e.g. VIP Gate 1" className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium" />
+                        </div>
+                        <div className="space-y-1 animate-fade-in-up">
+                          <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Gate Number *</label>
+                          <input type="text" value={tt.gateNumber || ''} onChange={e => updateTicketType(tt.id, 'gateNumber', e.target.value)} placeholder="e.g. 1" className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium" />
+                        </div>
+                        <div className="md:col-span-2 space-y-1 animate-fade-in-up">
+                          <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Gate/Entry Instructions (Optional)</label>
+                          <textarea value={tt.gateInstructions || ''} onChange={e => updateTicketType(tt.id, 'gateInstructions', e.target.value)} placeholder="e.g. Please arrive 30 minutes early." rows={2} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium" />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               ))}

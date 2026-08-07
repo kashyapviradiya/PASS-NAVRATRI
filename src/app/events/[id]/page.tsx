@@ -7,7 +7,6 @@ import { formatCurrency } from '@/lib/utils';
 import { MapPin, Calendar, Clock, Music, AlertCircle, ChevronRight, ChevronDown, ChevronUp, ExternalLink, Share2, Shield, Users, User, Star, Image as ImageIcon, Heart, CheckCircle } from 'lucide-react';
 import type { Event } from '@/types';
 import toast from 'react-hot-toast';
-import { motion, AnimatePresence } from 'framer-motion';
 import EventCard from '@/components/EventCard';
 import Link from 'next/link';
 
@@ -109,11 +108,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
         <div className="absolute inset-0 bg-gradient-to-r from-navratri-darkBg/90 via-navratri-darkBg/30 to-transparent z-10"></div>
         
         <div className="absolute bottom-12 left-0 right-0 px-4 sm:px-6 lg:px-8 max-w-[1280px] mx-auto z-20 flex justify-between items-end">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-3xl space-y-4"
-          >
+          <div className="max-w-3xl space-y-4 animate-fade-in-up">
             <div className="flex flex-wrap items-center gap-3">
               <span className="bg-gradient-premium shadow-premium text-white text-[10px] font-[700] px-3 py-1.5 rounded-full tracking-widest uppercase">Garba & Navratri</span>
               <span className="glass border border-white/20 text-white text-[10px] font-[700] px-3 py-1.5 rounded-full tracking-widest uppercase">{event.city}</span>
@@ -137,7 +132,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
                 <User className="w-5 h-5 text-navratri-accent" /> All Ages
               </div>
             </div>
-          </motion.div>
+          </div>
           
           <div className="hidden md:flex items-center gap-3">
             <button onClick={handleFavourite} className="w-12 h-12 flex items-center justify-center glass border border-white/20 text-white rounded-full hover:bg-navratri-accent hover:border-transparent transition-all shadow-glass">
@@ -245,11 +240,15 @@ export default function EventDetails({ params }: { params: { id: string } }) {
                       <span className="font-[600] text-navratri-text text-[15px]">{faq.q}</span>
                       {openFaq === idx ? <ChevronUp className="w-5 h-5 text-navratri-primary" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
                     </button>
-                    {openFaq === idx && (
+                    <div 
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                        openFaq === idx ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+                      }`}
+                    >
                       <div className="px-5 md:px-6 pb-6 text-navratri-muted text-[15px] font-[500] leading-relaxed border-t border-navratri-lightGrey pt-4">
                         {faq.a}
                       </div>
-                    )}
+                    </div>
                   </div>
                 ))}
               </div>

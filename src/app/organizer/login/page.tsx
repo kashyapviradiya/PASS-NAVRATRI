@@ -102,7 +102,7 @@ export default function OrganizerLogin() {
           </form>
 
           <div className="mt-8 text-center text-[12px] text-navratri-muted font-[600]">
-            <p>&copy; {new Date().getFullYear()} RasPass</p>
+            <p>&copy; {new Date().getFullYear()} RaasPass</p>
           </div>
         </div>
       </div>

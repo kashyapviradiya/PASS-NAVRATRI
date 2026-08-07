@@ -4,7 +4,7 @@ import { Ticket } from '@/types';
 
 export async function POST(request: NextRequest) {
   try {
-    const { ticketId, token } = await request.json();
+    const { ticketId, token, gateName } = await request.json();
 
     console.log(`[Scanner API] Verification requested for ticketId: ${ticketId}`);
 
@@ -100,6 +100,18 @@ export async function POST(request: NextRequest) {
         message: `Duplicate Scan - Ticket Already Used at ${new Date(ticket.checkedInAt || (ticket as any).entryTime || Date.now()).toLocaleString()} by ${ticket.scannedBy || 'unknown staff'} at ${ticket.gateName || 'unknown gate'}`, 
         ticket 
       }, { status: 200 });
+    }
+
+    // Enforce Gate Restriction check
+    if (ticket.gateRestriction) {
+      if (ticket.gateName && gateName && ticket.gateName !== gateName) {
+        return NextResponse.json({
+          success: false,
+          status: 'wrong_gate',
+          message: `Wrong Gate – Please go to ${ticket.gateName}`,
+          ticket
+        }, { status: 200 });
+      }
     }
 
     return NextResponse.json({ success: true, status: 'valid', message: 'Ticket is valid.', ticket });

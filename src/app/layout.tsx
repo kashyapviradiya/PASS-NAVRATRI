@@ -17,7 +17,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'RasPass | Premium Event Ticketing',
+  title: 'RaasPass | Premium Event Ticketing',
   description: 'Book your passes for the best events. Premium, secure, and fast ticketing experience.',
   keywords: 'events, tickets, booking, pass, premium, concerts, nightlife',
 };

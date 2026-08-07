@@ -35,7 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="w-8 h-8 bg-navratri-accent/10 rounded-[8px] flex items-center justify-center border border-navratri-accent/20">
             <Sparkles className="w-4 h-4 text-navratri-accent" />
           </div>
-          <span className="font-display font-[700] text-navratri-text text-[18px] leading-none tracking-tight">RasPass<br/><span className="text-[10px] text-navratri-muted tracking-widest uppercase font-sans">Admin</span></span>
+          <span className="font-display font-[700] text-navratri-text text-[18px] leading-none tracking-tight">RaasPass<br/><span className="text-[10px] text-navratri-muted tracking-widest uppercase font-sans">Admin</span></span>
         </div>
         <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-navratri-muted bg-navratri-bg rounded-[8px] hover:text-navratri-text transition-colors">
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -52,7 +52,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Sparkles className="w-5 h-5 text-navratri-accent" />
           </div>
           <div>
-            <h1 className="font-display font-[700] text-[20px] text-navratri-text leading-tight tracking-tight">RasPass</h1>
+            <h1 className="font-display font-[700] text-[20px] text-navratri-text leading-tight tracking-tight">RaasPass</h1>
             <p className="text-[10px] text-navratri-muted font-[700] tracking-widest uppercase">Admin Panel</p>
           </div>
         </div>
@@ -107,7 +107,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="flex items-center gap-3">
               <div className="text-right">
                 <p className="text-[14px] font-[700] text-navratri-text leading-none">Super Admin</p>
-                <p className="text-[11px] text-navratri-muted font-[600] mt-1">admin@raspass.com</p>
+                <p className="text-[11px] text-navratri-muted font-[600] mt-1">admin@raaspass.com</p>
               </div>
               <div className="w-10 h-10 bg-gradient-premium rounded-[12px] flex items-center justify-center shadow-sm">
                 <span className="font-display font-[700] text-white">A</span>

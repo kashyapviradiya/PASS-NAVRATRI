@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Shield, Loader2, Lock } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 export default function PaymentProcessing() {
   const router = useRouter();
@@ -101,10 +100,8 @@ export default function PaymentProcessing() {
 
   return (
     <div className="bg-[#F7F7F8] min-h-screen flex items-center justify-center p-4 font-sans selection:bg-[#9333EA] selection:text-white">
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="bg-white rounded-[2rem] p-10 md:p-16 max-w-md w-full text-center shadow-xl border border-gray-100"
+      <div 
+        className="bg-white rounded-[2rem] p-10 md:p-16 max-w-md w-full text-center shadow-xl border border-gray-100 animate-scale-in"
       >
         
         <div className="relative w-24 h-24 mx-auto mb-8">
@@ -138,7 +135,7 @@ export default function PaymentProcessing() {
           </div>
         </div>
 
-      </motion.div>
+      </div>
     </div>
   );
 }

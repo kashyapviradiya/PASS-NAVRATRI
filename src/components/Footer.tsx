@@ -24,13 +24,13 @@ export default function Footer() {
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* ── Main grid ───────────────────────────────────────── */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-12 md:gap-8 mb-16 text-left">
           {/* Brand column */}
-          <div className="md:col-span-4">
+          <div className="md:col-span-3">
             <Link href="/" className="inline-block mb-6 group">
               <img
                 src={logoImg.src}
-                alt="RasPass Logo"
+                alt="RaasPass Logo"
                 className="h-10 w-auto object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity duration-300"
               />
             </Link>
@@ -39,7 +39,7 @@ export default function Footer() {
               Your premium pass to unforgettable events.
             </p>
 
-            {/* Social icons – inline under the tagline on mobile */}
+            {/* Social icons */}
             <div className="flex items-center gap-3 mt-8">
               {[
                 {
@@ -105,7 +105,7 @@ export default function Footer() {
           </div>
 
           {/* Explore */}
-          <div className="md:col-span-2 md:col-start-6">
+          <div className="md:col-span-2">
             <h4 className="font-display font-[800] text-[#F8FAFC] text-[14px] uppercase tracking-widest mb-6">
               Explore
             </h4>
@@ -123,9 +123,6 @@ export default function Footer() {
                       text-[14px] font-[500] transition-all duration-300
                       hover:pl-1
                     "
-                    style={{
-                      /* Applied only on hover via the class above for text-transparent */
-                    }}
                     onMouseEnter={(e) => {
                       (e.currentTarget as HTMLElement).style.backgroundImage =
                         'linear-gradient(90deg, #A78BFA, #00E5FF)';
@@ -210,6 +207,26 @@ export default function Footer() {
               ))}
             </ul>
           </div>
+
+          {/* Newsletter Column */}
+          <div className="md:col-span-3 sm:col-span-2">
+            <h4 className="font-display font-[800] text-[#F8FAFC] text-[14px] uppercase tracking-widest mb-6">
+              Stay Updated
+            </h4>
+            <p className="text-[#CBD5E1] text-[13px] font-[500] leading-relaxed mb-4">
+              Subscribe to get notified about premium garba nights and Sunburn arena events.
+            </p>
+            <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="email"
+                placeholder="your@email.com"
+                className="w-full bg-white/[0.06] border border-white/10 hover:border-white/20 focus:border-purple-400/40 rounded-full px-4.5 py-2.5 text-[13px] text-white focus:outline-none focus:ring-1 focus:ring-purple-400/20 placeholder-slate-500 transition-all"
+              />
+              <button className="bg-gradient-to-r from-[#7C3AED] to-[#FF4D6D] hover:shadow-[0_8px_20px_rgba(124,58,237,0.3)] hover:-translate-y-0.5 active:scale-95 transition-all text-white font-[800] text-[13px] px-5 py-2.5 rounded-full shrink-0">
+                Join
+              </button>
+            </form>
+          </div>
         </div>
 
         {/* ── Gradient divider ────────────────────────────────── */}
@@ -224,7 +241,7 @@ export default function Footer() {
         {/* ── Bottom bar ──────────────────────────────────────── */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-5">
           <p className="text-[#94A3B8] text-[13px] font-[500] tracking-wide">
-            © {new Date().getFullYear()} RasPass. All rights reserved.
+            © {new Date().getFullYear()} RaasPass. All rights reserved.
           </p>
 
           <p className="text-[#64748B] text-[12px] font-[500] tracking-wide hidden md:block">

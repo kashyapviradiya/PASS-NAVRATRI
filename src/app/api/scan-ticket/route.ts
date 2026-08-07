@@ -83,6 +83,19 @@ export async function POST(request: NextRequest) {
         throw new Error('WRONG_EVENT');
       }
 
+      // Enforce Gate Restriction check
+      if (ticket.gateRestriction) {
+        if (ticket.gateName && ticket.gateName !== gateName) {
+          throw new Error(JSON.stringify({
+            code: 'WRONG_GATE',
+            correctGate: ticket.gateName,
+            customerName: ticket.customerName,
+            bookingId: ticket.bookingId,
+            ticketType: ticket.ticketType
+          }));
+        }
+      }
+
       // Check if ticket is already used
       if (ticket.status === 'used' || ticket.checkedIn === true) {
         // We throw a specific error with data we can parse to show the RED warning
@@ -149,18 +162,31 @@ export async function POST(request: NextRequest) {
 
     try {
       const parsedError = JSON.parse(error.message);
-      if (parsedError.code === 'ALREADY_USED') {
-        return NextResponse.json({
-          success: false,
-          code: 'ALREADY_USED',
-          ticket: {
-            customerName: parsedError.customerName,
-            bookingId: parsedError.bookingId,
-            ticketType: parsedError.ticketType
-          },
-          message: 'Ticket already used.'
-        }, { status: 400 });
-      }
+        if (parsedError.code === 'ALREADY_USED') {
+          return NextResponse.json({
+            success: false,
+            code: 'ALREADY_USED',
+            ticket: {
+              customerName: parsedError.customerName,
+              bookingId: parsedError.bookingId,
+              ticketType: parsedError.ticketType
+            },
+            message: 'Ticket already used.'
+          }, { status: 400 });
+        }
+        if (parsedError.code === 'WRONG_GATE') {
+          return NextResponse.json({
+            success: false,
+            code: 'WRONG_GATE',
+            ticket: {
+              customerName: parsedError.customerName,
+              bookingId: parsedError.bookingId,
+              ticketType: parsedError.ticketType,
+              correctGate: parsedError.correctGate
+            },
+            message: `Wrong Gate – Please go to ${parsedError.correctGate}`
+          }, { status: 400 });
+        }
     } catch (e) {
       // Not JSON
     }

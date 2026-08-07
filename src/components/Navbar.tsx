@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, Ticket } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 // Logo import
 import logoImg from '../../logo 1.png';
@@ -27,23 +26,20 @@ export default function Navbar() {
   ];
 
   return (
-    <motion.nav 
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <nav 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       scrolled
-        ? 'bg-white/90 backdrop-blur-xl shadow-card border-b border-navratri-lightGrey' 
-        : 'bg-white/80 backdrop-blur-xl border-b border-transparent'
+        ? 'bg-white/85 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.04)] border-b border-white/20' 
+        : 'bg-white/70 backdrop-blur-md border-b border-transparent'
     }`}>
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[72px]">
+        <div className="flex items-center justify-between h-[64px] sm:h-[76px]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <img 
               src={logoImg.src} 
-              alt="RasPass Logo" 
-              className={`h-9 w-auto object-contain transition-all duration-300`} 
+              alt="RaasPass Logo" 
+              className="h-9 sm:h-11 w-auto object-contain transition-all duration-300 transform group-hover:scale-[1.02]" 
             />
           </Link>
 
@@ -54,42 +50,49 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <Link href="/events" className="ml-4 px-6 py-2.5 bg-gradient-premium text-white font-[700] rounded-button hover:shadow-glow-purple transition-all duration-300 text-[14px] shadow-sm">
+            <Link href="/events" className="ml-4 px-6.5 py-2.5 bg-gradient-premium text-white font-[800] rounded-full hover:shadow-[0_8px_24px_rgba(124,58,237,0.25)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 text-[14px] shadow-sm">
               Explore Events
             </Link>
           </div>
 
           {/* Mobile Actions */}
-          <div className="flex items-center gap-4 lg:hidden">
-            <Link href="/events" className="px-4 py-2 bg-gradient-premium text-white font-[700] rounded-button hover:shadow-glow-purple transition-colors text-[13px] shadow-sm">
+          <div className="flex items-center gap-3.5 lg:hidden">
+            <Link href="/events" className="px-5 py-2.5 bg-gradient-premium text-white font-[800] rounded-full hover:shadow-[0_8px_24px_rgba(124,58,237,0.25)] active:scale-95 transition-all text-[13px] shadow-sm flex items-center justify-center">
               Explore
             </Link>
-            <button onClick={() => setIsOpen(!isOpen)} className={`p-1.5 transition-colors text-navratri-text`}>
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <button 
+              onClick={() => setIsOpen(!isOpen)} 
+              className="p-2 bg-slate-50 border border-slate-100 hover:bg-slate-100/50 rounded-xl transition-all text-navratri-text flex items-center justify-center"
+            >
+              {isOpen ? <X className="w-5.5 h-5.5 text-navratri-text" /> : <Menu className="w-5.5 h-5.5 text-navratri-text" />}
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white/95 backdrop-blur-xl border-b border-navratri-lightGrey overflow-hidden"
-          >
-            <div className="px-6 pt-2 pb-8 space-y-2">
-              {navLinks.map((link) => (
-                <Link key={link.name} href={link.href} onClick={() => setIsOpen(false)} className={`block px-4 py-3 rounded-xl transition-colors ${pathname === link.href ? 'text-navratri-primary font-[700] bg-navratri-primary/5' : 'text-navratri-muted font-[600] hover:bg-navratri-lightGrey/50 hover:text-navratri-text'}`}>
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+      <div 
+        className={`lg:hidden bg-white/95 backdrop-blur-xl border-b border-navratri-lightGrey transition-all duration-300 ease-in-out overflow-hidden ${
+          isOpen ? 'max-h-[300px] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="px-6 pt-3 pb-8 space-y-2">
+          {navLinks.map((link) => (
+            <Link 
+              key={link.name} 
+              href={link.href} 
+              onClick={() => setIsOpen(false)} 
+              className={`block px-4 py-3.5 rounded-xl transition-colors text-[15px] ${
+                pathname === link.href 
+                  ? 'text-navratri-primary font-[800] bg-navratri-primary/5' 
+                  : 'text-navratri-muted font-[600] hover:bg-navratri-lightGrey/50 hover:text-navratri-text'
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </nav>
   );
 }
