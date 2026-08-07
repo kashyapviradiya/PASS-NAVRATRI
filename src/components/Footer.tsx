@@ -243,10 +243,6 @@ export default function Footer() {
           <p className="text-[#94A3B8] text-[13px] font-[500] tracking-wide">
             © {new Date().getFullYear()} RaasPass. All rights reserved.
           </p>
-
-          <p className="text-[#64748B] text-[12px] font-[500] tracking-wide hidden md:block">
-            Built with ♥ for unforgettable nights
-          </p>
         </div>
       </div>
     </footer>

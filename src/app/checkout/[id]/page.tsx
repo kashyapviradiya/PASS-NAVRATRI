@@ -39,8 +39,8 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
 
   if (!event) {
     return (
-      <div className="min-h-screen bg-[#F7F7F8] flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-navratri-primary border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-gradient-to-b from-[#0F172A] to-[#1E1B4B] pb-24 font-sans text-white flex items-center justify-center">
+        <div className="w-16 h-16 border-4 border-[#00E5FF] border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -161,41 +161,41 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
             </div>
 
             {/* Guest Details */}
-            <div className="bg-white rounded-card p-8 shadow-card border border-navratri-lightGrey">
-              <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-6">Guest Details</h2>
+            <div className="bg-white/[0.03] backdrop-blur-[24px] rounded-card p-8 shadow-glass border border-white/10 relative z-10 overflow-hidden">
+              <h2 className="text-[24px] font-display font-[700] text-white mb-6">Guest Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">Full Name *</label>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your full name" className="w-full pl-12 pr-4 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 bg-slate-50 font-[500] text-navratri-text transition-all" />
+                  <label className="block text-[11px] font-[800] text-slate-400 uppercase tracking-widest mb-2">Full Name *</label>
+                  <div className="relative group">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00E5FF] transition-colors" />
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your full name" className="w-full pl-12 pr-4 py-4 border border-white/10 rounded-[16px] focus:outline-none focus:border-[#00E5FF]/50 focus:ring-1 focus:ring-[#00E5FF]/50 bg-white/5 font-[500] text-white placeholder-slate-500 transition-all shadow-inner" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">Mobile Number *</label>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
-                    <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))} placeholder="10-digit mobile number" className="w-full pl-12 pr-4 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 bg-slate-50 font-[500] text-navratri-text transition-all" />
+                  <label className="block text-[11px] font-[800] text-slate-400 uppercase tracking-widest mb-2">Mobile Number *</label>
+                  <div className="relative group">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00E5FF] transition-colors" />
+                    <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))} placeholder="10-digit mobile number" className="w-full pl-12 pr-4 py-4 border border-white/10 rounded-[16px] focus:outline-none focus:border-[#00E5FF]/50 focus:ring-1 focus:ring-[#00E5FF]/50 bg-white/5 font-[500] text-white placeholder-slate-500 transition-all shadow-inner" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">Email Address *</label>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" className="w-full pl-12 pr-4 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 bg-slate-50 font-[500] text-navratri-text transition-all" />
+                  <label className="block text-[11px] font-[800] text-slate-400 uppercase tracking-widest mb-2">Email Address *</label>
+                  <div className="relative group">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00E5FF] transition-colors" />
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="your@email.com" className="w-full pl-12 pr-4 py-4 border border-white/10 rounded-[16px] focus:outline-none focus:border-[#00E5FF]/50 focus:ring-1 focus:ring-[#00E5FF]/50 bg-white/5 font-[500] text-white placeholder-slate-500 transition-all shadow-inner" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">City *</label>
-                  <div className="relative">
-                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
-                    <select value={city} onChange={(e) => setCity(e.target.value)} className="w-full pl-12 pr-10 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 appearance-none cursor-pointer bg-slate-50 font-[500] text-navratri-text transition-all">
+                  <label className="block text-[11px] font-[800] text-slate-400 uppercase tracking-widest mb-2">City *</label>
+                  <div className="relative group">
+                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-[#00E5FF] transition-colors" />
+                    <select value={city} onChange={(e) => setCity(e.target.value)} className="w-full pl-12 pr-10 py-4 border border-white/10 rounded-[16px] focus:outline-none focus:border-[#00E5FF]/50 focus:ring-1 focus:ring-[#00E5FF]/50 appearance-none cursor-pointer bg-white/5 font-[500] text-white placeholder-slate-500 transition-all shadow-inner [&>option]:bg-[#1E1B4B] [&>option]:text-white">
                       <option value="">Select city</option>
                       {CITIES.filter(c => c !== 'All Cities').map(c => (
                         <option key={c} value={c}>{c}</option>
                       ))}
                     </select>
-                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted pointer-events-none" />
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
                   </div>
                 </div>
               </div>
@@ -204,45 +204,45 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
           
           {/* Right Column: Order Summary */}
           <div>
-            <div className="lg:sticky lg:top-28 bg-white rounded-card p-8 shadow-card hover:shadow-premium transition-shadow duration-500 border border-navratri-lightGrey space-y-8 relative overflow-hidden">
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-premium"></div>
-              <h2 className="text-[24px] font-display font-[700] text-navratri-text">Order Summary</h2>
+            <div className="lg:sticky lg:top-28 bg-white/[0.03] backdrop-blur-[24px] rounded-[24px] p-8 shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-white/10 space-y-8 relative overflow-hidden">
+              <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-premium"></div>
+              <h2 className="text-[24px] font-display font-[700] text-white">Order Summary</h2>
 
               <div className="space-y-5">
                 {bookingPasses.map(pass => (
                   <div key={pass.ticketTypeId} className="flex justify-between items-start text-[15px]">
                     <div>
-                      <span className="text-navratri-text font-[700]">{pass.ticketTypeName}</span>
-                      <p className="text-navratri-muted mt-1.5 font-[500]">Qty: {pass.quantity}</p>
+                      <span className="text-white font-[700]">{pass.ticketTypeName}</span>
+                      <p className="text-[#00E5FF] mt-1 font-[600]">Qty: {pass.quantity}</p>
                     </div>
-                    <span className="font-[700] text-navratri-text">{formatCurrency(pass.subtotal)}</span>
+                    <span className="font-[700] text-white">{formatCurrency(pass.subtotal)}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="border-t border-navratri-lightGrey pt-6 space-y-4">
+              <div className="border-t border-white/10 pt-6 space-y-4">
                 <div className="flex justify-between items-center text-[15px]">
-                  <span className="text-navratri-muted font-[600]">Subtotal</span>
-                  <span className="font-[700] text-navratri-text">{formatCurrency(totalAmount)}</span>
+                  <span className="text-slate-300 font-[500]">Subtotal</span>
+                  <span className="font-[700] text-white">{formatCurrency(totalAmount)}</span>
                 </div>
                 <div className="flex justify-between items-center text-[15px]">
-                  <span className="text-navratri-muted font-[600] flex items-center gap-1.5">Convenience Fee <span className="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-navratri-muted">i</span></span>
-                  <span className="font-[700] text-navratri-text">{formatCurrency(convenienceFee)}</span>
+                  <span className="text-slate-300 font-[500] flex items-center gap-1.5">Convenience Fee <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-slate-300">i</span></span>
+                  <span className="font-[700] text-white">{formatCurrency(convenienceFee)}</span>
                 </div>
               </div>
 
-              <div className="border-t border-navratri-lightGrey pt-6 pb-2">
+              <div className="border-t border-white/10 pt-6 pb-2">
                 <div className="flex justify-between items-end">
-                  <span className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">Total Amount</span>
+                  <span className="text-[11px] font-[800] text-slate-400 uppercase tracking-widest">Total Amount</span>
                   <span className="text-[32px] font-display font-[800] text-transparent bg-clip-text bg-gradient-premium tracking-tight">{formatCurrency(grandTotal)}</span>
                 </div>
               </div>
 
               {/* Terms */}
-              <label className="flex items-start gap-4 cursor-pointer bg-slate-50 p-5 rounded-[20px] border border-navratri-lightGrey hover:border-navratri-primary/30 transition-colors">
-                <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 w-5 h-5 accent-navratri-primary rounded border-navratri-lightGrey" />
-                <span className="text-[12px] text-navratri-muted font-[500] leading-relaxed">
-                  I agree to the <span className="text-navratri-primary font-[700] underline">Terms & Conditions</span>. Tickets are non-transferable.
+              <label className="flex items-start gap-4 cursor-pointer bg-white/5 p-5 rounded-[20px] border border-white/10 hover:border-[#00E5FF]/50 hover:bg-white/10 transition-all">
+                <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 w-5 h-5 accent-[#00E5FF] rounded border-white/20 bg-white/10" />
+                <span className="text-[12px] text-slate-300 font-[500] leading-relaxed">
+                  I agree to the <span className="text-white font-[700] underline">Terms & Conditions</span>. Tickets are non-transferable.
                 </span>
               </label>
 
@@ -259,12 +259,12 @@ export default function CheckoutPage({ params }: { params: { id: string } }) {
                 )}
               </button>
 
-              <div className="bg-green-50 rounded-[16px] p-4 flex flex-col gap-3 border border-green-100">
-                <div className="flex items-center gap-2 text-[12px] text-green-700 font-[600]">
+              <div className="bg-emerald-500/10 rounded-[16px] p-4 flex flex-col gap-3 border border-emerald-500/20 shadow-inner">
+                <div className="flex items-center gap-2 text-[12px] text-emerald-400 font-[700]">
                   <Shield className="w-4 h-4" />
                   100% Safe & Secure Payments
                 </div>
-                <div className="flex items-center gap-2 text-[12px] text-green-700 font-[600]">
+                <div className="flex items-center gap-2 text-[12px] text-emerald-400 font-[700]">
                   <CheckCircle2 className="w-4 h-4" />
                   Instant QR Ticket Generation
                 </div>

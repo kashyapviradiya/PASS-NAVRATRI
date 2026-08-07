@@ -130,14 +130,13 @@ export default function AdminDashboard() {
           <p className="text-navratri-muted font-[500] text-[15px] mt-1">Welcome back to the Admin Dashboard.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <button onClick={exportCSV} className="flex items-center gap-2 bg-white border border-navratri-lightGrey text-navratri-text hover:bg-slate-50 px-5 py-2.5 rounded-[12px] text-[14px] font-[700] shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
+          <button onClick={exportCSV} className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300 px-5 py-2.5 rounded-[12px] text-[14px] font-[700] shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
             <Download className="w-4 h-4" /> Export CSV
           </button>
-          <Link href="/" target="_blank" className="flex items-center gap-2 bg-white border border-navratri-lightGrey text-navratri-text hover:bg-slate-50 px-5 py-2.5 rounded-[12px] text-[14px] font-[700] shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
+          <Link href="/" target="_blank" className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300 px-5 py-2.5 rounded-[12px] text-[14px] font-[700] shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
             <ExternalLink className="w-4 h-4" /> Public Site
           </Link>
-          <Link href="/admin/events/new" className="flex items-center gap-2 bg-gradient-premium text-white px-5 py-2.5 rounded-[12px] text-[14px] font-[700] shadow-premium hover:shadow-lg transition-all hover:-translate-y-1 relative overflow-hidden group">
-            <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
+          <Link href="/admin/events/new" className="flex items-center gap-2 bg-[#0F172A] text-white hover:bg-slate-800 px-5 py-2.5 rounded-[12px] text-[14px] font-[700] shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 relative overflow-hidden">
             <span className="relative z-10 flex items-center gap-2"><Plus className="w-4 h-4" /> Create Event</span>
           </Link>
         </div>
@@ -146,15 +145,16 @@ export default function AdminDashboard() {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
         {statCards.map((stat, idx) => (
-          <div key={idx} className="bg-white/80 backdrop-blur-md rounded-card p-6 shadow-card hover:shadow-card-hover border border-slate-100 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
-            <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${stat.gradient}`} />
-            <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3 group-hover:scale-110 transition-transform duration-500"></div>
-            <div className="relative z-10 pl-2">
-              <div className="w-12 h-12 bg-slate-50 rounded-[12px] flex items-center justify-center mb-4 border border-slate-100 text-slate-600">
-                <stat.icon className="w-6 h-6" />
+          <div key={idx} className="bg-white rounded-[20px] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] border border-slate-100/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+            <div className={`absolute left-0 top-0 bottom-0 w-1 ${stat.gradient}`} />
+            <div className="relative z-10 pl-3">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-12 h-12 bg-slate-50 rounded-[12px] flex items-center justify-center border border-slate-100 text-slate-500 group-hover:scale-110 group-hover:text-slate-800 transition-all duration-300">
+                  <stat.icon className="w-5 h-5" />
+                </div>
               </div>
-              <p className="text-[36px] font-display font-[800] tracking-tight mb-1 text-slate-800">{stat.value}</p>
-              <p className="text-[12px] font-[700] uppercase tracking-widest text-slate-400">{stat.label}</p>
+              <p className="text-[32px] font-display font-[800] tracking-tight mb-1 text-slate-800 leading-none">{stat.value}</p>
+              <p className="text-[12px] font-[700] uppercase tracking-widest text-slate-400 mt-2">{stat.label}</p>
             </div>
           </div>
         ))}

@@ -30,7 +30,7 @@ export default function EventCard({ event }: EventCardProps) {
   const progress = totalInventory > 0 ? ((totalSold / totalInventory) * 100) : 0;
 
   return (
-    <Link href={`/events/${event.id}`} className="group block bg-white rounded-[28px] shadow-[0_8px_32px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_48px_rgba(124,58,237,0.12)] overflow-hidden transition-all duration-500 hover:-translate-y-2 border border-slate-100/90 active:scale-[0.99] flex flex-col h-full relative z-10">
+    <Link href={`/events/${event.id}`} className="group block bg-white rounded-[28px] shadow-[0_8px_32px_rgba(0,0,0,0.03)] hover:shadow-[0_24px_64px_rgba(124,58,237,0.15)] overflow-hidden transition-all duration-500 hover:-translate-y-1.5 border border-slate-100/90 active:scale-[0.99] flex flex-col h-full relative z-10">
       {/* Event Image */}
       <div className="aspect-[16/10] relative overflow-hidden bg-slate-50 shrink-0">
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent z-10"></div>
@@ -77,8 +77,8 @@ export default function EventCard({ event }: EventCardProps) {
             <Calendar className="w-4 h-4 mr-2.5 text-navratri-primary shrink-0 opacity-80" />
             <span>{new Date(event.startDate).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</span>
           </div>
-          <div className="flex items-center text-[13.5px] font-[500] text-navratri-muted">
-            <MapPin className="w-4 h-4 mr-2.5 text-navratri-primary shrink-0 opacity-80" />
+          <div className="flex items-center text-[13.5px] font-[500] text-slate-500">
+            <MapPin className="w-4 h-4 mr-2.5 text-[#00E5FF] shrink-0 opacity-80" />
             <span className="truncate">{event.venue}</span>
           </div>
         </div>
@@ -102,8 +102,9 @@ export default function EventCard({ event }: EventCardProps) {
               <p className="text-[24px] font-display font-[850] text-navratri-text">{formatCurrency(lowestPrice)}</p>
             </div>
             
-            <div className="w-11 h-11 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-gradient-to-r group-hover:from-[#7C3AED] group-hover:to-[#FF4D6D] group-hover:border-transparent group-hover:shadow-[0_8px_20px_rgba(124,58,237,0.3)] transition-all duration-300">
-              <Ticket className="w-4 h-4 text-navratri-muted group-hover:text-white transition-colors" />
+            <div className="bg-slate-50 border border-slate-100 group-hover:bg-gradient-premium group-hover:border-transparent text-slate-400 group-hover:text-white font-[700] px-4 py-2 rounded-full flex items-center justify-center gap-1.5 transition-all duration-300 group-hover:shadow-[0_8px_20px_rgba(124,58,237,0.3)] text-[13px]">
+              <Ticket className="w-3.5 h-3.5 transition-colors" />
+              <span>Book</span>
             </div>
           </div>
         </div>

@@ -30,30 +30,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-navratri-bg font-sans flex flex-col md:flex-row selection:bg-navratri-accent selection:text-white">
       
       {/* Mobile Header & Menu Toggle */}
-      <div className="md:hidden bg-white/80 backdrop-blur-md border-b border-navratri-lightGrey/50 p-4 flex items-center justify-between sticky top-0 z-50 shadow-sm">
+      <div className="md:hidden bg-[#0F172A] p-4 flex items-center justify-between sticky top-0 z-50 shadow-sm border-b border-white/10">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-navratri-accent/10 rounded-[8px] flex items-center justify-center border border-navratri-accent/20">
-            <Sparkles className="w-4 h-4 text-navratri-accent" />
+          <div className="w-8 h-8 bg-[#00E5FF]/10 rounded-[8px] flex items-center justify-center border border-[#00E5FF]/20">
+            <Sparkles className="w-4 h-4 text-[#00E5FF]" />
           </div>
-          <span className="font-display font-[700] text-navratri-text text-[18px] leading-none tracking-tight">RaasPass<br/><span className="text-[10px] text-navratri-muted tracking-widest uppercase font-sans">Admin</span></span>
+          <span className="font-display font-[700] text-white text-[18px] leading-none tracking-tight">RaasPass<br/><span className="text-[10px] text-slate-400 tracking-widest uppercase font-sans">Admin</span></span>
         </div>
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-navratri-muted bg-navratri-bg rounded-[8px] hover:text-navratri-text transition-colors">
+        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-slate-400 bg-white/5 rounded-[8px] hover:text-white transition-colors">
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
       {/* Sidebar */}
       <div className={`
-        fixed md:sticky top-0 left-0 h-screen w-64 bg-white/80 backdrop-blur-md border-r border-navratri-lightGrey/50 flex flex-col z-40 shadow-sm transition-transform duration-300
+        fixed md:sticky top-0 left-0 h-screen w-64 bg-[#0F172A] flex flex-col z-40 shadow-xl transition-transform duration-300
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
-        <div className="p-6 border-b border-navratri-lightGrey hidden md:flex items-center gap-3">
-          <div className="w-10 h-10 bg-navratri-accent/10 rounded-[12px] flex items-center justify-center border border-navratri-accent/20">
-            <Sparkles className="w-5 h-5 text-navratri-accent" />
+        <div className="p-6 border-b border-white/10 hidden md:flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-[#7C3AED] to-[#00E5FF] rounded-[12px] flex items-center justify-center shadow-inner">
+            <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="font-display font-[700] text-[20px] text-navratri-text leading-tight tracking-tight">RaasPass</h1>
-            <p className="text-[10px] text-navratri-muted font-[700] tracking-widest uppercase">Admin Panel</p>
+            <h1 className="font-display font-[800] text-[20px] text-white leading-tight tracking-tight">RaasPass</h1>
+            <p className="text-[10px] text-[#00E5FF] font-[800] tracking-widest uppercase">Admin Panel</p>
           </div>
         </div>
         
@@ -67,22 +67,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onClick={() => setMobileMenuOpen(false)}
                 className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-[12px] transition-all group ${
                   isActive 
-                  ? 'bg-gradient-premium text-white shadow-md shadow-navratri-primary/20' 
-                  : 'text-navratri-muted hover:bg-slate-50 hover:text-navratri-primary'
+                  ? 'bg-gradient-to-r from-[#7C3AED]/20 to-transparent text-[#00E5FF] border-l-4 border-[#00E5FF]' 
+                  : 'text-slate-400 hover:bg-white/5 hover:text-white border-l-4 border-transparent'
                 }`}
               >
-                <link.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-navratri-muted group-hover:text-navratri-primary'}`} />
+                <link.icon className={`w-5 h-5 ${isActive ? 'text-[#00E5FF]' : 'text-slate-400 group-hover:text-white'}`} />
                 <span className="font-[600] text-[14px]">{link.name}</span>
               </Link>
             );
           })}
         </div>
         
-        <div className="p-4 border-t border-navratri-lightGrey space-y-2">
-          <Link href="/" target="_blank" className="w-full flex items-center justify-center gap-2 bg-slate-50 text-navratri-text px-4 py-3.5 rounded-[12px] text-[14px] font-[700] hover:bg-slate-100 transition-colors border border-navratri-lightGrey">
+        <div className="p-4 border-t border-white/10 space-y-2 bg-[#0F172A]">
+          <Link href="/" target="_blank" className="w-full flex items-center justify-center gap-2 bg-white/5 text-slate-300 px-4 py-3.5 rounded-[12px] text-[14px] font-[700] hover:bg-white/10 hover:text-white transition-colors border border-white/10">
             View Public Site
           </Link>
-          <button onClick={() => router.push('/admin/login')} className="w-full flex items-center justify-center gap-2 bg-red-50 text-red-600 px-4 py-3.5 rounded-[12px] text-[14px] font-[700] hover:bg-red-100 hover:text-red-700 transition-colors border border-red-100">
+          <button onClick={() => router.push('/admin/login')} className="w-full flex items-center justify-center gap-2 bg-red-500/10 text-red-400 px-4 py-3.5 rounded-[12px] text-[14px] font-[700] hover:bg-red-500/20 hover:text-red-300 transition-colors border border-red-500/20">
             <LogOut className="w-4 h-4" /> Logout
           </button>
         </div>
