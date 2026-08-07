@@ -547,7 +547,7 @@ END:VCALENDAR`;
               <div>
                 <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Gate Assignment</p>
                 <p className="text-slate-900 font-semibold text-[15px]">
-                  {ticket.gateName ? \`\${ticket.gateName} (Gate \${ticket.gateNumber || 'N/A'})\` : 'Gate Announced at Venue'}
+                  {ticket.gateName ? `${ticket.gateName} (Gate ${ticket.gateNumber || 'N/A'})` : 'Gate Announced at Venue'}
                 </p>
               </div>
 
