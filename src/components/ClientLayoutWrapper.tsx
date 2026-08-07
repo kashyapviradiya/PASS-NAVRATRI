@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -22,7 +23,18 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
     <>
       <Navbar mobileMenuOpen={isMobileMenuOpen} setMobileMenuOpen={setIsMobileMenuOpen} />
       <main className="pt-[56px] flex-grow pb-[60px] md:pb-0">
-        {children}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="flex-grow flex flex-col min-h-screen"
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
       </main>
       <Footer />
       <MobileBottomNav onMenuClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />

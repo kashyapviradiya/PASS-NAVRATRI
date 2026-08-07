@@ -6,6 +6,7 @@ import { IndianRupee, TrendingUp, Ticket, CheckCircle2, Download, Plus, External
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { motion } from 'framer-motion';
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
@@ -143,9 +144,23 @@ export default function AdminDashboard() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      <motion.div 
+        initial="hidden" animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+        }}
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+      >
         {statCards.map((stat, idx) => (
-          <div key={idx} className="bg-white rounded-[20px] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] border border-slate-100/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <motion.div 
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+            }}
+            key={idx} 
+            className="bg-white rounded-[20px] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] border border-slate-100/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group"
+          >
             <div className={`absolute left-0 top-0 bottom-0 w-1 ${stat.gradient}`} />
             <div className="relative z-10 pl-3">
               <div className="flex justify-between items-start mb-4">
@@ -156,9 +171,9 @@ export default function AdminDashboard() {
               <p className="text-[32px] font-display font-[800] tracking-tight mb-1 text-slate-800 leading-none">{stat.value}</p>
               <p className="text-[12px] font-[700] uppercase tracking-widest text-slate-400 mt-2">{stat.label}</p>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

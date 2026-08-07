@@ -1,12 +1,18 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import { Event } from '@/types';
 import { formatCurrency } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 interface EventCardProps {
   event: Event;
 }
 
 export default function EventCard({ event }: EventCardProps) {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   const ticketTypes = event.ticketTypes || [];
   const availableTickets = ticketTypes.filter(p => p.status === 'available' || p.status === 'published' || p.status === 'active' || p.remainingQuantity > 0);
   
@@ -26,56 +32,80 @@ export default function EventCard({ event }: EventCardProps) {
   return (
     <Link
       href={`/events/${event.id}`}
-      className="block bg-white rounded-[16px] border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] cursor-pointer transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] no-underline overflow-hidden"
+      className="block no-underline outline-none rounded-[16px]"
     >
-      {/* Event Poster — 10:13 aspect ratio (≈3:4), NO overlay text */}
-      <div className="relative w-full pb-[130%] overflow-hidden rounded-t-[16px] bg-slate-50">
-        <img
-          src={event.bannerImage || 'https://images.unsplash.com/photo-1540039155733-d7696d4eb98e?q=80&w=800&auto=format&fit=crop'}
-          alt={event.title}
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        {/* Status badge only for sold out / selling fast */}
-        {isSoldOut && (
-          <div className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide">
-            Sold Out
+      <motion.div
+        whileHover="hover"
+        whileTap="tap"
+        variants={{
+          hover: { y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.08)", transition: { duration: 0.25, ease: "easeOut" } },
+          tap: { scale: 0.97, boxShadow: "0 4px 12px rgba(0,0,0,0.04)", transition: { duration: 0.15, ease: "easeOut" } }
+        }}
+        className="bg-white rounded-[16px] border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] cursor-pointer overflow-hidden h-full flex flex-col"
+      >
+        {/* Event Poster — 10:13 aspect ratio (≈3:4), NO overlay text */}
+        <div className="relative w-full pb-[130%] overflow-hidden rounded-t-[16px] bg-slate-100">
+          
+          {/* Skeleton Loader */}
+          {!isImageLoaded && (
+            <div className="absolute inset-0 bg-slate-200 animate-pulse" />
+          )}
+
+          <motion.img
+            src={event.bannerImage || 'https://images.unsplash.com/photo-1540039155733-d7696d4eb98e?q=80&w=800&auto=format&fit=crop'}
+            alt={event.title}
+            loading="lazy"
+            onLoad={() => setIsImageLoaded(true)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isImageLoaded ? 1 : 0 }}
+            variants={{
+              hover: { scale: 1.04, transition: { duration: 0.3, ease: "easeOut" } },
+              tap: { scale: 1.02, transition: { duration: 0.2, ease: "easeOut" } }
+            }}
+            className="absolute inset-0 w-full h-full object-cover origin-center"
+          />
+
+          {/* Status badge only for sold out / selling fast */}
+          {isSoldOut && (
+            <div className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide z-10 shadow-sm">
+              Sold Out
+            </div>
+          )}
+          {isAlmostSoldOut && !isSoldOut && (
+            <div className="absolute top-2 left-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide z-10 shadow-sm">
+              Selling Fast
+            </div>
+          )}
+        </div>
+
+        {/* Compact info below image */}
+        <div className="p-3 flex flex-col flex-grow">
+          {/* Date */}
+          <div className="flex items-center text-[11px] md:text-[12px] text-navratri-primary font-[700] uppercase tracking-wide mb-1">
+            <span className="line-clamp-1">
+              {new Date(event.startDate).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })}
+              {' • '}
+              {new Date(event.startDate).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', hour12: true })}
+            </span>
           </div>
-        )}
-        {isAlmostSoldOut && !isSoldOut && (
-          <div className="absolute top-2 left-2 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide">
-            Selling Fast
+
+          {/* Event title */}
+          <h3 className="text-[14px] md:text-[15px] font-[800] text-gray-900 line-clamp-2 leading-snug tracking-tight mb-0.5">
+            {event.title}
+          </h3>
+
+          {/* Venue */}
+          <div className="text-[12px] text-gray-500 font-medium line-clamp-1 mb-3 flex-grow">
+            {event.venue}, {event.city}
           </div>
-        )}
-      </div>
 
-      {/* Compact info below image */}
-      <div className="p-3 space-y-1">
-        {/* Date */}
-        <div className="flex items-center text-[11px] md:text-[12px] text-navratri-primary font-[700] uppercase tracking-wide">
-          <span className="line-clamp-1">
-            {new Date(event.startDate).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })}
-            {' • '}
-            {new Date(event.startDate).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', hour12: true })}
-          </span>
+          {/* Price */}
+          <div className="text-[13px] md:text-[14px] font-[800] text-gray-900 pt-2 border-t border-gray-100/60 flex justify-between items-center mt-auto">
+            <span>{lowestPrice === 0 ? 'FREE' : `${formatCurrency(lowestPrice)}`}</span>
+            {lowestPrice !== 0 && <span className="text-[10px] text-gray-400 font-normal uppercase tracking-wide">Onwards</span>}
+          </div>
         </div>
-
-        {/* Event title */}
-        <h3 className="text-[14px] md:text-[15px] font-[800] text-gray-900 line-clamp-2 leading-snug tracking-tight">
-          {event.title}
-        </h3>
-
-        {/* Venue */}
-        <div className="text-[12px] text-gray-500 font-medium line-clamp-1 pb-1">
-          {event.venue}, {event.city}
-        </div>
-
-        {/* Price */}
-        <div className="text-[13px] md:text-[14px] font-[800] text-gray-900 pt-1 border-t border-gray-100/60 flex justify-between items-center">
-          <span>{lowestPrice === 0 ? 'FREE' : `${formatCurrency(lowestPrice)}`}</span>
-          {lowestPrice !== 0 && <span className="text-[10px] text-gray-400 font-normal uppercase tracking-wide">Onwards</span>}
-        </div>
-      </div>
+      </motion.div>
     </Link>
   );
 }

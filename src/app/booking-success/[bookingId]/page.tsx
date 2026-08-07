@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { CheckCircle, Calendar, Clock, Ticket, Home, ShieldCheck } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export default function BookingSuccess({ params }: { params: { bookingId: string } }) {
   const router = useRouter();
@@ -55,7 +56,12 @@ export default function BookingSuccess({ params }: { params: { bookingId: string
       {/* Floating particles background effect */}
       <div className="absolute inset-0 opacity-20 pointer-events-none z-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"></div>
 
-      <div className="max-w-[600px] w-full bg-white/[0.08] backdrop-blur-[24px] rounded-[28px] p-8 md:p-12 shadow-[0_24px_64px_rgba(0,0,0,0.4)] border border-white/[0.12] relative overflow-hidden animate-fade-in-up z-10">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 40 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
+        className="max-w-[600px] w-full bg-white/[0.08] backdrop-blur-[24px] rounded-[28px] p-8 md:p-12 shadow-[0_24px_64px_rgba(0,0,0,0.4)] border border-white/[0.12] relative overflow-hidden z-10"
+      >
         
         {demo && (
           <div className="absolute top-4 right-4 bg-orange-500/10 text-orange-400 text-[11px] font-[800] px-3.5 py-1.5 rounded-[12px] uppercase tracking-wider border border-orange-500/20 backdrop-blur-md">
@@ -63,14 +69,42 @@ export default function BookingSuccess({ params }: { params: { bookingId: string
           </div>
         )}
         <div className="text-center mb-10 mt-4">
-          <div className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/30 shadow-[0_0_32px_rgba(16,185,129,0.35)] animate-[pulse_3s_ease-in-out_infinite]">
-            <CheckCircle className="w-12 h-12 text-emerald-400 drop-shadow-[0_0_12px_rgba(52,211,153,0.4)]" />
-            <div className="absolute inset-0 border-2 border-emerald-500 rounded-full animate-ping opacity-25"></div>
-          </div>
-          <h1 className="text-[36px] font-display font-[850] text-white tracking-tight leading-tight mb-3">Booking Confirmed!</h1>
-          <p className="text-[#CBD5E1] font-[500] text-[16px] leading-relaxed max-w-md mx-auto">
+          <motion.div 
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", delay: 0.2, bounce: 0.5 }}
+            className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/30 shadow-[0_0_32px_rgba(16,185,129,0.35)] relative"
+          >
+            <motion.svg 
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+              className="w-12 h-12 text-emerald-400 drop-shadow-[0_0_12px_rgba(52,211,153,0.4)] z-10"
+            >
+              <motion.path
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
+                d="M20 6L9 17l-5-5"
+              />
+            </motion.svg>
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1.2, opacity: [0, 0.25, 0] }}
+              transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+              className="absolute inset-0 border-2 border-emerald-500 rounded-full"
+            ></motion.div>
+          </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="text-[36px] font-display font-[850] text-white tracking-tight leading-tight mb-3"
+          >
+            Booking Confirmed!
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="text-[#CBD5E1] font-[500] text-[16px] leading-relaxed max-w-md mx-auto"
+          >
             Thank you, {customerName}. Your payment of <strong className="text-white font-[800]">{formatCurrency(totalAmount)}</strong> was successful.
-          </p>
+          </motion.p>
         </div>
 
         {/* Premium ticket-graphic box */}

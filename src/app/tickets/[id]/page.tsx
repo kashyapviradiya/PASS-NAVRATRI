@@ -5,6 +5,7 @@ import { Download, Share2, Calendar, Clock, Loader2, ShieldCheck, ShieldAlert, C
 import QRCode from 'qrcode';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function BookingTicketsPage({ params }: { params: { id: string } }) {
   const [tickets, setTickets] = useState<any[]>([]);
@@ -382,10 +383,13 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
 
       <div className="w-full max-w-md relative z-10 flex flex-col gap-12 print:gap-4 print:w-full print:max-w-none">
         
-        <div className="text-center mb-2 animate-fade-in-up">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: "easeOut" }}
+          className="text-center mb-2"
+        >
            <h1 className="text-white text-2xl font-bold font-display tracking-tight">Your Tickets</h1>
            <p className="text-gray-400 text-sm mt-1">{tickets.length} pass{tickets.length > 1 ? 'es' : ''} in booking</p>
-        </div>
+        </motion.div>
 
         {tickets.map((ticket, index) => {
           const isExpired = new Date(ticket.eventEndDate || ticket.eventDate) < new Date();
@@ -399,7 +403,13 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
           const codeUrl = qrCodes[ticket.ticketId];
 
           return (
-            <div key={ticket.ticketId} className="w-full relative animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+            <motion.div 
+              key={ticket.ticketId} 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.15, duration: 0.6, type: "spring", bounce: 0.3 }}
+              className="w-full relative"
+            >
               
               {/* Glow Effect */}
               {isValid && (
@@ -461,9 +471,18 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
                   </div>
 
                   <div className="flex flex-col items-center justify-center py-8 bg-slate-50 rounded-[24px] border border-slate-100 relative group overflow-hidden">
-                    <div className="p-3 bg-white rounded-[20px] shadow-sm border border-slate-200/60">
+                    {/* Hologram Shimmer Sweep */}
+                    {isValid && (
+                      <motion.div 
+                        initial={{ x: "-100%" }}
+                        animate={{ x: "200%" }}
+                        transition={{ repeat: Infinity, duration: 3, ease: "linear", repeatDelay: 1 }}
+                        className="absolute top-0 bottom-0 w-32 bg-gradient-to-r from-transparent via-[#00E5FF]/10 to-transparent skew-x-12 z-0 pointer-events-none"
+                      />
+                    )}
+                    <div className="p-3 bg-white rounded-[20px] shadow-sm border border-slate-200/60 relative z-10 isolate">
                       {codeUrl ? (
-                        <img src={codeUrl} alt="QR Code" className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] object-contain block" />
+                        <img src={codeUrl} alt="QR Code" className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] object-contain block mix-blend-multiply" />
                       ) : (
                         <div className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] bg-slate-100 animate-pulse rounded-xl"></div>
                       )}
@@ -561,7 +580,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>

@@ -3,8 +3,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Html5Qrcode } from 'html5-qrcode';
-import { CheckCircle, XCircle, LogOut, Camera, X, ScanLine, Clock, Ticket, Calendar, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { ScanLine, LogOut, CheckCircle, XCircle, Camera, Calendar, Ticket, X, Clock, AlertTriangle, Info } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type ScanResult = {
   status: 'valid' | 'used' | 'invalid' | 'wrong_event' | 'wrong_gate';
@@ -210,14 +211,25 @@ export default function ScannerDashboard() {
   if (scanResult) {
     if (scanResult.status === 'valid') {
       return (
-        <div className="fixed inset-0 bg-emerald-600 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
-          <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_24px_rgba(255,255,255,0.2)]">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }} 
+          animate={{ opacity: 1, scale: 1 }} 
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-emerald-600 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white"
+        >
+          <motion.div 
+            initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", delay: 0.1 }}
+            className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_24px_rgba(255,255,255,0.2)]"
+          >
             <CheckCircle className="w-16 h-16 text-white" />
-          </div>
+          </motion.div>
           <h1 className="text-[40px] font-display font-[850] tracking-tight mb-2">Entry Approved</h1>
           <p className="text-[18px] font-[500] opacity-90 mb-10">Pass successfully scanned.</p>
           
-          <div className="bg-white/10 backdrop-blur-md rounded-[24px] p-6 w-full max-w-sm space-y-4 text-left border border-white/25 shadow-premium">
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
+            className="bg-white/10 backdrop-blur-md rounded-[24px] p-6 w-full max-w-sm space-y-4 text-left border border-white/25 shadow-premium"
+          >
             <div>
               <p className="text-green-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Customer Name</p>
               <p className="font-display font-[800] text-[24px]">{scanResult.ticket?.customerName}</p>
@@ -240,12 +252,15 @@ export default function ScannerDashboard() {
                 <p className="text-green-100 text-[10px] font-[800] uppercase tracking-widest mb-1 mt-2">Scan Time</p>
                 <p className="font-[500] text-[14px]">{new Date().toLocaleTimeString()}</p>
             </div>
-          </div>
+          </motion.div>
           
-          <button onClick={dismissResult} className="mt-12 bg-white text-emerald-600 px-10 py-4 rounded-button font-[800] text-[16px] shadow-premium hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
+          <motion.button 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+            onClick={dismissResult} className="mt-12 bg-white text-emerald-600 px-10 py-4 rounded-button font-[800] text-[16px] shadow-premium hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm"
+          >
             Scan Next Pass
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       );
     }
 
@@ -326,7 +341,11 @@ export default function ScannerDashboard() {
     }
 
     return (
-      <div className="fixed inset-0 bg-rose-700 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
+      <motion.div 
+        animate={{ x: [0, -10, 10, -10, 10, 0] }} 
+        transition={{ duration: 0.4 }}
+        className="fixed inset-0 bg-rose-700 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white"
+      >
         <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mb-6 border border-white/25">
           <XCircle className="w-16 h-16 text-white" />
         </div>
@@ -336,7 +355,7 @@ export default function ScannerDashboard() {
         <button onClick={dismissResult} className="mt-12 bg-white text-rose-750 px-10 py-4 rounded-button font-[800] text-[16px] shadow-premium hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
           Dismiss
         </button>
-      </div>
+      </motion.div>
     );
   }
 
@@ -401,6 +420,24 @@ export default function ScannerDashboard() {
         {isScanning ? (
           <>
             <div id="qr-reader" className="w-full h-full object-cover"></div>
+            
+            {/* Animated Scan Line Overlay */}
+            <div className="absolute inset-0 pointer-events-none z-10 flex flex-col items-center justify-center p-6">
+              <div className="w-64 h-64 relative">
+                {/* Corner frames */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-[#00E5FF] rounded-tl-xl"></div>
+                <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-[#00E5FF] rounded-tr-xl"></div>
+                <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-[#00E5FF] rounded-bl-xl"></div>
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-[#00E5FF] rounded-br-xl"></div>
+                
+                {/* Scanning Laser Line */}
+                <motion.div 
+                  animate={{ y: ["0%", "100%", "0%"] }} 
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+                  className="w-full h-0.5 bg-[#00E5FF] shadow-[0_0_12px_2px_#00E5FF] absolute top-0 left-0" 
+                />
+              </div>
+            </div>
             {processing && (
               <div className="absolute inset-0 bg-black/80 backdrop-blur-md flex flex-col items-center justify-center z-20">
                 <div className="w-16 h-16 border-4 border-navratri-accent border-t-transparent rounded-full animate-spin"></div>

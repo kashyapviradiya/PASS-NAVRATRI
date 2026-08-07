@@ -5,11 +5,14 @@ import { Shield, QrCode, Zap, ArrowRight, ChevronRight, Music, Users, Sparkles, 
 import EventCard from '@/components/EventCard';
 import type { Event } from '@/types';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [mounted, setMounted] = useState(false);
   const [activeBanner, setActiveBanner] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   useEffect(() => {
     setMounted(true);
@@ -79,6 +82,22 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [events.length]);
 
+  const handleTouchStart = (e: React.TouchEvent) => setTouchStart(e.targetTouches[0].clientX);
+  const handleTouchMove = (e: React.TouchEvent) => setTouchEnd(e.targetTouches[0].clientX);
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    const total = Math.min(events.length, 5);
+    
+    if (isLeftSwipe) setActiveBanner(prev => (prev + 1) % total);
+    if (isRightSwipe) setActiveBanner(prev => (prev - 1 + total) % total);
+    
+    setTouchStart(0);
+    setTouchEnd(0);
+  };
+
   if (!mounted) return null;
 
   const featuredEvents = events.slice(0, 2); // 2 featured
@@ -102,6 +121,11 @@ export default function Home() {
 
   const hideScrollbar = "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
 
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } }
+  };
+
   return (
     <div className="bg-gradient-to-b from-purple-50 via-purple-50/30 to-white pb-20 md:pb-0 overflow-x-hidden min-h-screen">
 
@@ -109,7 +133,10 @@ export default function Home() {
           1. FEATURED EVENT BANNER — compact, rounded, with blurred bg
          ═══════════════════════════════════════════════════ */}
       {featuredEvents.length > 0 && (
-        <section className="relative px-4 pt-3 pb-4">
+        <motion.section 
+          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}
+          className="relative px-4 pt-3 pb-4"
+        >
           {/* Blurred background visual (like Showmates) */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
             <img
@@ -122,15 +149,24 @@ export default function Home() {
           </div>
 
           {/* Carousel */}
-          <div className="relative overflow-hidden rounded-2xl shadow-lg">
-            {featuredEvents.map((event, idx) => (
-              <Link
-                key={event.id}
-                href={`/events/${event.id}`}
-                className={`block relative w-full transition-all duration-500 ${
-                  idx === activeBanner ? '' : 'hidden'
-                }`}
-              >
+          <div 
+            className="relative overflow-hidden rounded-2xl shadow-lg"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <AnimatePresence mode="wait">
+              {featuredEvents.map((event, idx) => (
+                idx === activeBanner && (
+                  <motion.div
+                    key={event.id}
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 1.04 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="block relative w-full"
+                  >
+                    <Link href={`/events/${event.id}`} className="block relative w-full">
                 {/* Banner image — 16:9 compact aspect ratio */}
                 <div className="relative w-full pb-[50%] overflow-hidden bg-gray-200">
                   <img
@@ -160,7 +196,10 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-            ))}
+              </motion.div>
+                )
+              ))}
+            </AnimatePresence>
 
             {/* Carousel dots */}
             {featuredEvents.length > 1 && (
@@ -177,13 +216,16 @@ export default function Home() {
               </div>
             )}
           </div>
-        </section>
+        </motion.section>
       )}
 
       {/* ═══════════════════════════════════════════════════
           2. POPULAR EVENTS — 2-column GRID (like reference)
          ═══════════════════════════════════════════════════ */}
-      <section className="px-4 sm:px-6 lg:px-8 py-5">
+      <motion.section 
+        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={sectionVariants}
+        className="px-4 sm:px-6 lg:px-8 py-5"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-4">
             <div>
@@ -207,14 +249,17 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════
           3. EXPLORE BY CATEGORY — compact row
          ═══════════════════════════════════════════════════ */}
-      <section className="px-4 sm:px-6 lg:px-8 py-5">
+      <motion.section 
+        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={sectionVariants}
+        className="px-4 sm:px-6 lg:px-8 py-5"
+      >
         <div className="max-w-7xl mx-auto">
           <h2 className="text-[18px] md:text-[22px] font-bold text-gray-900 mb-4">Explore by Category</h2>
-          <div className={`flex overflow-x-auto ${hideScrollbar} gap-3 pb-1`}>
+          <div className={`flex overflow-x-auto snap-x snap-mandatory ${hideScrollbar} gap-3 pb-1`}>
             {categories.map((cat, i) => (
               <button
                 key={i}
-                className="relative group w-[100px] h-[100px] md:w-[120px] md:h-[120px] rounded-2xl overflow-hidden shrink-0 active:scale-95 transition-all shadow-sm hover:shadow-md"
+                className="relative group w-[100px] h-[100px] md:w-[120px] md:h-[120px] rounded-2xl overflow-hidden shrink-0 snap-start active:scale-95 transition-all shadow-sm hover:shadow-md"
               >
                 <img src={cat.bgImage} alt={cat.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300"></div>
@@ -223,13 +268,16 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* ═══════════════════════════════════════════════════
           4. UPCOMING EVENTS — 2-column grid
          ═══════════════════════════════════════════════════ */}
       {upcomingEvents.length > 0 && (
-        <section className="px-4 sm:px-6 lg:px-8 py-5">
+        <motion.section 
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={sectionVariants}
+          className="px-4 sm:px-6 lg:px-8 py-5"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-end mb-4">
               <div>
@@ -246,14 +294,17 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
       )}
 
       {/* ═══════════════════════════════════════════════════
           5. POPULAR ARTISTS — horizontal scroll (only if real data)
          ═══════════════════════════════════════════════════ */}
       {uniqueArtists.length > 0 && (
-        <section className="px-4 sm:px-6 lg:px-8 py-5">
+        <motion.section 
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={sectionVariants}
+          className="px-4 sm:px-6 lg:px-8 py-5"
+        >
           <div className="max-w-7xl mx-auto">
             <div className="mb-4">
               <h2 className="text-[18px] md:text-[22px] font-bold text-gray-900 mb-0.5">
@@ -261,9 +312,9 @@ export default function Home() {
               </h2>
               <p className="text-gray-500 text-[12px] md:text-[14px]">Discover events by your favourite artists</p>
             </div>
-            <div className={`flex overflow-x-auto ${hideScrollbar} gap-5 pb-2`}>
+            <div className={`flex overflow-x-auto snap-x snap-mandatory ${hideScrollbar} gap-5 pb-2`}>
               {uniqueArtists.map((artist, i) => (
-                <div key={i} className="flex flex-col items-center shrink-0 w-20 sm:w-24 text-center group cursor-pointer">
+                <div key={i} className="flex flex-col items-center shrink-0 w-20 sm:w-24 text-center group cursor-pointer snap-start active:scale-95 transition-transform duration-300">
                   <div className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] rounded-full overflow-hidden mb-2 shadow-md bg-gray-100 group-hover:scale-105 transition-transform">
                     <div className="w-full h-full bg-gradient-to-br from-navratri-primary to-navratri-secondary flex items-center justify-center">
                       <span className="text-white font-bold text-[28px] sm:text-[32px]">{artist.charAt(0)}</span>
@@ -274,13 +325,16 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
       )}
 
       {/* ═══════════════════════════════════════════════════
           6. WHY RAASPASS — compact trust strip
          ═══════════════════════════════════════════════════ */}
-      <section className="px-4 sm:px-6 lg:px-8 py-6">
+      <motion.section 
+        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={sectionVariants}
+        className="px-4 sm:px-6 lg:px-8 py-6"
+      >
         <div className="max-w-7xl mx-auto">
           <h2 className="text-[18px] md:text-[22px] font-bold text-gray-900 mb-4 text-center">Why RaasPass?</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -300,7 +354,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* ═══════════════════════════════════════════════════
           7. HOW IT WORKS — compact 3-step

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Compass, Ticket, Menu as MenuIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function MobileBottomNav({ onMenuClick }: { onMenuClick?: () => void }) {
   const pathname = usePathname();
@@ -28,10 +29,15 @@ export default function MobileBottomNav({ onMenuClick }: { onMenuClick?: () => v
                   : 'text-gray-400 hover:text-gray-600'
               }`}
             >
-              <div className={`relative flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
-                isActive ? 'bg-purple-50' : 'bg-transparent'
-              }`}>
-                <item.icon className={`w-[22px] h-[22px] transition-transform duration-300 ${isActive ? 'scale-110' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
+              <div className="relative flex items-center justify-center w-10 h-10 rounded-full">
+                {isActive && (
+                  <motion.div
+                    layoutId="mobile-nav-pill"
+                    className="absolute inset-0 bg-purple-50 rounded-full"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <item.icon className={`w-[22px] h-[22px] relative z-10 transition-transform duration-300 ${isActive ? 'scale-110' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
               </div>
               <span className={`text-[10px] mt-0.5 tracking-wide transition-all duration-300 ${
                 isActive ? 'font-[700] text-navratri-text' : 'font-[600]'
