@@ -20,17 +20,17 @@ export default function Home() {
           // --- DEMO ASSETS OVERRIDE START ---
           // DO NOT modify the real database. Just mapping generated UI demo images for visual review.
           const demoImages = [
-            '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\demo_poster_navratri_1786101204234.jpg'),
-            '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\demo_poster_dj_1786101242672.jpg'),
-            '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\demo_poster_livemusic_1786101218071.jpg'),
-            '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\demo_poster_cultural_1786101255678.jpg'),
-            '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\demo_poster_bollywood_1786101269642.jpg'),
-            '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\demo_poster_comedy_1786101284911.jpg')
+            '/demo/events/poster-navratri.jpg',
+            '/demo/events/poster-dj.jpg',
+            '/demo/events/poster-livemusic.jpg',
+            '/demo/events/poster-cultural.jpg',
+            '/demo/events/poster-bollywood.jpg',
+            '/demo/events/poster-comedy.jpg'
           ];
           
           const demoBanners = [
-            '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\demo_banner_navratri_1786101179726.jpg'),
-            '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\demo_banner_dj_1786101191047.jpg')
+            '/demo/events/banner-navratri.jpg',
+            '/demo/events/banner-dj.jpg'
           ];
 
           const demoTitles = [
@@ -93,11 +93,11 @@ export default function Home() {
   const uniqueArtists = Array.from(new Set(events.filter(e => e.artist).map(e => e.artist as string))).filter(Boolean);
 
   const categories = [
-    { name: 'Navratri', bgImage: '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\category_navratri_1786101638571.jpg') },
-    { name: 'Music', bgImage: '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\category_music_1786101652960.jpg') },
-    { name: 'Cultural', bgImage: '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\category_cultural_1786101664796.jpg') },
-    { name: 'Festival', bgImage: '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\category_festival_1786101679379.jpg') },
-    { name: 'Party', bgImage: '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\category_party_1786101727525.jpg') },
+    { name: 'Navratri', bgImage: '/demo/categories/navratri.jpg' },
+    { name: 'Music', bgImage: '/demo/categories/music.jpg' },
+    { name: 'Cultural', bgImage: '/demo/categories/cultural.jpg' },
+    { name: 'Festival', bgImage: '/demo/categories/festival.jpg' },
+    { name: 'Party', bgImage: '/demo/categories/party.jpg' },
   ];
 
   const hideScrollbar = "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
