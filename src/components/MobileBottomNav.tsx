@@ -22,12 +22,20 @@ export default function MobileBottomNav({ onMenuClick }: { onMenuClick?: () => v
             <Link
               key={item.name}
               href={item.href}
-              className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-all ${
-                isActive ? 'text-navratri-primary scale-105' : 'text-slate-400 hover:text-slate-600'
+              className={`flex flex-col items-center justify-center w-full h-full transition-all duration-300 ${
+                isActive 
+                  ? 'text-navratri-primary' 
+                  : 'text-gray-400 hover:text-gray-600'
               }`}
             >
-              <item.icon className={`w-[22px] h-[22px] ${isActive ? 'fill-navratri-primary/10' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
-              <span className={`text-[10px] tracking-wide ${isActive ? 'font-[800]' : 'font-[600]'}`}>
+              <div className={`relative flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 ${
+                isActive ? 'bg-purple-50' : 'bg-transparent'
+              }`}>
+                <item.icon className={`w-[22px] h-[22px] transition-transform duration-300 ${isActive ? 'scale-110' : ''}`} strokeWidth={isActive ? 2.5 : 2} />
+              </div>
+              <span className={`text-[10px] mt-0.5 tracking-wide transition-all duration-300 ${
+                isActive ? 'font-[700] text-navratri-text' : 'font-[600]'
+              }`}>
                 {item.name}
               </span>
             </Link>

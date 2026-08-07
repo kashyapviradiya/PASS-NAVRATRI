@@ -33,9 +33,30 @@ export default function Home() {
             '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\demo_banner_dj_1786101191047.jpg')
           ];
 
+          const demoTitles = [
+            "Swarnim Navratri Garba 2026",
+            "Sunburn Club Edition: DJ NYK",
+            "Acoustic Nights with Arijit",
+            "Rann Utsav Cultural Fest",
+            "Bollywood Glamour Night",
+            "Stand-up Special: Zakir Khan"
+          ];
+          const demoVenues = [
+            "GMDC Ground, Ahmedabad",
+            "Prism Club, Hyderabad",
+            "Jio World Garden, Mumbai",
+            "Rann of Kutch, Gujarat",
+            "The St. Regis, Mumbai",
+            "NCPA, Mumbai"
+          ];
+
           const eventsWithDemoImages = data.events.map((event: any, index: number) => {
             return {
               ...event,
+              // Fictional realistic demo text override
+              title: demoTitles[index % demoTitles.length],
+              venue: demoVenues[index % demoVenues.length].split(',')[0],
+              city: demoVenues[index % demoVenues.length].split(', ')[1] || 'Ahmedabad',
               // Use demo banners for the first two featured items, and posters for everything else
               bannerImage: index < 2 ? demoBanners[index % demoBanners.length] : demoImages[index % demoImages.length]
             };
@@ -60,17 +81,23 @@ export default function Home() {
 
   if (!mounted) return null;
 
-  const featuredEvents = events.slice(0, 5);
-  const popularEvents = events.slice(0, 8);
-  const upcomingEvents = events.length > 4 ? events.slice(4, 12) : events.slice(0, 8);
+  const featuredEvents = events.slice(0, 2); // 2 featured
+  
+  // Ensure we have an even number of popular events (max 4 or 6) for perfect grid
+  const availablePopular = events.slice(0, 6);
+  const popularEvents = availablePopular.slice(0, availablePopular.length - (availablePopular.length % 2));
+  
+  const upcomingEventsPool = events.length > 4 ? events.slice(4, 10) : events.slice(0, 6);
+  const upcomingEvents = upcomingEventsPool.slice(0, upcomingEventsPool.length - (upcomingEventsPool.length % 2));
+  
   const uniqueArtists = Array.from(new Set(events.filter(e => e.artist).map(e => e.artist as string))).filter(Boolean);
 
   const categories = [
-    { name: 'Navratri', icon: Sparkles, bg: 'bg-purple-100', color: 'text-purple-600' },
-    { name: 'Music', icon: Music, bg: 'bg-blue-100', color: 'text-blue-600' },
-    { name: 'Cultural', icon: Star, bg: 'bg-amber-100', color: 'text-amber-600' },
-    { name: 'Festival', icon: Zap, bg: 'bg-green-100', color: 'text-green-600' },
-    { name: 'Party', icon: Users, bg: 'bg-pink-100', color: 'text-pink-600' },
+    { name: 'Navratri', bgImage: '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\category_navratri_1786101638571.jpg') },
+    { name: 'Music', bgImage: '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\category_music_1786101652960.jpg') },
+    { name: 'Cultural', bgImage: '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\category_cultural_1786101664796.jpg') },
+    { name: 'Festival', bgImage: '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\category_festival_1786101679379.jpg') },
+    { name: 'Party', bgImage: '/api/demo-image?file=' + encodeURIComponent('C:\\Users\\kashy\\.gemini\\antigravity\\brain\\7d3e34c7-58d5-4b7a-b856-deed95811da1\\category_party_1786101727525.jpg') },
   ];
 
   const hideScrollbar = "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
@@ -187,12 +214,11 @@ export default function Home() {
             {categories.map((cat, i) => (
               <button
                 key={i}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-gray-200 shadow-sm shrink-0 active:scale-95 transition-all hover:border-navratri-primary/30 hover:shadow-md"
+                className="relative group w-[100px] h-[100px] md:w-[120px] md:h-[120px] rounded-2xl overflow-hidden shrink-0 active:scale-95 transition-all shadow-sm hover:shadow-md"
               >
-                <div className={`w-8 h-8 rounded-lg ${cat.bg} flex items-center justify-center`}>
-                  <cat.icon className={`w-4 h-4 ${cat.color}`} />
-                </div>
-                <span className="font-semibold text-[13px] text-gray-800">{cat.name}</span>
+                <img src={cat.bgImage} alt={cat.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300"></div>
+                <span className="absolute inset-0 flex items-center justify-center font-bold text-[14px] md:text-[16px] tracking-wide text-white drop-shadow-md z-10">{cat.name}</span>
               </button>
             ))}
           </div>
