@@ -38,7 +38,7 @@ export default function Home() {
     <div className="bg-navratri-bg pb-24 overflow-x-hidden">
       
       {/* 1. HERO SECTION */}
-      <section className="relative flex items-center justify-center bg-gradient-to-b from-[#0F172A] via-[#1E1B4B] to-[#312E81] pt-24 lg:min-h-[calc(100vh-76px)] lg:pt-[110px] pb-6 sm:pb-16 md:py-24 overflow-hidden border-b border-white/5">
+      <section className="relative flex items-center justify-center bg-gradient-to-b from-[#0F172A] via-[#1E1B4B] to-[#312E81] pt-6 pb-6 md:pt-24 md:pb-24 lg:min-h-[calc(100vh-76px)] lg:pt-[110px] overflow-hidden border-b border-white/5">
         {/* Subtle animated gradient mesh and floating glow */}
         <div className="absolute inset-0 z-0">
           <div className="absolute top-1/4 right-1/4 w-[350px] h-[350px] md:w-[800px] md:h-[800px] bg-navratri-primary/20 rounded-full blur-[100px] md:blur-[140px] animate-pulse-slow"></div>
@@ -53,8 +53,8 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Left Content */}
-            <div className="lg:col-span-7 text-left space-y-3 sm:space-y-5 lg:space-y-7 animate-fade-in-up mt-1 lg:mt-0">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/12 backdrop-blur-md shadow-inner-glow">
+            <div className="lg:col-span-7 text-left animate-fade-in-up mt-1 lg:mt-0 md:space-y-5 lg:space-y-7">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/12 backdrop-blur-md shadow-inner-glow mb-3.5 md:mb-0">
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00E5FF] opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00E5FF]"></span>
@@ -62,16 +62,16 @@ export default function Home() {
                 <span className="text-white text-[12px] font-[700] tracking-wider uppercase">Premium Ticketing Experience</span>
               </div>
  
-              <h1 className="text-[36px] sm:text-[46px] md:text-[68px] lg:text-[80px] font-display font-[850] text-white leading-[1.15] lg:leading-[1.1] tracking-tight">
+              <h1 className="text-[32px] sm:text-[46px] md:text-[68px] lg:text-[80px] font-display font-[850] text-white leading-[1.1] tracking-tight mb-2.5 md:mb-0">
                 Your Pass to <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-premium">Unforgettable</span> Events
               </h1>
               
-              <p className="text-[14px] sm:text-[16px] md:text-[19px] text-[#CBD5E1] font-[500] max-w-[90%] sm:max-w-xl leading-relaxed mt-1 mb-2 lg:my-0">
+              <p className="text-[14px] sm:text-[16px] md:text-[19px] text-[#CBD5E1] font-[500] max-w-[90%] sm:max-w-xl leading-[1.4] md:leading-relaxed mb-4.5 md:mb-0 lg:my-0">
                 Discover premium events, book your pass, and enter seamlessly with secure digital QR tickets.
               </p>
  
-              <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 pt-1 lg:pt-2 w-full sm:w-auto">
+              <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 w-full sm:w-auto mb-4.5 md:mb-0 pt-1 lg:pt-2">
                 <Link href="/events" className="h-[48px] sm:h-[54px] w-full sm:w-auto bg-gradient-to-r from-[#7C3AED] to-[#FF4D6D] text-white font-[800] rounded-full shadow-[0_8px_32px_rgba(124,58,237,0.35)] hover:shadow-[0_12px_40px_rgba(124,58,237,0.45)] hover:-translate-y-0.5 active:scale-[0.98] transition-all text-[15px] sm:text-[16px] text-center flex items-center justify-center gap-2 px-8 relative overflow-hidden group">
                   <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                   <span className="relative z-10 flex items-center gap-2">Explore Events <ArrowRight className="w-4 h-4" /></span>
@@ -82,7 +82,7 @@ export default function Home() {
               </div>
  
               {/* Feature glass pills under CTAs */}
-              <div className="flex flex-wrap gap-2 sm:gap-3 pt-3 lg:pt-6 border-t border-white/10 mt-2">
+              <div className="flex flex-wrap gap-2 sm:gap-3 md:border-t md:border-white/10 md:pt-6 md:mt-2">
                 {[
                   { text: 'Secure Booking', icon: Shield },
                   { text: 'Instant QR Ticket', icon: QrCode },
