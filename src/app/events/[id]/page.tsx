@@ -98,7 +98,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
     <div className="bg-navratri-bg min-h-[calc(100vh-64px)] pb-32 lg:pb-24 font-sans">
       
       {/* 1. TOP SECTION (HERO) */}
-      <div className="relative h-[50vh] md:h-[65vh] overflow-hidden" style={{ background: 'linear-gradient(180deg, #0F172A 0%, #1E1B4B 60%, #312E81 100%)' }}>
+      <div className="relative h-[40vh] md:h-[65vh] min-h-[300px] overflow-hidden" style={{ background: 'linear-gradient(180deg, #0F172A 0%, #1E1B4B 60%, #312E81 100%)' }}>
         <div className="absolute inset-0 bg-gradient-to-t from-navratri-darkBg via-navratri-darkBg/60 to-transparent z-10"></div>
         <img 
           src={event.bannerImage || 'https://images.unsplash.com/photo-1540039155733-d7696d4eb98e?q=80&w=1974&auto=format&fit=crop'} 
@@ -148,8 +148,8 @@ export default function EventDetails({ params }: { params: { id: string } }) {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           
-          {/* LEFT COLUMN */}
-          <div className="lg:col-span-2 space-y-10">
+          {/* MAIN CONTENT (Shows SECOND on mobile) */}
+          <div className="lg:col-span-2 space-y-8 order-last lg:order-first">
             
             {/* 2. EVENT DESCRIPTION */}
             <div className="bg-white rounded-card p-8 md:p-10 shadow-card border border-navratri-lightGrey hover:shadow-premium transition-shadow duration-500 group">
@@ -256,10 +256,10 @@ export default function EventDetails({ params }: { params: { id: string } }) {
 
           </div>
 
-          {/* RIGHT COLUMN: BOOKING PANEL */}
-          <div className="space-y-6">
+          {/* BOOKING PANEL (Shows FIRST on mobile) */}
+          <div className="space-y-6 order-first lg:order-last">
             <div className="lg:sticky lg:top-24">
-              <div className="bg-white rounded-card p-8 shadow-card hover:shadow-premium transition-shadow duration-500 border border-navratri-lightGrey text-center relative overflow-hidden">
+              <div className="bg-white rounded-card p-6 md:p-8 shadow-sm hover:shadow-premium transition-shadow duration-500 border border-navratri-lightGrey text-center relative overflow-hidden">
                 <div className="absolute top-0 inset-x-0 h-1 bg-gradient-premium"></div>
                 <p className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">
                   {hasTickets ? 'Tickets Starting From' : 'Status'}
@@ -359,8 +359,8 @@ export default function EventDetails({ params }: { params: { id: string } }) {
 
       </div>
 
-      {/* Mobile Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-navratri-lightGrey p-4 lg:hidden z-40 pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
+      {/* Mobile Sticky Bottom Bar (Booking CTA) */}
+      <div className="fixed bottom-[64px] left-0 right-0 bg-white/95 backdrop-blur-md border-t border-navratri-lightGrey p-4 lg:hidden z-40 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
         <div className="max-w-[1280px] mx-auto flex items-center justify-between gap-4">
           <div className="flex flex-col">
             <span className="text-[10px] text-navratri-muted uppercase tracking-widest font-[700]">
