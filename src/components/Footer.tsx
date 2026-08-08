@@ -12,11 +12,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-12 md:gap-8 mb-16 text-left">
           {/* Brand column */}
           <div className="md:col-span-3">
-            <Link href="/" className="inline-block mb-6 group">
+            <Link href="/" className="inline-block mb-8 md:mb-10 group">
               <img
                 src="/brand/raaspass-logo.svg"
                 alt="RaasPass Logo"
-                className="h-10 md:h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                className="h-[52px] md:h-[72px] w-auto object-contain scale-[1.15] md:scale-[1.25] origin-left brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity duration-300"
               />
             </Link>
             <p className="text-[#E8DDE0] font-[500] text-[15px] leading-[1.75] max-w-sm">
