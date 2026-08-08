@@ -69,9 +69,9 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
 
       // 3. Draw Background Gradient
       const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      bgGrad.addColorStop(0, '#0F172A');
-      bgGrad.addColorStop(0.5, '#1E1B4B');
-      bgGrad.addColorStop(1, '#312E81');
+      bgGrad.addColorStop(0, '#5A2132');
+      bgGrad.addColorStop(0.5, '#6F5A61');
+      bgGrad.addColorStop(1, '#DED3D6');
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -126,7 +126,7 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
       ctx.shadowOffsetY = 0;
 
       // 4. Header: Draw Logo
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 42px "Inter", "Plus Jakarta Sans", sans-serif';
       ctx.fillText('RaasPass', ticketX + 60, ticketY + 80);
       
@@ -156,7 +156,7 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
       ctx.textAlign = 'left';
 
       // 5. Event Title
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = '800 40px sans-serif';
       
       const eventName = ticket.eventName || 'Navratri Event';
@@ -204,7 +204,7 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
       ctx.textAlign = 'center';
       ctx.fillText('SCAN AT ENTRY', qrX + qrW / 2, qrY + qrH + 25);
       
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 18px monospace';
       ctx.fillText(ticket.ticketId, qrX + qrW / 2, qrY + qrH + 50);
       ctx.textAlign = 'left';
@@ -226,7 +226,7 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
       ctx.fillStyle = '#94A3B8';
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText('GUEST NAME', ticketX + 60, metaY);
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
       ctx.fillText(ticket.customerName, ticketX + 60, metaY + 35);
 
@@ -234,7 +234,7 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
       ctx.fillStyle = '#94A3B8';
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText('BOOKING ID', ticketX + 440, metaY);
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
       ctx.fillText(ticket.bookingId, ticketX + 440, metaY + 35);
 
@@ -244,7 +244,7 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText('DATE & TIME', ticketX + 60, timeY);
       
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
       const formattedDate = new Date(ticket.eventDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
       ctx.fillText(`${formattedDate} • 7:00 PM`, ticketX + 60, timeY + 35);
@@ -255,7 +255,7 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText('GATE ASSIGNMENT', ticketX + 60, gateY);
       
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
       const gateText = ticket.gateName ? `${ticket.gateName} (Gate ${ticket.gateNumber || 'N/A'})` : 'Gate Announced at Venue';
       ctx.fillText(gateText, ticketX + 60, gateY + 35);
@@ -266,7 +266,7 @@ export default function TicketPage({ params }: { params: { ticketId: string } })
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText('VENUE LOCATION', ticketX + 60, venueY);
       
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 20px sans-serif';
       const venueStr = ticket.venue || '';
       let venueLines = [];
@@ -393,19 +393,20 @@ END:VCALENDAR`;
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-navratri-accent bg-[#07070F]">
+      <div className="flex flex-col items-center justify-center min-h-screen text-navratri-primary bg-navratri-bg">
         <Loader2 className="w-10 h-10 animate-spin mb-4" />
-        <p className="text-white font-medium">Verifying Secure Ticket...</p>
+        <p className="text-navratri-text font-medium">Loading Ticket...</p>
       </div>
     );
   }
 
-  if (statusState === 'invalid' || !ticket) {
+  if (error || !ticket) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-[#07070F]">
+      <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-navratri-bg">
         <ShieldAlert className="w-16 h-16 text-red-500 mb-6" />
-        <h1 className="text-3xl font-display font-bold text-white mb-2">Invalid Ticket</h1>
-        <p className="text-gray-400 max-w-md">This ticket link is invalid or the ticket could not be found. Please contact the organizer.</p>
+        <h1 className="text-3xl font-display font-bold text-navratri-text mb-2">Invalid Booking</h1>
+        <p className="text-navratri-muted max-w-md mb-8">{error || 'This booking link is invalid or no ticket was found.'}</p>
+        <Link href="/" className="bg-navratri-primary hover:opacity-90 text-white px-6 py-3 rounded-full font-bold transition-all">Go to Homepage</Link>
       </div>
     );
   }
@@ -420,11 +421,11 @@ END:VCALENDAR`;
   const formattedDate = new Date(ticket.eventDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
   return (
-    <div className="min-h-screen pb-28 pt-8 px-4 flex flex-col items-center bg-[#07070F] print:bg-white print:p-0 print:m-0 relative overflow-hidden">
+    <div className="min-h-screen pb-28 pt-8 px-4 flex flex-col items-center bg-navratri-bg print:bg-white print:p-0 print:m-0 relative overflow-hidden">
       
       {/* Decorative Blur Orbs */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/20 rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="absolute top-1/2 -right-40 w-96 h-96 bg-[#00E5FF]/10 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-navratri-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-1/2 -right-40 w-96 h-96 bg-navratri-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
       
       {/* Hologram style styles inside component */}
       <style dangerouslySetInnerHTML={{__html: `
@@ -433,7 +434,7 @@ END:VCALENDAR`;
           100% { background-position: -200% center; }
         }
         .animate-shimmer {
-          background: linear-gradient(90deg, #7C3AED 0%, #00E5FF 25%, #FF4D6D 50%, #00E5FF 75%, #7C3AED 100%);
+          background: linear-gradient(90deg, #5A2132 0%, #FFFFFF 25%, #5A2132 50%, #FFFFFF 75%, #5A2132 100%);
           background-size: 200% auto;
           animation: shimmer 4s linear infinite;
         }
@@ -444,7 +445,7 @@ END:VCALENDAR`;
         
         {/* Glow Effect */}
         {isValid && (
-          <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-[#00E5FF] to-pink-500 rounded-[2.5rem] blur-xl opacity-20 animate-pulse print:hidden"></div>
+          <div className="absolute -inset-1 bg-navratri-primary rounded-[2.5rem] blur-xl opacity-20 animate-pulse print:hidden"></div>
         )}
 
         {/* Boarding Pass Ticket Card */}
@@ -463,8 +464,8 @@ END:VCALENDAR`;
             
             {/* Top Row: Brand & Status */}
             <div className="flex items-center justify-between mb-6">
-              <span className="text-xl font-display font-[850] text-[#0F172A] tracking-tight flex items-center gap-1.5">
-                RaasPass<span className="w-2 h-2 rounded-full bg-pink-500"></span>
+              <span className="flex items-center">
+                <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-8 md:h-9 w-auto object-contain" />
               </span>
               
               {/* Dynamic Status Badge */}
@@ -496,7 +497,7 @@ END:VCALENDAR`;
             <div className="mb-8 text-left">
               <h1 className="text-[26px] md:text-[32px] font-display font-[850] text-slate-900 leading-tight mb-3 tracking-tight">{ticket.eventName}</h1>
               <div className="flex items-center gap-3">
-                <span className="px-3 py-1 bg-purple-50 text-purple-700 text-[12px] font-[800] uppercase tracking-wider rounded-md border border-purple-100">
+                <span className="px-3 py-1 bg-navratri-primary/10 text-navratri-primary text-[12px] font-[800] uppercase tracking-wider rounded-md border border-navratri-primary/20">
                   {ticket.ticketType}
                 </span>
                 <span className="text-[13px] text-slate-500 font-semibold">
@@ -519,8 +520,8 @@ END:VCALENDAR`;
             </div>
             
             {/* Cutout notches */}
-            <div className="absolute -left-4 bottom-0 w-8 h-8 bg-[#07070F] rounded-full transform translate-y-1/2 border-r border-slate-100 print:hidden"></div>
-            <div className="absolute -right-4 bottom-0 w-8 h-8 bg-[#07070F] rounded-full transform translate-y-1/2 border-l border-slate-100 print:hidden"></div>
+            <div className="absolute -left-4 bottom-0 w-8 h-8 bg-navratri-bg rounded-full transform translate-y-1/2 border-r border-slate-100 print:hidden"></div>
+            <div className="absolute -right-4 bottom-0 w-8 h-8 bg-navratri-bg rounded-full transform translate-y-1/2 border-l border-slate-100 print:hidden"></div>
           </div>
 
           {/* Bottom Half of Boarding Pass */}
@@ -603,7 +604,7 @@ END:VCALENDAR`;
           <button 
             onClick={handleDownloadPass} 
             disabled={downloading || isCancelled}
-            className="flex-1 bg-gradient-to-r from-purple-600 to-pink-500 hover:scale-[1.02] active:scale-[0.98] transition-transform text-white font-[800] py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm shadow-lg shadow-purple-500/20 disabled:opacity-55 disabled:hover:scale-100"
+            className="flex-1 bg-navratri-primary hover:opacity-90 active:scale-[0.98] transition-all text-white font-[800] py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm shadow-premium disabled:opacity-55 disabled:hover:scale-100"
           >
             {downloading ? (
               <>
@@ -617,14 +618,14 @@ END:VCALENDAR`;
           </button>
 
           <div className="flex gap-2">
-            <button onClick={handleShare} disabled={isCancelled} className="p-3.5 bg-white/10 hover:bg-white/15 text-white rounded-xl border border-white/10 transition-colors" title="Share Pass">
-              <Share2 className="w-4 h-4" />
+            <button onClick={handleShare} disabled={isCancelled} className="p-3.5 bg-white hover:bg-slate-100 active:scale-95 text-slate-800 rounded-xl border border-slate-200 shadow-sm transition-all" title="Share Pass">
+              <Share2 className="w-5 h-5" />
             </button>
-            <button onClick={handleDownloadIcs} className="p-3.5 bg-white/10 hover:bg-white/15 text-white rounded-xl border border-white/10 transition-colors" title="Add to Calendar">
-              <Calendar className="w-4 h-4" />
+            <button onClick={handleDownloadIcs} className="p-3.5 bg-white hover:bg-slate-100 active:scale-95 text-slate-800 rounded-xl border border-slate-200 shadow-sm transition-all" title="Add to Calendar">
+              <Calendar className="w-5 h-5" />
             </button>
-            <button onClick={openMaps} className="p-3.5 bg-white/10 hover:bg-white/15 text-[#00E5FF] rounded-xl border border-[#00E5FF]/20 transition-colors" title="Directions">
-              <Navigation className="w-4 h-4" />
+            <button onClick={openMaps} className="p-3.5 bg-white hover:bg-slate-100 active:scale-95 text-navratri-primary rounded-xl border border-slate-200 shadow-sm transition-all" title="Directions">
+              <Navigation className="w-5 h-5" />
             </button>
           </div>
 

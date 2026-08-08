@@ -49,12 +49,10 @@ export default function ScannerLogin() {
     <div className="min-h-screen bg-navratri-primary flex flex-col justify-center px-6 py-12 selection:bg-navratri-accent selection:text-white">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-navratri-accent/10 rounded-[16px] flex items-center justify-center shadow-lg shadow-navratri-accent/20 border border-navratri-accent/20">
-            <ScanLine className="w-8 h-8 text-navratri-accent" />
-          </div>
+          <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-16 w-auto object-contain bg-white/10 p-2 rounded-xl" />
         </div>
         <h2 className="text-center text-[28px] font-display font-[700] leading-9 tracking-tight text-white">
-          RaasPass Scanner
+          Scanner Login
         </h2>
         <p className="mt-2 text-center text-[15px] text-white/60 font-[500]">
           Staff Entry Validation System

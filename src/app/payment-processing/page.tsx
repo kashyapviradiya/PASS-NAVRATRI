@@ -100,15 +100,15 @@ export default function PaymentProcessing() {
   }, [router]);
 
   return (
-    <div className="bg-[#F7F7F8] min-h-screen flex items-center justify-center p-4 font-sans selection:bg-[#9333EA] selection:text-white">
+    <div className="bg-navratri-bg min-h-screen flex items-center justify-center p-4 font-sans selection:bg-navratri-primary selection:text-white">
       <div 
-        className="bg-white rounded-[2rem] p-10 md:p-16 max-w-md w-full text-center shadow-xl border border-gray-100 animate-scale-in"
+        className="max-w-md w-full bg-white rounded-[24px] p-8 md:p-12 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 animate-scale-in"
       >
         
-        <div className="relative w-24 h-24 mx-auto mb-8">
-          <div className="absolute inset-0 bg-[#9333EA]/10 rounded-full animate-ping"></div>
-          <div className="relative bg-white rounded-full w-full h-full flex items-center justify-center border-4 border-[#F7F7F8] shadow-sm z-10">
-            <Loader2 className="w-10 h-10 text-[#9333EA] animate-spin" />
+        <div className="mb-8 relative w-20 h-20 mx-auto">
+          <div className="absolute inset-0 bg-navratri-primary/10 rounded-full animate-ping"></div>
+          <div className="absolute inset-0 bg-navratri-softBg rounded-full flex items-center justify-center border border-navratri-border">
+            <Loader2 className="w-10 h-10 text-navratri-primary animate-spin" />
           </div>
         </div>
 

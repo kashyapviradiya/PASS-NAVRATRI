@@ -108,7 +108,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="bg-navratri-bg min-h-[calc(100vh-64px)] pb-32 font-sans selection:bg-navratri-accent selection:text-white pt-10">
+    <div className="bg-navratri-bg min-h-[calc(100vh-64px)] pb-32 font-sans selection:bg-navratri-primary selection:text-white pt-10">
       <div className="max-w-[1024px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* HEADER */}
@@ -145,7 +145,7 @@ export default function CheckoutPage() {
             </div>
 
             <div className="bg-white rounded-card p-8 md:p-10 border border-slate-100 shadow-card relative overflow-hidden">
-              <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-premium"></div>
+              <div className="absolute top-0 inset-x-0 h-[3px] bg-navratri-primary"></div>
               
               {/* STEP 1: CUSTOMER DETAILS */}
               {step === 1 && (
@@ -169,7 +169,7 @@ export default function CheckoutPage() {
                       <input type="text" className="w-full px-5 py-3.5 rounded-[16px] bg-slate-50 border border-slate-200 focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 outline-none transition-all font-[500] text-[15px] text-navratri-text" placeholder="Ahmedabad" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} />
                     </div>
                   </div>
-                  <button onClick={handleNextStep} className="mt-8 px-8 py-4 bg-gradient-premium text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all w-full sm:w-auto text-[15px]">
+                  <button onClick={handleNextStep} className="mt-8 px-8 py-4 bg-navratri-primary text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all w-full sm:w-auto text-[15px] hover:opacity-90">
                     Continue to Order Summary
                   </button>
                 </div>
@@ -202,7 +202,7 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  <div className="bg-purple-50/50 p-6 rounded-[20px] border border-purple-100 flex justify-between items-center mb-8">
+                  <div className="bg-slate-50 p-6 rounded-[20px] border border-slate-200 flex justify-between items-center mb-8 shadow-sm">
                     <div>
                       <p className="text-[11px] font-[800] text-navratri-primary uppercase tracking-widest mb-1">Total Payable</p>
                       <p className="text-[32px] font-display font-[800] text-navratri-text tracking-tight">{formatCurrency(totalAmount)}</p>
@@ -210,7 +210,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <button onClick={handleNextStep} className="w-full sm:w-auto px-8 py-4 bg-gradient-premium text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all text-[15px]">
+                    <button onClick={handleNextStep} className="w-full sm:w-auto px-8 py-4 bg-navratri-primary text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all text-[15px] hover:opacity-90">
                       Proceed to Payment
                     </button>
                     <button onClick={() => setStep(1)} className="w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-navratri-text font-[700] rounded-button hover:bg-slate-50 transition-colors text-[15px]">
@@ -226,8 +226,8 @@ export default function CheckoutPage() {
                   <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-6">Select Payment Method</h2>
                   
                   <div className="space-y-4 mb-8">
-                    <label className={`flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'upi' ? 'border-navratri-primary bg-purple-50/20' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
-                      <input type="radio" name="payment" value="upi" checked={paymentMethod === 'upi'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 text-navratri-primary focus:ring-navratri-primary" />
+                    <label className={`flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'upi' ? 'border-navratri-primary bg-navratri-primary/5' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
+                      <input type="radio" name="payment" value="upi" checked={paymentMethod === 'upi'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 accent-navratri-primary focus:ring-navratri-primary" />
                       <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 shrink-0">
                         <Smartphone className="w-5 h-5 text-navratri-primary" />
                       </div>
@@ -237,8 +237,8 @@ export default function CheckoutPage() {
                       </div>
                     </label>
 
-                    <label className={`flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-navratri-primary bg-purple-50/20' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
-                      <input type="radio" name="payment" value="card" checked={paymentMethod === 'card'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 text-navratri-primary focus:ring-navratri-primary" />
+                    <label className={`flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-navratri-primary bg-navratri-primary/5' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
+                      <input type="radio" name="payment" value="card" checked={paymentMethod === 'card'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 accent-navratri-primary focus:ring-navratri-primary" />
                       <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 shrink-0">
                         <CreditCard className="w-5 h-5 text-navratri-primary" />
                       </div>
@@ -248,8 +248,8 @@ export default function CheckoutPage() {
                       </div>
                     </label>
 
-                    <label className={`flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'netbanking' ? 'border-navratri-primary bg-purple-50/20' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
-                      <input type="radio" name="payment" value="netbanking" checked={paymentMethod === 'netbanking'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 text-navratri-primary focus:ring-navratri-primary" />
+                    <label className={`flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'netbanking' ? 'border-navratri-primary bg-navratri-primary/5' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
+                      <input type="radio" name="payment" value="netbanking" checked={paymentMethod === 'netbanking'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 accent-navratri-primary focus:ring-navratri-primary" />
                       <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 shrink-0">
                         <Building className="w-5 h-5 text-navratri-primary" />
                       </div>
@@ -264,7 +264,7 @@ export default function CheckoutPage() {
                     <button 
                       onClick={handleCheckout} 
                       disabled={isProcessing}
-                      className="w-full sm:w-auto px-10 py-4 bg-gradient-premium text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:translate-y-0 text-[15px]"
+                      className="w-full sm:w-auto px-10 py-4 bg-navratri-primary text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:translate-y-0 text-[15px] hover:opacity-90"
                     >
                       {isProcessing ? (
                         <><Loader2 className="w-5 h-5 animate-spin" /> Processing Securely...</>

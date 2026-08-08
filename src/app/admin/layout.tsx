@@ -32,10 +32,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Mobile Header & Menu Toggle */}
       <div className="md:hidden bg-[#0F172A] p-4 flex items-center justify-between sticky top-0 z-50 shadow-sm border-b border-white/10">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#00E5FF]/10 rounded-[8px] flex items-center justify-center border border-[#00E5FF]/20">
-            <Sparkles className="w-4 h-4 text-[#00E5FF]" />
-          </div>
-          <span className="font-display font-[700] text-white text-[18px] leading-none tracking-tight">RaasPass<br/><span className="text-[10px] text-slate-400 tracking-widest uppercase font-sans">Admin</span></span>
+          <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-8 w-auto object-contain" />
+          <span className="text-[10px] text-slate-400 tracking-widest uppercase font-sans mt-1">Admin</span>
         </div>
         <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-slate-400 bg-white/5 rounded-[8px] hover:text-white transition-colors">
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -47,14 +45,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         fixed md:sticky top-0 left-0 h-screen w-64 bg-[#0F172A] flex flex-col z-40 shadow-xl transition-transform duration-300
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
-        <div className="p-6 border-b border-white/10 hidden md:flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-[#7C3AED] to-[#00E5FF] rounded-[12px] flex items-center justify-center shadow-inner">
-            <Sparkles className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h1 className="font-display font-[800] text-[20px] text-white leading-tight tracking-tight">RaasPass</h1>
-            <p className="text-[10px] text-[#00E5FF] font-[800] tracking-widest uppercase">Admin Panel</p>
-          </div>
+        <div className="p-6 border-b border-white/10 hidden md:flex items-end gap-3">
+          <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-10 w-auto object-contain" />
+          <p className="text-[10px] text-slate-400 font-[800] tracking-widest uppercase mb-1">Admin Panel</p>
         </div>
         
         <div className="flex-1 py-6 px-4 space-y-2 overflow-y-auto hide-scrollbar">

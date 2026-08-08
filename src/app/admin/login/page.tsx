@@ -52,9 +52,9 @@ export default function AdminLogin() {
         <div className="bg-white/[0.03] backdrop-blur-xl rounded-[28px] shadow-glass border border-white/10 p-8 sm:p-12 relative overflow-hidden">
           
           <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-white/[0.06] rounded-[16px] flex items-center justify-center mx-auto mb-6 shadow-sm border border-white/10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-10 h-10 bg-navratri-accent/20 rounded-full blur-md"></div>
-              <Shield className="w-10 h-10 text-navratri-accent relative z-10" />
+            <div className="w-24 h-24 bg-white/[0.06] rounded-[16px] flex items-center justify-center mx-auto mb-6 shadow-sm border border-white/10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-12 h-12 bg-navratri-accent/20 rounded-full blur-md"></div>
+              <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-12 w-auto object-contain relative z-10" />
             </div>
             <h1 className="text-[32px] font-display font-[800] text-white tracking-tight mb-2">Admin Portal</h1>
             <p className="text-slate-300 font-[500] text-[15px]">Enter your secure credentials</p>

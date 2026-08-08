@@ -35,12 +35,12 @@ export default function TicketSelectionPage({ params }: { params: { id: string }
     fetchEvent();
   }, [params.id]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#F7F7F8] flex items-center justify-center pt-[80px]">
-        <div className="w-16 h-16 border-4 border-[#9333EA] border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
+    if (loading) {
+      return (
+        <div className="min-h-screen bg-navratri-bg flex items-center justify-center pt-[80px]">
+          <div className="w-16 h-16 border-4 border-navratri-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      );
   }
 
   if (!event) return null;

@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
-      <body className={`font-sans min-h-screen flex flex-col bg-[#F8F7F4] text-[#111111]`}>
+      <body className={`font-sans min-h-screen flex flex-col bg-navratri-bg text-navratri-dark`}>
         <AuthProvider>
           <ToasterWrapper />
           <ClientLayoutWrapper>

@@ -54,10 +54,10 @@ export default function OrganizerLayout({ children }: { children: React.ReactNod
         
         <div className="h-20 flex items-center justify-between px-6 border-b border-navratri-lightGrey">
           <Link href="/organizer/dashboard" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-navratri-accent/10 rounded-[12px] flex items-center justify-center border border-navratri-accent/20 shadow-sm">
-              <Sparkles className="w-5 h-5 text-navratri-accent" />
+            <div className="flex items-end gap-3">
+              <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-10 w-auto object-contain" />
+              <span className="text-[10px] text-navratri-muted tracking-widest uppercase font-sans font-[700] mb-1">Organizer</span>
             </div>
-            <span className="font-display font-[700] text-[20px] text-navratri-text leading-none tracking-tight">RaasPass<br/><span className="text-[10px] text-navratri-muted tracking-widest uppercase font-sans font-[700]">Organizer</span></span>
           </Link>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-navratri-muted hover:text-navratri-text transition-colors">
             <X className="w-6 h-6" />

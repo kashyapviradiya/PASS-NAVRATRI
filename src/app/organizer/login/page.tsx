@@ -53,8 +53,8 @@ export default function OrganizerLogin() {
         <div className="bg-white rounded-card shadow-sm border border-navratri-lightGrey p-8 sm:p-12">
           
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-navratri-bg border border-navratri-lightGrey rounded-[16px] flex items-center justify-center mx-auto mb-6 relative overflow-hidden">
-              <Briefcase className="w-8 h-8 text-navratri-accent relative z-10" />
+            <div className="w-20 h-20 bg-navratri-bg border border-navratri-lightGrey rounded-[16px] flex items-center justify-center mx-auto mb-6 relative overflow-hidden p-3">
+              <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-full w-auto object-contain relative z-10" />
             </div>
             <h1 className="text-[28px] font-display font-[700] text-navratri-text tracking-tight mb-2">Organizer Portal</h1>
             <p className="text-navratri-muted font-[500] text-[15px]">Sign in to manage your events</p>

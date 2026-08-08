@@ -15,15 +15,21 @@ export default function PassSelector({ pass, quantity, onIncrement, onDecrement 
   const discount = getDiscountPercentage(pass.originalPrice, pass.price);
   const isLowStock = pass.available < 100;
   const isSoldOut = pass.available === 0;
+  const isSelected = quantity > 0;
 
   return (
-    <div className={`border-2 rounded-2xl p-5 transition-all duration-300 ${
+    <div className={`border-2 rounded-2xl p-5 transition-all duration-300 relative ${
       isSoldOut 
         ? 'border-gray-200 bg-gray-50 opacity-60' 
-        : quantity > 0 
-          ? 'border-[#9333EA] bg-[#9333EA]/5 shadow-md shadow-purple-500/10' 
+        : isSelected 
+          ? 'border-navratri-primary bg-navratri-primary/5 shadow-md shadow-navratri-primary/10' 
           : 'border-gray-200 bg-white hover:border-[#111111]/30'
     }`}>
+      {isSelected && (
+        <div className="absolute top-4 right-4 bg-white rounded-full p-1 shadow-sm border border-navratri-primary">
+          <Check className="w-3.5 h-3.5 text-navratri-primary" />
+        </div>
+      )}
       <div className="flex justify-between items-start">
         <div className="flex-1">
           <div className="flex items-center gap-2">
@@ -47,7 +53,7 @@ export default function PassSelector({ pass, quantity, onIncrement, onDecrement 
             <button 
               onClick={onDecrement}
               disabled={quantity === 0}
-              className="w-9 h-9 flex items-center justify-center rounded-lg bg-white shadow-sm text-gray-600 hover:text-[#9333EA] font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="w-9 h-9 flex items-center justify-center rounded-lg bg-white shadow-sm text-gray-600 hover:text-navratri-primary font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               <Minus className="w-4 h-4" />
             </button>
@@ -55,7 +61,7 @@ export default function PassSelector({ pass, quantity, onIncrement, onDecrement 
             <button 
               onClick={onIncrement}
               disabled={quantity >= pass.maxPerUser || quantity >= pass.available}
-              className="w-9 h-9 flex items-center justify-center rounded-lg bg-white shadow-sm text-gray-600 hover:text-[#9333EA] font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              className="w-9 h-9 flex items-center justify-center rounded-lg bg-white shadow-sm text-gray-600 hover:text-navratri-primary font-bold disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               <Plus className="w-4 h-4" />
             </button>
@@ -69,7 +75,7 @@ export default function PassSelector({ pass, quantity, onIncrement, onDecrement 
       <div className="mt-4 space-y-1.5">
         {pass.benefits.map((benefit, idx) => (
           <div key={idx} className="flex items-center gap-2 text-sm text-[#6B7280] font-[500]">
-            <Check className="w-3.5 h-3.5 text-[#9333EA] flex-shrink-0" />
+            <Check className="w-3.5 h-3.5 text-navratri-primary flex-shrink-0" />
             {benefit}
           </div>
         ))}

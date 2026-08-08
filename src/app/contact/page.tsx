@@ -9,7 +9,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="bg-navratri-bg min-h-screen pt-[120px] pb-32 font-sans selection:bg-navratri-accent selection:text-white">
+    <div className="bg-navratri-bg min-h-screen pt-[120px] pb-32 font-sans selection:bg-navratri-primary selection:text-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1 className="text-[36px] md:text-[44px] font-display font-[800] text-navratri-text mb-4 tracking-tight">Contact Us</h1>
@@ -17,7 +17,7 @@ export default function ContactPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="bg-white rounded-card p-10 border border-navratri-lightGrey shadow-card hover:shadow-card-hover transition-shadow duration-300">
+          <div className="bg-white rounded-card p-10 border border-navratri-border shadow-card hover:shadow-card-hover transition-shadow duration-300">
             <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-8">Get in Touch</h2>
             
             <div className="space-y-8">
@@ -60,22 +60,22 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-card p-10 border border-navratri-lightGrey shadow-card hover:shadow-card-hover transition-shadow duration-300">
+          <div className="bg-white rounded-card p-10 border border-navratri-border shadow-card hover:shadow-card-hover transition-shadow duration-300">
             <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-8">Send a Message</h2>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2 block">Full Name</label>
-                <input required type="text" className="w-full px-5 py-3.5 rounded-[14px] bg-navratri-bg border border-navratri-lightGrey focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary focus:shadow-[0_0_0_3px_rgba(124,58,237,0.1)] outline-none transition-all font-[500] text-[15px]" placeholder="Your Name" />
+                <input required type="text" className="w-full px-5 py-3.5 rounded-[14px] bg-navratri-bg border border-navratri-border focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary focus:shadow-[0_0_0_3px_rgba(1,69,242,0.1)] outline-none transition-all font-[500] text-[15px]" placeholder="Your Name" />
               </div>
               <div>
                 <label className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2 block">Email Address</label>
-                <input required type="email" className="w-full px-5 py-3.5 rounded-[14px] bg-navratri-bg border border-navratri-lightGrey focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary focus:shadow-[0_0_0_3px_rgba(124,58,237,0.1)] outline-none transition-all font-[500] text-[15px]" placeholder="you@example.com" />
+                <input required type="email" className="w-full px-5 py-3.5 rounded-[14px] bg-navratri-bg border border-navratri-border focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary focus:shadow-[0_0_0_3px_rgba(1,69,242,0.1)] outline-none transition-all font-[500] text-[15px]" placeholder="you@example.com" />
               </div>
               <div>
                 <label className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2 block">Message</label>
-                <textarea required rows={4} className="w-full px-5 py-3.5 rounded-[14px] bg-navratri-bg border border-navratri-lightGrey focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary focus:shadow-[0_0_0_3px_rgba(124,58,237,0.1)] outline-none transition-all font-[500] text-[15px]" placeholder="How can we help?"></textarea>
+                <textarea required rows={4} className="w-full px-5 py-3.5 rounded-[14px] bg-navratri-bg border border-navratri-border focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary focus:shadow-[0_0_0_3px_rgba(1,69,242,0.1)] outline-none transition-all font-[500] text-[15px]" placeholder="How can we help?"></textarea>
               </div>
-              <button type="submit" className="w-full px-8 py-4 bg-gradient-premium text-white font-[700] rounded-button hover:shadow-premium transition-all shadow-sm hover:-translate-y-0.5 active:scale-[0.98] mt-2">
+              <button type="submit" className="w-full px-8 py-4 bg-navratri-primary hover:opacity-90 text-white font-[700] rounded-button hover:shadow-premium transition-all shadow-sm hover:-translate-y-0.5 active:scale-[0.98] mt-2">
                 Send Message
               </button>
             </form>

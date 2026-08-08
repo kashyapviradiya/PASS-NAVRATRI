@@ -80,8 +80,8 @@ export default function MyTicketsPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col pt-[80px] px-4 sm:px-6">
         <div className="max-w-md w-full mx-auto animate-fade-in-up">
-          <div className="w-12 h-12 bg-white rounded-[12px] flex items-center justify-center mb-6 border border-gray-200 shadow-sm">
-            <Lock className="w-6 h-6 text-gray-900" />
+          <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 border border-gray-200 shadow-sm p-3">
+            <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="w-full h-auto object-contain" />
           </div>
           
           <h1 className="text-[28px] md:text-[32px] font-[850] text-gray-900 mb-2 tracking-tight">
@@ -110,7 +110,7 @@ export default function MyTicketsPage() {
 
   // UI for Authenticated View
   return (
-    <div className="bg-gray-50 min-h-[calc(100vh-50px)] pb-24 pt-[60px] font-sans">
+    <div className="bg-navratri-bg min-h-[calc(100vh-50px)] pb-24 pt-[60px] font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-[24px] md:text-[28px] font-[850] text-gray-900 tracking-tight">My Tickets</h1>
@@ -121,13 +121,13 @@ export default function MyTicketsPage() {
         </div>
 
         {bookings.length === 0 ? (
-          <div className="bg-white rounded-[16px] p-10 text-center border border-gray-200 shadow-sm flex flex-col items-center">
-            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-100">
-              <Ticket className="w-6 h-6 text-gray-400" />
+          <div className="bg-navratri-card rounded-[16px] p-10 text-center border border-navratri-border shadow-sm flex flex-col items-center">
+            <div className="w-16 h-16 bg-navratri-softBg rounded-full flex items-center justify-center mb-4 border border-navratri-border p-3">
+              <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="w-full h-auto object-contain" />
             </div>
-            <h2 className="text-[18px] font-[800] text-gray-900 mb-2">No Bookings Found</h2>
-            <p className="text-gray-500 font-[500] max-w-sm mb-6 text-[13px]">You haven't booked any tickets yet. Explore our events and book your passes.</p>
-            <button onClick={() => router.push('/events')} className="bg-gray-900 text-white font-[700] px-6 py-2.5 rounded-[12px] active:scale-95 transition-transform text-[13px]">
+            <h2 className="text-[18px] font-[800] text-navratri-text mb-2">No Bookings Found</h2>
+            <p className="text-navratri-muted font-[500] max-w-sm mb-6 text-[13px]">You haven't booked any tickets yet. Explore our events and book your passes.</p>
+            <button onClick={() => router.push('/events')} className="bg-navratri-primary hover:opacity-90 text-white font-[700] px-6 py-2.5 rounded-[12px] active:scale-95 transition-all text-[13px] shadow-premium">
               Explore Events
             </button>
           </div>
@@ -138,7 +138,7 @@ export default function MyTicketsPage() {
               const bannerImage = booking.eventBanner || booking.tickets[0]?.eventBanner;
               
               return (
-                <div key={booking.id} className="bg-white rounded-[16px] p-4 border border-gray-200 shadow-sm flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                <div key={booking.id} className="bg-navratri-card rounded-[16px] p-4 border border-navratri-border shadow-sm flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                   
                   <div className="flex gap-4 flex-1 w-full">
                     <div className="w-24 h-24 sm:w-20 sm:h-20 bg-gray-100 rounded-[12px] flex items-center justify-center shrink-0 overflow-hidden border border-gray-200">
@@ -161,10 +161,10 @@ export default function MyTicketsPage() {
                     </div>
                   </div>
                   
-                  <div className="w-full sm:w-auto shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-100 mt-1 sm:mt-0">
+                  <div className="w-full sm:w-auto shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-navratri-border mt-1 sm:mt-0">
                     <button 
                       onClick={() => router.push(`/tickets/${booking.id}`)}
-                      className="w-full sm:w-auto bg-gray-900 text-white font-[700] px-5 py-2.5 rounded-[10px] hover:bg-gray-800 active:scale-95 transition-transform text-[13px] shadow-sm flex justify-center items-center gap-2"
+                      className="w-full sm:w-auto bg-navratri-primary text-white font-[700] px-5 py-2.5 rounded-[10px] hover:opacity-90 active:scale-95 transition-all text-[13px] shadow-premium flex justify-center items-center gap-2"
                     >
                       View Ticket <ArrowRight className="w-4 h-4" />
                     </button>

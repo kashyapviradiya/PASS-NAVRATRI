@@ -29,54 +29,101 @@ export default function Home() {
   return (
     <div className="bg-gray-50 min-h-screen pb-[60px] md:pb-0 overflow-x-hidden font-sans">
       
-      {/* 1. HERO CAROUSEL SECTION */}
-      <div className="relative overflow-hidden px-0 pt-[40px] md:pt-[64px] pb-2 bg-[#1E1B4B]">
-        {/* Ambient background */}
-        <div className="pointer-events-none absolute inset-0 -z-10 mt-14">
-          <img 
-            alt="background blur"
-            src="https://images.unsplash.com/photo-1540039155733-d7696d4eb98e?q=80&w=1974&auto=format&fit=crop"
-            className="scale-110 object-cover blur-md brightness-90 absolute inset-0 w-full h-full opacity-30"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1E1B4B] via-[#1E1B4B]/40 to-transparent mix-blend-normal"></div>
-          <div className="absolute inset-x-0 bottom-0 h-40 sm:h-72 lg:h-80 bg-gradient-to-b from-transparent via-gray-50/80 to-gray-50"></div>
+      {/* 1. HERO SECTION */}
+      <div className="relative overflow-hidden px-0 pt-[60px] md:pt-[100px] pb-6 md:pb-12 bg-navratri-bg">
+        {/* Ambient background matching poster style */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          {featuredEvents.length > 0 && (
+            <img 
+              alt="background blur"
+              src={featuredEvents[0].bannerImage || '/demo/events/poster_navratri.jpg'}
+              className="scale-[1.5] object-cover blur-[100px] opacity-[0.15] absolute inset-0 w-full h-full"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-b from-navratri-bg/40 via-navratri-bg/80 to-navratri-bg"></div>
         </div>
 
-        {/* Carousel Content */}
-        <div className="w-full px-0 max-w-full md:px-4 mt-6 lg:mt-8 relative z-10">
-          <div className="flex overflow-x-auto snap-x snap-mandatory px-4 md:px-0 gap-3 pb-2" style={{ scrollbarWidth: 'none' }}>
-            {featuredEvents.length > 0 ? featuredEvents.map((event, i) => (
-              <Link href={`/events/${event.id}`} key={event.id} className="w-[85vw] md:w-[60vw] lg:w-[45vw] shrink-0 snap-center group">
-                <div className="relative w-full pb-[60%] md:pb-[40%] rounded-[16px] overflow-hidden shadow-lg border border-white/10 mb-3">
+        {/* MOBILE CAROUSEL (hidden on desktop) */}
+        <div className="w-full relative z-10 md:hidden mt-2">
+          <div className="flex overflow-x-auto snap-x snap-mandatory px-8 gap-4 pb-4" style={{ scrollbarWidth: 'none' }}>
+            {featuredEvents.length > 0 ? featuredEvents.map((event) => (
+              <Link href={`/events/${event.id}`} key={event.id} className="w-[82vw] shrink-0 snap-center group block">
+                <div className="relative w-full pb-[125%] rounded-[16px] overflow-hidden shadow-md border border-navratri-border mb-4 bg-white">
                   <img 
                     src={event.bannerImage || event.bannerUrl || '/demo/events/poster_navratri.jpg'} 
                     alt={event.title}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                {/* Metadata below poster */}
-                <div className="px-2">
-                  <h2 className="text-[18px] md:text-[22px] font-[800] text-gray-900 leading-tight mb-1 truncate">{event.title}</h2>
-                  <div className="flex items-center gap-3 text-[13px] text-gray-600 font-[600]">
-                    <span className="flex items-center gap-1 text-navratri-primary">
-                      {new Date(event.startDate).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
+                {/* Centered Metadata */}
+                <div className="text-center px-1">
+                  <h2 className="text-[20px] font-[850] text-navratri-dark leading-tight mb-1 truncate uppercase">{event.title}</h2>
+                  <div className="text-[12px] text-navratri-muted font-[600] flex items-center justify-center gap-1.5 flex-wrap">
+                    <span className="text-navratri-primary">
+                      {new Date(event.startDate).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })} - {new Date(event.endDate || event.startDate).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })}
                     </span>
-                    <span className="flex items-center gap-1 truncate">
-                      {event.venue}
-                    </span>
+                    <span>•</span>
+                    <span>{event.category || 'Navratri'}</span>
+                    <span>•</span>
+                    <span>{event.city || 'Ahmedabad'}</span>
                   </div>
+                  {event.views && (
+                    <div className="text-[11px] text-navratri-muted mt-1.5 font-[700] flex justify-center items-center gap-1">
+                       <Zap className="w-3 h-3 text-navratri-primary" /> Views ({event.views})
+                    </div>
+                  )}
                 </div>
               </Link>
             )) : (
               [1,2,3].map(i => (
-                <div key={i} className="w-[85vw] md:w-[60vw] lg:w-[45vw] shrink-0 snap-center">
-                  <div className="relative w-full pb-[60%] md:pb-[40%] rounded-2xl bg-white/10 animate-pulse border border-white/5 mb-3"></div>
-                  <div className="h-6 bg-gray-200 animate-pulse rounded w-3/4 mb-2 mx-2"></div>
-                  <div className="h-4 bg-gray-200 animate-pulse rounded w-1/2 mx-2"></div>
+                <div key={i} className="w-[82vw] shrink-0 snap-center">
+                  <div className="relative w-full pb-[125%] rounded-[16px] bg-navratri-softBg animate-pulse mb-4"></div>
+                  <div className="h-6 bg-navratri-softBg animate-pulse rounded w-3/4 mx-auto mb-2"></div>
+                  <div className="h-4 bg-navratri-softBg animate-pulse rounded w-1/2 mx-auto"></div>
                 </div>
               ))
             )}
           </div>
+        </div>
+
+        {/* DESKTOP SPLIT HERO (hidden on mobile) */}
+        <div className="hidden md:flex max-w-7xl mx-auto px-6 lg:px-8 mt-8 relative z-10 items-center justify-between gap-12">
+          {featuredEvents.length > 0 ? (
+            <>
+              {/* Left Info */}
+              <div className="flex-1 max-w-xl">
+                <h1 className="text-[42px] lg:text-[56px] font-display font-[850] text-navratri-dark leading-[1.1] mb-6 uppercase tracking-tight">
+                  {featuredEvents[0].title}
+                </h1>
+                <div className="flex flex-col gap-3 text-[16px] text-navratri-muted font-[600] mb-8">
+                  <span className="flex items-center gap-3">
+                    <Calendar className="w-5 h-5 text-navratri-primary" />
+                    {new Date(featuredEvents[0].startDate).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })} - {new Date(featuredEvents[0].endDate || featuredEvents[0].startDate).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })}
+                  </span>
+                  <span className="flex items-center gap-3">
+                    <MapPin className="w-5 h-5 text-navratri-primary" />
+                    {featuredEvents[0].venue}, {featuredEvents[0].city || 'Ahmedabad'}
+                  </span>
+                </div>
+                <Link href={`/events/${featuredEvents[0].id}`} className="inline-block bg-navratri-primary text-white font-[800] px-10 py-4 rounded-full text-[16px] hover:opacity-90 transition-all shadow-premium hover:-translate-y-1">
+                  GET TICKETS
+                </Link>
+              </div>
+              
+              {/* Right Poster */}
+              <Link href={`/events/${featuredEvents[0].id}`} className="w-[380px] lg:w-[420px] shrink-0 block group">
+                <div className="relative w-full pb-[125%] rounded-[24px] overflow-hidden shadow-[0_20px_60px_-15px_rgba(90,33,50,0.4)] border-2 border-white">
+                  <img 
+                    src={featuredEvents[0].bannerImage || featuredEvents[0].bannerUrl || '/demo/events/poster_navratri.jpg'} 
+                    alt={featuredEvents[0].title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+              </Link>
+            </>
+          ) : (
+            <div className="flex-1 h-[400px] bg-navratri-softBg animate-pulse rounded-[24px]"></div>
+          )}
         </div>
       </div>
 
@@ -91,13 +138,14 @@ export default function Home() {
           className="relative py-2"
         >
           <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="flex justify-between items-end mb-3">
+            <div className="flex justify-between items-end mb-4">
               <div>
-                <h2 className="text-[20px] md:text-[24px] font-[800] text-gray-900 tracking-tight">Popular Events</h2>
+                <h2 className="text-[20px] md:text-[24px] font-[800] text-navratri-dark tracking-tight leading-none">Popular Events</h2>
+                <p className="text-[13px] text-navratri-muted font-[500] mt-1 hidden sm:block">Popular events to attend with friends</p>
               </div>
-              <Link href="/events" className="flex items-center gap-1 text-navratri-primary hover:underline font-[700] text-[13px] tracking-wide uppercase">
+              <Link href="/events" className="flex items-center gap-1 text-navratri-primary hover:underline font-[700] text-[12px] tracking-wider uppercase whitespace-nowrap mb-0.5">
                 <span>View All</span>
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-3.5 h-3.5" />
               </Link>
             </div>
             
@@ -110,29 +158,29 @@ export default function Home() {
         </motion.div>
 
         {/* 2. COMPACT TRUST BANNER */}
-        <div className="relative py-4 mt-2 border-y border-gray-200/60 bg-white">
+        <div className="relative py-4 mt-2 border-y border-navratri-border bg-navratri-bg">
           <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-            <div className="bg-[#1E1B4B] rounded-[12px] p-4 flex flex-col md:flex-row items-center justify-between text-white shadow-sm">
+            <div className="bg-navratri-softBg rounded-[12px] p-4 flex flex-col md:flex-row items-center justify-between text-navratri-dark shadow-sm border border-navratri-border">
               <div className="mb-3 md:mb-0 text-center md:text-left">
-                <h3 className="text-[16px] md:text-[18px] font-[800] tracking-tight">Book. Scan. Enter.</h3>
-                <p className="text-[13px] text-white/80 font-[500]">Fast, Secure Event Entry with RaasPass</p>
+                <h3 className="text-[16px] md:text-[18px] font-[800] tracking-tight text-navratri-primary">Book. Scan. Enter.</h3>
+                <p className="text-[13px] text-navratri-muted font-[500]">Fast, Secure Event Entry with RaasPass</p>
               </div>
               <div className="flex gap-4 md:gap-6">
                 <div className="flex flex-col items-center">
-                  <Smartphone className="w-5 h-5 text-navratri-secondary mb-1" />
-                  <span className="text-[10px] uppercase tracking-wider font-[700]">Digital Pass</span>
+                  <Smartphone className="w-5 h-5 text-navratri-primary mb-1" />
+                  <span className="text-[10px] uppercase tracking-wider font-[700] text-navratri-muted">Digital Pass</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <QrCode className="w-5 h-5 text-navratri-secondary mb-1" />
-                  <span className="text-[10px] uppercase tracking-wider font-[700]">Unique QR</span>
+                  <QrCode className="w-5 h-5 text-navratri-primary mb-1" />
+                  <span className="text-[10px] uppercase tracking-wider font-[700] text-navratri-muted">Unique QR</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Shield className="w-5 h-5 text-navratri-secondary mb-1" />
-                  <span className="text-[10px] uppercase tracking-wider font-[700]">Secure</span>
+                  <Shield className="w-5 h-5 text-navratri-primary mb-1" />
+                  <span className="text-[10px] uppercase tracking-wider font-[700] text-navratri-muted">Secure</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Zap className="w-5 h-5 text-navratri-secondary mb-1" />
-                  <span className="text-[10px] uppercase tracking-wider font-[700]">Fast Entry</span>
+                  <Zap className="w-5 h-5 text-navratri-primary mb-1" />
+                  <span className="text-[10px] uppercase tracking-wider font-[700] text-navratri-muted">Fast Entry</span>
                 </div>
               </div>
             </div>
@@ -220,10 +268,10 @@ export default function Home() {
             <h2 className="text-[18px] md:text-[22px] font-[800] text-gray-900 mb-3 tracking-tight">Platform Services</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
               {[
-                { title: 'Event Ticketing', desc: 'Setup & sell instantly', icon: Ticket, color: 'text-blue-600', bg: 'bg-blue-50' },
-                { title: 'QR Entry', desc: 'Digital pass standard', icon: QrCode, color: 'text-purple-600', bg: 'bg-purple-50' },
-                { title: 'Gate Management', desc: 'Scanner app included', icon: CheckSquare, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                { title: 'Event Analytics', desc: 'Real-time sales data', icon: BarChart3, color: 'text-orange-600', bg: 'bg-orange-50' },
+                { title: 'Event Ticketing', desc: 'Setup & sell instantly', icon: Ticket, color: 'text-navratri-primary', bg: 'bg-navratri-primary/10' },
+                { title: 'QR Entry', desc: 'Digital pass standard', icon: QrCode, color: 'text-navratri-primary', bg: 'bg-navratri-primary/10' },
+                { title: 'Gate Management', desc: 'Scanner app included', icon: CheckSquare, color: 'text-navratri-primary', bg: 'bg-navratri-primary/10' },
+                { title: 'Event Analytics', desc: 'Real-time sales data', icon: BarChart3, color: 'text-navratri-primary', bg: 'bg-navratri-primary/10' },
               ].map((svc, i) => (
                 <div key={i} className="rounded-[10px] p-3 border border-gray-100 shadow-sm flex flex-col bg-white hover:border-gray-200 transition-colors">
                   <div className={`w-8 h-8 rounded-full ${svc.bg} flex items-center justify-center mb-2 ${svc.color}`}>

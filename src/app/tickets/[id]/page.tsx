@@ -69,9 +69,9 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       });
 
       const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      bgGrad.addColorStop(0, '#0F172A');
-      bgGrad.addColorStop(0.5, '#1E1B4B');
-      bgGrad.addColorStop(1, '#312E81');
+      bgGrad.addColorStop(0, '#5A2132');
+      bgGrad.addColorStop(0.5, '#6F5A61');
+      bgGrad.addColorStop(1, '#DED3D6');
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -119,11 +119,11 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       ctx.shadowBlur = 0;
       ctx.shadowOffsetY = 0;
 
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 42px "Inter", "Plus Jakarta Sans", sans-serif';
       ctx.fillText('RaasPass', ticketX + 60, ticketY + 80);
       
-      ctx.fillStyle = '#FF4D6D';
+      ctx.fillStyle = '#5A2132';
       ctx.beginPath();
       ctx.arc(ticketX + 235, ticketY + 68, 8, 0, Math.PI * 2);
       ctx.fill();
@@ -146,7 +146,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       ctx.fillText(statusText === 'USED' ? 'USED' : statusText, ticketX + ticketW - 150, ticketY + 76);
       ctx.textAlign = 'left';
 
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = '800 40px sans-serif';
       
       const eventName = ticket.eventName || 'Navratri Event';
@@ -158,7 +158,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       }
       ctx.fillText(eventLines[0], ticketX + 60, ticketY + 160);
       
-      ctx.fillStyle = '#7C3AED';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
       ctx.fillText(ticket.ticketType?.toUpperCase() || 'PASS', ticketX + 60, ticketY + 220);
 
@@ -189,7 +189,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       ctx.textAlign = 'center';
       ctx.fillText('SCAN AT ENTRY', qrX + qrW / 2, qrY + qrH + 25);
       
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 18px monospace';
       ctx.fillText(ticket.ticketId, qrX + qrW / 2, qrY + qrH + 50);
       ctx.textAlign = 'left';
@@ -208,14 +208,14 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       ctx.fillStyle = '#94A3B8';
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText('GUEST NAME', ticketX + 60, metaY);
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
       ctx.fillText(ticket.customerName, ticketX + 60, metaY + 35);
 
       ctx.fillStyle = '#94A3B8';
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText('BOOKING ID', ticketX + 440, metaY);
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
       ctx.fillText(ticket.bookingId, ticketX + 440, metaY + 35);
 
@@ -224,7 +224,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText('DATE & TIME', ticketX + 60, timeY);
       
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
       const formattedDate = new Date(ticket.eventDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
       ctx.fillText(`${formattedDate} • 7:00 PM`, ticketX + 60, timeY + 35);
@@ -234,7 +234,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText('GATE ASSIGNMENT', ticketX + 60, gateY);
       
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
       const gateText = ticket.gateName ? `${ticket.gateName} (Gate ${ticket.gateNumber || 'N/A'})` : 'Gate Announced at Venue';
       ctx.fillText(gateText, ticketX + 60, gateY + 35);
@@ -244,7 +244,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText('VENUE LOCATION', ticketX + 60, venueY);
       
-      ctx.fillStyle = '#0F172A';
+      ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 20px sans-serif';
       const venueStr = ticket.venue || '';
       let venueLines = [];
@@ -284,9 +284,9 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
 
       const holoY = ticketY + ticketH - 12;
       const holoGrad = ctx.createLinearGradient(ticketX, holoY, ticketX + ticketW, holoY);
-      holoGrad.addColorStop(0, '#7C3AED');
-      holoGrad.addColorStop(0.5, '#00E5FF');
-      holoGrad.addColorStop(1, '#FF4D6D');
+      holoGrad.addColorStop(0, '#5A2132');
+      holoGrad.addColorStop(0.5, '#0B1020');
+      holoGrad.addColorStop(1, '#5A2132');
       
       ctx.fillStyle = holoGrad;
       ctx.beginPath();
@@ -344,30 +344,30 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-navratri-accent bg-[#07070F]">
+      <div className="flex flex-col items-center justify-center min-h-screen text-navratri-primary bg-navratri-bg">
         <Loader2 className="w-10 h-10 animate-spin mb-4" />
-        <p className="text-white font-medium">Loading Tickets...</p>
+        <p className="text-navratri-text font-medium">Loading Tickets...</p>
       </div>
     );
   }
 
   if (tickets.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-[#07070F]">
+      <div className="flex flex-col items-center justify-center min-h-screen p-8 text-center bg-navratri-bg">
         <ShieldAlert className="w-16 h-16 text-red-500 mb-6" />
-        <h1 className="text-3xl font-display font-bold text-white mb-2">Invalid Booking</h1>
-        <p className="text-gray-400 max-w-md mb-8">This booking link is invalid or no tickets were found. Please contact the organizer.</p>
-        <button onClick={() => router.push('/my-tickets')} className="bg-white/10 hover:bg-white/15 text-white px-6 py-3 rounded-full font-bold transition-all">Go Back</button>
+        <h1 className="text-3xl font-display font-bold text-navratri-text mb-2">Invalid Booking</h1>
+        <p className="text-navratri-muted max-w-md mb-8">This booking link is invalid or no tickets were found. Please contact the organizer.</p>
+        <button onClick={() => router.push('/my-tickets')} className="bg-navratri-primary hover:opacity-90 text-white px-6 py-3 rounded-full font-bold transition-all">Go Back</button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pb-28 pt-8 px-4 flex flex-col items-center bg-[#07070F] print:bg-white print:p-0 print:m-0 relative overflow-x-hidden">
+    <div className="min-h-screen pb-28 pt-8 px-4 flex flex-col items-center bg-navratri-bg print:bg-white print:p-0 print:m-0 relative overflow-x-hidden">
       
       {/* Decorative Blur Orbs */}
-      <div className="absolute top-0 -left-40 w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[120px] pointer-events-none fixed"></div>
-      <div className="absolute top-1/2 -right-40 w-[600px] h-[600px] bg-[#00E5FF]/10 rounded-full blur-[120px] pointer-events-none fixed"></div>
+      <div className="absolute top-0 -left-40 w-[600px] h-[600px] bg-navratri-primary/5 rounded-full blur-[120px] pointer-events-none fixed"></div>
+      <div className="absolute top-1/2 -right-40 w-[600px] h-[600px] bg-navratri-primary/5 rounded-full blur-[120px] pointer-events-none fixed"></div>
       
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes shimmer {
@@ -375,7 +375,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
           100% { background-position: -200% center; }
         }
         .animate-shimmer {
-          background: linear-gradient(90deg, #7C3AED 0%, #00E5FF 25%, #FF4D6D 50%, #00E5FF 75%, #7C3AED 100%);
+          background: linear-gradient(90deg, #5A2132 0%, #FFFFFF 25%, #5A2132 50%, #FFFFFF 75%, #5A2132 100%);
           background-size: 200% auto;
           animation: shimmer 4s linear infinite;
         }
@@ -387,8 +387,8 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
           initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: "easeOut" }}
           className="text-center mb-2"
         >
-           <h1 className="text-white text-2xl font-bold font-display tracking-tight">Your Tickets</h1>
-           <p className="text-gray-400 text-sm mt-1">{tickets.length} pass{tickets.length > 1 ? 'es' : ''} in booking</p>
+           <h1 className="text-navratri-text text-2xl font-bold font-display tracking-tight">Your Tickets</h1>
+           <p className="text-navratri-muted text-sm mt-1">{tickets.length} pass{tickets.length > 1 ? 'es' : ''} in booking</p>
         </motion.div>
 
         {tickets.map((ticket, index) => {
@@ -422,8 +422,8 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
                 <div className="p-6 md:p-8 flex flex-col bg-[#FDFDFF] border-b border-dashed border-slate-200 relative">
                   
                   <div className="flex items-center justify-between mb-6">
-                    <span className="text-xl font-display font-[850] text-[#0F172A] tracking-tight flex items-center gap-1.5">
-                      RaasPass<span className="w-2 h-2 rounded-full bg-pink-500"></span>
+                    <span className="flex items-center">
+                      <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-8 md:h-9 w-auto object-contain" />
                     </span>
                     
                     <div>
@@ -453,7 +453,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
                   <div className="mb-8 text-left">
                     <h1 className="text-[26px] md:text-[32px] font-display font-[850] text-slate-900 leading-tight mb-3 tracking-tight">{ticket.eventName}</h1>
                     <div className="flex items-center gap-3">
-                      <span className="px-3 py-1 bg-purple-50 text-purple-700 text-[12px] font-[800] uppercase tracking-wider rounded-md border border-purple-100">
+                      <span className="px-3 py-1 bg-navratri-primary/10 text-navratri-primary text-[12px] font-[800] uppercase tracking-wider rounded-md border border-navratri-primary/20">
                         {ticket.ticketType}
                       </span>
                       <span className="text-[13px] text-slate-500 font-semibold">
@@ -474,8 +474,8 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
                     <p className="font-mono text-[13px] font-[800] text-slate-700 tracking-wider mt-1.5">{ticket.ticketId}</p>
                   </div>
                   
-                  <div className="absolute -left-4 bottom-0 w-8 h-8 bg-[#07070F] rounded-full transform translate-y-1/2 border-r border-slate-100 print:hidden"></div>
-                  <div className="absolute -right-4 bottom-0 w-8 h-8 bg-[#07070F] rounded-full transform translate-y-1/2 border-l border-slate-100 print:hidden"></div>
+                  <div className="absolute -left-4 bottom-0 w-8 h-8 bg-navratri-bg rounded-full transform translate-y-1/2 border-r border-slate-100 print:hidden"></div>
+                  <div className="absolute -right-4 bottom-0 w-8 h-8 bg-navratri-bg rounded-full transform translate-y-1/2 border-l border-slate-100 print:hidden"></div>
                 </div>
 
                 <div className="p-6 md:p-8 bg-[#FFFFFF] space-y-6">
@@ -558,7 +558,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
                   <button onClick={() => handleShare(ticket)} disabled={isCancelled} className="p-3 bg-white hover:bg-slate-100 active:scale-95 text-slate-800 rounded-xl border border-slate-200 shadow-sm transition-all" title="Share Pass">
                     <Share2 className="w-4 h-4" />
                   </button>
-                  <button onClick={() => openMaps(ticket.venue)} className="p-3 bg-white hover:bg-slate-100 active:scale-95 text-[#00E5FF] rounded-xl border border-slate-200 shadow-sm transition-all" title="Directions">
+                  <button onClick={() => openMaps(ticket.venue)} className="p-3 bg-white hover:bg-slate-100 active:scale-95 text-navratri-primary rounded-xl border border-slate-200 shadow-sm transition-all" title="Directions">
                     <Navigation className="w-4 h-4" />
                   </button>
                 </div>

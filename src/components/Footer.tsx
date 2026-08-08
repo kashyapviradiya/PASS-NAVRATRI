@@ -1,26 +1,11 @@
 import Link from 'next/link';
-import logoImg from '../../logo 1.png';
+
 
 export default function Footer() {
   return (
-    <footer
-      className="relative pt-20 pb-10 overflow-hidden"
-      style={{
-        background: 'linear-gradient(180deg, #0F172A 0%, #1E1B4B 60%, #312E81 100%)',
-      }}
-    >
-      {/* ── Gradient top border ────────────────────────────────── */}
-      <div
-        className="absolute top-0 inset-x-0 h-[2px]"
-        style={{
-          background:
-            'linear-gradient(90deg, transparent 0%, #7C3AED 25%, #FF4D6D 50%, #00E5FF 75%, transparent 100%)',
-        }}
-      />
-
-      {/* ── Decorative blurred orbs ───────────────────────────── */}
-      <div className="absolute top-10 left-1/4 w-72 h-72 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-pink-600/8 rounded-full blur-[140px] pointer-events-none" />
+    <footer className="relative pt-20 pb-10 overflow-hidden bg-navratri-dark">
+      {/* ── Top border ────────────────────────────────── */}
+      <div className="absolute top-0 inset-x-0 h-[1px] bg-white/10" />
 
       <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* ── Main grid ───────────────────────────────────────── */}
@@ -29,12 +14,12 @@ export default function Footer() {
           <div className="md:col-span-3">
             <Link href="/" className="inline-block mb-6 group">
               <img
-                src={logoImg.src}
+                src="/brand/raaspass-logo.svg"
                 alt="RaasPass Logo"
-                className="h-10 w-auto object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                className="h-10 md:h-12 w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
               />
             </Link>
-            <p className="text-[#CBD5E1] font-[500] text-[15px] leading-[1.75] max-w-sm">
+            <p className="text-[#E8DDE0] font-[500] text-[15px] leading-[1.75] max-w-sm">
               Scan. Enter. Celebrate.<br />
               Your premium pass to unforgettable events.
             </p>
@@ -79,26 +64,18 @@ export default function Footer() {
                   className="
                     group/icon relative w-10 h-10 rounded-full flex items-center justify-center
                     bg-white/[0.06] border border-white/10 backdrop-blur-sm
-                    hover:border-purple-400/40 hover:shadow-[0_0_20px_rgba(124,58,237,0.25)]
+                    hover:border-navratri-primary/40 hover:bg-navratri-primary/10
                     hover:scale-110 transition-all duration-300
                   "
                 >
                   <svg
-                    className="w-[18px] h-[18px] text-[#94A3B8] group-hover/icon:text-white transition-colors duration-300"
+                    className="w-[18px] h-[18px] text-[#E8DDE0] group-hover/icon:text-white transition-colors duration-300"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     aria-hidden="true"
                   >
                     {social.path}
                   </svg>
-                  {/* Gradient glow ring on hover */}
-                  <span
-                    className="absolute inset-0 rounded-full opacity-0 group-hover/icon:opacity-100 transition-opacity duration-300 -z-10 blur-md"
-                    style={{
-                      background:
-                        'linear-gradient(135deg, #7C3AED 0%, #00E5FF 100%)',
-                    }}
-                  />
                 </a>
               ))}
             </div>
@@ -106,7 +83,7 @@ export default function Footer() {
 
           {/* Explore */}
           <div className="md:col-span-2">
-            <h4 className="font-display font-[800] text-[#F8FAFC] text-[14px] uppercase tracking-widest mb-6">
+            <h4 className="font-display font-[800] text-white text-[14px] uppercase tracking-widest mb-6">
               Explore
             </h4>
             <ul className="space-y-4">
@@ -119,18 +96,10 @@ export default function Footer() {
                   <Link
                     href={link.href}
                     className="
-                      text-[#CBD5E1] hover:text-transparent hover:bg-clip-text
+                      text-[#E8DDE0] hover:text-white
                       text-[14px] font-[500] transition-all duration-300
                       hover:pl-1
                     "
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.backgroundImage =
-                        'linear-gradient(90deg, #A78BFA, #00E5FF)';
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.backgroundImage = 'none';
-                      (e.currentTarget as HTMLElement).style.color = '#CBD5E1';
-                    }}
                   >
                     {link.label}
                   </Link>
@@ -141,7 +110,7 @@ export default function Footer() {
 
           {/* Support */}
           <div className="md:col-span-2">
-            <h4 className="font-display font-[800] text-[#F8FAFC] text-[14px] uppercase tracking-widest mb-6">
+            <h4 className="font-display font-[800] text-white text-[14px] uppercase tracking-widest mb-6">
               Support
             </h4>
             <ul className="space-y-4">
@@ -154,18 +123,10 @@ export default function Footer() {
                   <Link
                     href={link.href}
                     className="
-                      text-[#CBD5E1] hover:text-transparent hover:bg-clip-text
+                      text-[#E8DDE0] hover:text-white
                       text-[14px] font-[500] transition-all duration-300
                       hover:pl-1
                     "
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.backgroundImage =
-                        'linear-gradient(90deg, #A78BFA, #00E5FF)';
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.backgroundImage = 'none';
-                      (e.currentTarget as HTMLElement).style.color = '#CBD5E1';
-                    }}
                   >
                     {link.label}
                   </Link>
@@ -176,7 +137,7 @@ export default function Footer() {
 
           {/* Legal */}
           <div className="md:col-span-2">
-            <h4 className="font-display font-[800] text-[#F8FAFC] text-[14px] uppercase tracking-widest mb-6">
+            <h4 className="font-display font-[800] text-white text-[14px] uppercase tracking-widest mb-6">
               Legal
             </h4>
             <ul className="space-y-4">
@@ -188,18 +149,10 @@ export default function Footer() {
                   <Link
                     href={link.href}
                     className="
-                      text-[#CBD5E1] hover:text-transparent hover:bg-clip-text
+                      text-[#E8DDE0] hover:text-white
                       text-[14px] font-[500] transition-all duration-300
                       hover:pl-1
                     "
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.backgroundImage =
-                        'linear-gradient(90deg, #A78BFA, #00E5FF)';
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.backgroundImage = 'none';
-                      (e.currentTarget as HTMLElement).style.color = '#CBD5E1';
-                    }}
                   >
                     {link.label}
                   </Link>
@@ -210,37 +163,31 @@ export default function Footer() {
 
           {/* Newsletter Column */}
           <div className="md:col-span-3 sm:col-span-2">
-            <h4 className="font-display font-[800] text-[#F8FAFC] text-[14px] uppercase tracking-widest mb-6">
+            <h4 className="font-display font-[800] text-white text-[14px] uppercase tracking-widest mb-6">
               Stay Updated
             </h4>
-            <p className="text-[#CBD5E1] text-[13px] font-[500] leading-relaxed mb-4">
-              Subscribe to get notified about premium garba nights and Sunburn arena events.
+            <p className="text-[#E8DDE0] text-[13px] font-[500] leading-relaxed mb-4">
+              Subscribe to get notified about premium events and concerts.
             </p>
             <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-2">
               <input
                 type="email"
                 placeholder="your@email.com"
-                className="w-full bg-white/[0.06] border border-white/10 hover:border-white/20 focus:border-purple-400/40 rounded-full px-4.5 py-2.5 text-[13px] text-white focus:outline-none focus:ring-1 focus:ring-purple-400/20 placeholder-slate-500 transition-all"
+                className="w-full bg-white/[0.06] border border-white/10 hover:border-white/20 focus:border-navratri-primary/40 rounded-full px-4.5 py-2.5 text-[13px] text-white focus:outline-none focus:ring-1 focus:ring-navratri-primary/40 placeholder-slate-500 transition-all"
               />
-              <button className="bg-gradient-to-r from-[#7C3AED] to-[#FF4D6D] hover:shadow-[0_8px_20px_rgba(124,58,237,0.3)] hover:-translate-y-0.5 active:scale-95 transition-all text-white font-[800] text-[13px] px-5 py-2.5 rounded-full shrink-0">
+              <button className="bg-white text-navratri-primary hover:opacity-90 active:scale-95 transition-all font-[800] text-[13px] px-5 py-2.5 rounded-full shrink-0 shadow-sm hover:-translate-y-0.5">
                 Join
               </button>
             </form>
           </div>
         </div>
 
-        {/* ── Gradient divider ────────────────────────────────── */}
-        <div
-          className="h-px w-full mb-8"
-          style={{
-            background:
-              'linear-gradient(90deg, transparent 0%, rgba(124,58,237,0.4) 20%, rgba(255,77,109,0.3) 50%, rgba(0,229,255,0.4) 80%, transparent 100%)',
-          }}
-        />
+        {/* ── Divider ────────────────────────────────── */}
+        <div className="h-px w-full mb-8 bg-white/10" />
 
         {/* ── Bottom bar ──────────────────────────────────────── */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-5">
-          <p className="text-[#94A3B8] text-[13px] font-[500] tracking-wide">
+          <p className="text-[#E8DDE0] text-[13px] font-[500] tracking-wide">
             © {new Date().getFullYear()} RaasPass. All rights reserved.
           </p>
         </div>

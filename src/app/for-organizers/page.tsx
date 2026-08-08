@@ -8,7 +8,7 @@ export default function ForOrganizers() {
     <div className="bg-navratri-bg min-h-screen pb-20 font-sans">
       
       {/* Hero Section */}
-      <section className="relative pt-20 pb-24 overflow-hidden" style={{ background: 'linear-gradient(180deg, #0F172A 0%, #1E1B4B 60%, #312E81 100%)' }}>
+      <section className="relative pt-20 pb-24 overflow-hidden bg-navratri-dark">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-navratri-primary/20 rounded-full blur-[100px] animate-pulse-slow"></div>
           <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-navratri-accent/10 rounded-full blur-[80px] animate-pulse-slow"></div>
@@ -47,21 +47,21 @@ export default function ForOrganizers() {
               title: 'Bank-Grade Security', 
               desc: 'Prevent unauthorized entry and fake tickets with our dynamic, cryptographically secure QR system.',
               color: 'text-navratri-primary',
-              bg: 'bg-purple-50'
+              bg: 'bg-navratri-softBg'
             },
             { 
               icon: Zap, 
               title: 'Lightning Fast Check-in', 
               desc: 'Our proprietary staff scanner app processes entries in milliseconds, keeping queues moving.',
               color: 'text-navratri-secondary',
-              bg: 'bg-pink-50'
+              bg: 'bg-navratri-softBg'
             },
             { 
               icon: BarChart3, 
               title: 'Real-time Analytics', 
               desc: 'Monitor ticket sales, live entry counts, and revenue on a beautiful, easy-to-use dashboard.',
               color: 'text-navratri-accent',
-              bg: 'bg-cyan-50'
+              bg: 'bg-navratri-softBg'
             }
           ].map((feat, i) => (
             <div key={i} className="bg-white rounded-card p-8 border border-slate-100 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 group">
@@ -76,7 +76,7 @@ export default function ForOrganizers() {
       </section>
 
       {/* Dashboard Preview */}
-      <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #0F172A 0%, #1E1B4B 60%, #312E81 100%)' }}>
+      <section className="py-24 relative overflow-hidden bg-navratri-dark">
         <div className="absolute inset-0 bg-gradient-premium opacity-10"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

@@ -10,7 +10,7 @@ export default function MobileBottomNav({ onMenuClick }: { onMenuClick?: () => v
 
   const navItems = [
     { name: 'Home', href: '/', icon: Home },
-    { name: 'Explore', href: '/events', icon: Compass },
+    { name: 'Events', href: '/events', icon: Compass },
   ];
   
   const rightItems = [
@@ -51,10 +51,10 @@ export default function MobileBottomNav({ onMenuClick }: { onMenuClick?: () => v
             href="/contact"
             className="flex flex-col items-center justify-center -mt-4"
           >
-            <div className="w-[46px] h-[46px] bg-gray-900 rounded-full flex items-center justify-center shadow-md border-[4px] border-white active:scale-95 transition-transform">
+            <div className="w-[46px] h-[46px] bg-navratri-primary rounded-full flex items-center justify-center shadow-md border-[4px] border-white active:scale-95 transition-transform">
               <PlusCircle className="w-6 h-6 text-white" strokeWidth={2} />
             </div>
-            <span className="text-[9px] tracking-wide font-[700] mt-0.5 text-gray-900">Host</span>
+            <span className="text-[9px] tracking-wide font-[700] mt-0.5 text-navratri-dark">Host Event</span>
           </Link>
         </div>
 

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background-rgb: 248, 250, 252; /* #F8FAFC Light bg */
-  --foreground-rgb: 15, 23, 42;    /* #0F172A */
+  --background-rgb: 239, 233, 233; /* #EFE9E9 Light bg */
+  --foreground-rgb: 90, 33, 50;    /* #5A2132 Primary text */
 }
 
 html {
@@ -21,7 +21,7 @@ body {
 
 /* Base focus and selection styles */
 ::selection {
-  background-color: #7C3AED;
+  background-color: #5A2132;
   color: white;
 }
 
@@ -34,10 +34,7 @@ body {
     @apply bg-slate-900/70 backdrop-blur-md border border-slate-700/50 shadow-glass;
   }
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-premium;
-  }
-  .text-gradient-cyan {
-    @apply bg-clip-text text-transparent bg-gradient-cyan;
+    @apply text-navratri-primary;
   }
   .animate-on-scroll {
     opacity: 0;
@@ -48,10 +45,6 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-  .shimmer-bg {
-    background-size: 200% 100%;
-    animation: shimmer 2s linear infinite;
-  }
   .premium-border {
     position: relative;
   }
@@ -61,7 +54,7 @@ body {
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(255,77,109,0.2), rgba(0,229,255,0.3));
+    background: linear-gradient(135deg, rgba(90,33,50,0.3), rgba(90,33,50,0.1));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;

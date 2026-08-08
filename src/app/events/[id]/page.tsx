@@ -195,14 +195,14 @@ export default function EventDetails({ params }: { params: { id: string } }) {
               <h2 className="text-[18px] md:text-[20px] font-[800] text-gray-900 mb-4">Select Tickets</h2>
               <div className="space-y-3">
                 {activeTickets.map(tt => (
-                  <label key={tt.id} className={`flex items-start p-3 border rounded-[12px] cursor-pointer transition-colors ${selectedPassId === tt.id ? 'border-gray-900 bg-gray-50' : 'border-gray-200'}`}>
+                  <label key={tt.id} className={`flex items-start p-3 border rounded-[12px] cursor-pointer transition-colors ${selectedPassId === tt.id ? 'border-navratri-primary bg-navratri-primary/5' : 'border-gray-200'}`}>
                     <input 
                       type="radio" 
                       name="mobile_ticket" 
                       value={tt.id} 
                       checked={selectedPassId === tt.id} 
                       onChange={() => setSelectedPassId(tt.id)}
-                      className="mt-1 mr-3 accent-gray-900 w-4 h-4"
+                      className="mt-1 mr-3 accent-navratri-primary w-4 h-4"
                     />
                     <div className="flex-1">
                       <div className="flex justify-between items-start mb-1">
@@ -309,7 +309,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
                   router.push(`/checkout/${event.id}`);
                 }}
                 disabled={!hasTickets}
-                className="w-full bg-gray-900 text-white font-[700] py-3.5 rounded-[12px] flex justify-center items-center text-[15px] active:scale-95 transition-transform disabled:opacity-50"
+                className="w-full bg-navratri-primary hover:opacity-90 text-white font-[700] py-3.5 rounded-[12px] flex justify-center items-center text-[15px] active:scale-95 transition-all disabled:opacity-50 shadow-premium"
               >
                 {hasTickets ? 'Book Now' : 'Sold Out'}
               </button>
@@ -356,7 +356,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
               router.push(`/checkout/${event.id}`);
             }}
             disabled={!hasTickets}
-            className="flex-1 bg-gray-900 text-white font-[700] py-3 rounded-[12px] flex items-center justify-center shadow-sm active:scale-95 transition-transform text-[14px]"
+            className="flex-1 bg-navratri-primary hover:opacity-90 text-white font-[700] py-3 rounded-[12px] flex items-center justify-center shadow-premium active:scale-95 transition-all text-[14px]"
           >
             {hasTickets ? 'Book Now' : 'Sold Out'}
           </button>
