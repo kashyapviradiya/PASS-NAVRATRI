@@ -32,23 +32,14 @@ export default function EventCard({ event }: EventCardProps) {
   return (
     <Link
       href={`/events/${event.id}`}
-      className="block no-underline outline-none rounded-[16px]"
+      className="block no-underline outline-none rounded-[16px] group transition-all duration-300 active:scale-[0.99] hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] bg-white border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] h-full flex flex-col overflow-hidden"
     >
-      <motion.div
-        whileHover="hover"
-        whileTap="tap"
-        variants={{
-          hover: { y: -4, boxShadow: "0 12px 32px rgba(0,0,0,0.08)", transition: { duration: 0.25, ease: "easeOut" } },
-          tap: { scale: 0.97, boxShadow: "0 4px 12px rgba(0,0,0,0.04)", transition: { duration: 0.15, ease: "easeOut" } }
-        }}
-        className="bg-white rounded-[16px] border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] cursor-pointer overflow-hidden h-full flex flex-col"
-      >
         {/* Event Poster — 10:13 aspect ratio (≈3:4), NO overlay text */}
         <div className="relative w-full pb-[130%] overflow-hidden rounded-t-[16px] bg-slate-100">
           
           {/* Skeleton Loader */}
           {!isImageLoaded && (
-            <div className="absolute inset-0 bg-slate-200 animate-pulse" />
+            <div className="absolute inset-0 bg-slate-200" />
           )}
 
           <motion.img
@@ -58,11 +49,8 @@ export default function EventCard({ event }: EventCardProps) {
             onLoad={() => setIsImageLoaded(true)}
             initial={{ opacity: 0 }}
             animate={{ opacity: isImageLoaded ? 1 : 0 }}
-            variants={{
-              hover: { scale: 1.04, transition: { duration: 0.3, ease: "easeOut" } },
-              tap: { scale: 1.02, transition: { duration: 0.2, ease: "easeOut" } }
-            }}
-            className="absolute inset-0 w-full h-full object-cover origin-center"
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 w-full h-full object-cover origin-center transition-transform duration-500 group-hover:scale-105"
           />
 
           {/* Status badge only for sold out / selling fast */}
@@ -105,7 +93,6 @@ export default function EventCard({ event }: EventCardProps) {
             {lowestPrice !== 0 && <span className="text-[10px] text-gray-400 font-normal uppercase tracking-wide">Onwards</span>}
           </div>
         </div>
-      </motion.div>
     </Link>
   );
 }

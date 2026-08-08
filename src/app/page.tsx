@@ -121,10 +121,7 @@ export default function Home() {
 
   const hideScrollbar = "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
 
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 16 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } }
-  };
+  const hideScrollbar = "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]";
 
   return (
     <div className="bg-gradient-to-b from-purple-50 via-purple-50/30 to-white pb-20 md:pb-0 overflow-x-hidden min-h-screen">
@@ -133,10 +130,7 @@ export default function Home() {
           1. FEATURED EVENT BANNER — compact, rounded, with blurred bg
          ═══════════════════════════════════════════════════ */}
       {featuredEvents.length > 0 && (
-        <motion.section 
-          initial="hidden" whileInView="visible" viewport={{ once: true }} variants={sectionVariants}
-          className="relative px-4 pt-3 pb-4"
-        >
+        <section className="relative px-4 pt-3 pb-4">
           {/* Blurred background visual (like Showmates) */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
             <img
@@ -160,10 +154,10 @@ export default function Home() {
                 idx === activeBanner && (
                   <motion.div
                     key={event.id}
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.04 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
                     className="block relative w-full"
                   >
                     <Link href={`/events/${event.id}`} className="block relative w-full">
@@ -216,16 +210,13 @@ export default function Home() {
               </div>
             )}
           </div>
-        </motion.section>
+        </section>
       )}
 
       {/* ═══════════════════════════════════════════════════
           2. POPULAR EVENTS — 2-column GRID (like reference)
          ═══════════════════════════════════════════════════ */}
-      <motion.section 
-        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={sectionVariants}
-        className="px-4 sm:px-6 lg:px-8 py-5"
-      >
+      <section className="px-4 sm:px-6 lg:px-8 py-5">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-4">
             <div>
@@ -244,15 +235,12 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* ═══════════════════════════════════════════════════
           3. EXPLORE BY CATEGORY — compact row
          ═══════════════════════════════════════════════════ */}
-      <motion.section 
-        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={sectionVariants}
-        className="px-4 sm:px-6 lg:px-8 py-5"
-      >
+      <section className="px-4 sm:px-6 lg:px-8 py-5">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-[18px] md:text-[22px] font-bold text-gray-900 mb-4">Explore by Category</h2>
           <div className={`flex overflow-x-auto snap-x snap-mandatory ${hideScrollbar} gap-3 pb-1`}>
@@ -268,16 +256,13 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* ═══════════════════════════════════════════════════
           4. UPCOMING EVENTS — 2-column grid
          ═══════════════════════════════════════════════════ */}
       {upcomingEvents.length > 0 && (
-        <motion.section 
-          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={sectionVariants}
-          className="px-4 sm:px-6 lg:px-8 py-5"
-        >
+        <section className="px-4 sm:px-6 lg:px-8 py-5">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-end mb-4">
               <div>
@@ -294,17 +279,14 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </motion.section>
+        </section>
       )}
 
       {/* ═══════════════════════════════════════════════════
           5. POPULAR ARTISTS — horizontal scroll (only if real data)
          ═══════════════════════════════════════════════════ */}
       {uniqueArtists.length > 0 && (
-        <motion.section 
-          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={sectionVariants}
-          className="px-4 sm:px-6 lg:px-8 py-5"
-        >
+        <section className="px-4 sm:px-6 lg:px-8 py-5">
           <div className="max-w-7xl mx-auto">
             <div className="mb-4">
               <h2 className="text-[18px] md:text-[22px] font-bold text-gray-900 mb-0.5">
@@ -325,16 +307,13 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </motion.section>
+        </section>
       )}
 
       {/* ═══════════════════════════════════════════════════
           6. WHY RAASPASS — compact trust strip
          ═══════════════════════════════════════════════════ */}
-      <motion.section 
-        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40px" }} variants={sectionVariants}
-        className="px-4 sm:px-6 lg:px-8 py-6"
-      >
+      <section className="px-4 sm:px-6 lg:px-8 py-6">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-[18px] md:text-[22px] font-bold text-gray-900 mb-4 text-center">Why RaasPass?</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -354,7 +333,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* ═══════════════════════════════════════════════════
           7. HOW IT WORKS — compact 3-step

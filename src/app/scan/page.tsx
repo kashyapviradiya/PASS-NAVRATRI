@@ -218,7 +218,7 @@ export default function ScannerDashboard() {
           className="fixed inset-0 bg-emerald-600 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white"
         >
           <motion.div 
-            initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", delay: 0.1 }}
+            initial={{ scale: 0.9 }} animate={{ scale: 1 }} transition={{ duration: 0.2 }}
             className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_24px_rgba(255,255,255,0.2)]"
           >
             <CheckCircle className="w-16 h-16 text-white" />
@@ -227,7 +227,7 @@ export default function ScannerDashboard() {
           <p className="text-[18px] font-[500] opacity-90 mb-10">Pass successfully scanned.</p>
           
           <motion.div 
-            initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}
+            initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1, duration: 0.2 }}
             className="bg-white/10 backdrop-blur-md rounded-[24px] p-6 w-full max-w-sm space-y-4 text-left border border-white/25 shadow-premium"
           >
             <div>
@@ -342,8 +342,9 @@ export default function ScannerDashboard() {
 
     return (
       <motion.div 
-        animate={{ x: [0, -10, 10, -10, 10, 0] }} 
-        transition={{ duration: 0.4 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }} 
+        transition={{ duration: 0.2 }}
         className="fixed inset-0 bg-rose-700 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white"
       >
         <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mb-6 border border-white/25">

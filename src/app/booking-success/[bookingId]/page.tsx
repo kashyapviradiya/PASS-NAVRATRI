@@ -48,18 +48,13 @@ export default function BookingSuccess({ params }: { params: { bookingId: string
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0F172A] via-[#1E1B4B] to-[#312E81] flex items-center justify-center p-4 sm:p-6 lg:p-8 selection:bg-navratri-accent selection:text-white py-20 pt-[100px] relative overflow-hidden">
-      {/* Premium ambient glow orbs */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#7C3AED]/25 rounded-full blur-[120px] pointer-events-none z-0"></div>
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[450px] h-[450px] bg-[#FF4D6D]/20 rounded-full blur-[140px] pointer-events-none z-0"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#00E5FF]/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
-
       {/* Floating particles background effect */}
       <div className="absolute inset-0 opacity-20 pointer-events-none z-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"></div>
 
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95, y: 40 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         className="max-w-[600px] w-full bg-white/[0.08] backdrop-blur-[24px] rounded-[28px] p-8 md:p-12 shadow-[0_24px_64px_rgba(0,0,0,0.4)] border border-white/[0.12] relative overflow-hidden z-10"
       >
         
@@ -69,12 +64,7 @@ export default function BookingSuccess({ params }: { params: { bookingId: string
           </div>
         )}
         <div className="text-center mb-10 mt-4">
-          <motion.div 
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", delay: 0.2, bounce: 0.5 }}
-            className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/30 shadow-[0_0_32px_rgba(16,185,129,0.35)] relative"
-          >
+          <div className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/30 shadow-[0_0_32px_rgba(16,185,129,0.35)] relative">
             <motion.svg 
               viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
               className="w-12 h-12 text-emerald-400 drop-shadow-[0_0_12px_rgba(52,211,153,0.4)] z-10"
@@ -82,17 +72,11 @@ export default function BookingSuccess({ params }: { params: { bookingId: string
               <motion.path
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
+                transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
                 d="M20 6L9 17l-5-5"
               />
             </motion.svg>
-            <motion.div 
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1.2, opacity: [0, 0.25, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-              className="absolute inset-0 border-2 border-emerald-500 rounded-full"
-            ></motion.div>
-          </motion.div>
+          </div>
           <motion.h1 
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
             className="text-[36px] font-display font-[850] text-white tracking-tight leading-tight mb-3"
