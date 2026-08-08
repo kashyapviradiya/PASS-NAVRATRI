@@ -22,7 +22,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
   return (
     <>
       <Navbar mobileMenuOpen={isMobileMenuOpen} setMobileMenuOpen={setIsMobileMenuOpen} />
-      <main className="pt-[56px] flex-grow pb-[60px] md:pb-0">
+      <main className="pt-[50px] flex-grow pb-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={pathname}

@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ToasterWrapper from '@/components/ToasterWrapper';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -30,10 +31,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
       <body className={`font-sans min-h-screen flex flex-col bg-[#F8F7F4] text-[#111111]`}>
-        <ToasterWrapper />
-        <ClientLayoutWrapper>
-          {children}
-        </ClientLayoutWrapper>
+        <AuthProvider>
+          <ToasterWrapper />
+          <ClientLayoutWrapper>
+            {children}
+          </ClientLayoutWrapper>
+        </AuthProvider>
       </body>
     </html>
   );

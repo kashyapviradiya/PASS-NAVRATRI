@@ -108,6 +108,11 @@ export async function POST(request: NextRequest) {
         razorpayPaymentId: razorpay_payment_id || `pay_mock_${Date.now()}`,
         createdAt: new Date().toISOString(),
       };
+
+      if (body.customerUid) {
+        order.customerUid = body.customerUid;
+      }
+
       transaction.set(orderRef, order);
 
       // 6. Generate Individual Tickets
@@ -137,6 +142,7 @@ export async function POST(request: NextRequest) {
             checkedIn: false,
             qrValue,
             createdAt: new Date().toISOString(),
+            customerUid: body.customerUid || null,
             // Copy gate and entry count info from dbPass
             gateRestriction: dbPass.gateRestriction || false,
             gateId: dbPass.gateId || '',

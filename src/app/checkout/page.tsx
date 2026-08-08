@@ -6,6 +6,7 @@ import { formatCurrency, calculateConvenienceFee } from '@/lib/utils';
 import type { Event } from '@/types';
 import { CheckCircle, Shield, CreditCard, Smartphone, Building, ArrowLeft, Ticket, Calendar, Clock, MapPin, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -21,6 +22,17 @@ export default function CheckoutPage() {
   });
   const [paymentMethod, setPaymentMethod] = useState('upi');
   const [isProcessing, setIsProcessing] = useState(false);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        name: prev.name || user.displayName || '',
+        email: prev.email || user.email || ''
+      }));
+    }
+  }, [user]);
 
   useEffect(() => {
     const eventData = localStorage.getItem('checkout_event');
@@ -64,6 +76,7 @@ export default function CheckoutPage() {
             eventId: event.id,
             ticketTypes: selectedPasses,
             customer: formData,
+            customerUid: user?.uid || null,
             paymentMode: paymentMethod
           })
         });
@@ -87,6 +100,7 @@ export default function CheckoutPage() {
         event,
         ticketTypes: selectedPasses,
         customer: formData,
+        customerUid: user?.uid || null,
         amount: totalAmount
       }));
       router.push('/payment-processing');
@@ -275,7 +289,7 @@ export default function CheckoutPage() {
               <h3 className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest mb-6">Booking Details</h3>
               
               <div className="flex gap-4 mb-6 pb-6 border-b border-slate-100">
-                <img src={event.bannerImage || 'https://images.unsplash.com/photo-1540039155733-d7696d4eb98e?q=80&w=1974&auto=format&fit=crop'} alt={event.title} className="w-20 h-20 object-cover rounded-[16px] border border-slate-100" />
+                <img src={event.bannerImage || event.bannerUrl || '/demo/events/poster_navratri.jpg'} alt={event.title || event.name} className="w-20 h-20 object-cover rounded-[16px] border border-slate-100" />
                 <div>
                   <h4 className="font-display font-[800] text-navratri-text leading-tight mb-2 text-[16px] line-clamp-2">{event.title}</h4>
                   <div className="flex items-center gap-1.5 text-[13px] text-navratri-muted font-[600] mb-1">

@@ -66,6 +66,7 @@ export interface Order {
   razorpayOrderId?: string;
   razorpayPaymentId?: string;
   createdAt: string;
+  customerUid?: string;
 }
 
 export interface TimelineEvent {
@@ -116,6 +117,7 @@ export interface Ticket {
   checkedIn: boolean;
   qrValue: string; // The secure value encoded in QR
   createdAt: string;
+  customerUid?: string;
   // Gate Details
   gateRestriction?: boolean;
   gateId?: string;

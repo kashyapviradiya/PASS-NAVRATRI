@@ -1,43 +1,50 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Ticket, Phone, ArrowRight, ShieldCheck, Search, Loader2, Calendar, MapPin, ChevronRight, Lock } from 'lucide-react';
-import { formatCurrency } from '@/lib/utils';
+import { Ticket, ArrowRight, Calendar, Loader2, Lock, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 
 export default function MyTicketsPage() {
   const router = useRouter();
-  const [phone, setPhone] = useState('');
-  const [otp, setOtp] = useState('');
-  const [step, setStep] = useState<'phone' | 'otp' | 'authenticated'>('phone');
-  const [loading, setLoading] = useState(false);
+  const { user, loading: authLoading, signInWithGoogle, signOut } = useAuth();
+  
+  const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState<any[]>([]);
 
   useEffect(() => {
-    const authPhone = sessionStorage.getItem('mock_auth_phone');
-    if (authPhone) {
-      setPhone(authPhone);
-      setStep('authenticated');
-      loadBookings(authPhone);
+    if (!authLoading) {
+      if (user) {
+        loadBookings(user);
+      } else {
+        setLoading(false);
+      }
     }
-  }, []);
+  }, [user, authLoading]);
 
-  const loadBookings = async (mobile: string, bookingId?: string) => {
+  const loadBookings = async (currentUser: any) => {
+    setLoading(true);
     try {
-      let url = `/api/get-tickets?mobile=${mobile}`;
-      if (bookingId) url += `&bookingId=${bookingId}`;
-      const res = await fetch(url);
+      const token = await currentUser.getIdToken();
+      const url = `/api/get-tickets?customerUid=${currentUser.uid}`;
+      
+      const res = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await res.json();
+      
       if (data.success) {
         // Group tickets by bookingId for display
         const grouped = data.tickets.reduce((acc: any, ticket: any) => {
           if (!acc[ticket.bookingId]) {
             acc[ticket.bookingId] = {
               id: ticket.bookingId,
-              eventName: ticket.eventTitle || ticket.eventName, // handle both old mock and new schema
-              eventDate: ticket.createdAt, // since tickets don't store eventDate in new schema directly
-              venue: 'Venue', // Would need event fetch to get venue, fallback for now
+              eventName: ticket.eventTitle || ticket.eventName,
+              eventDate: ticket.eventDate, 
+              eventBanner: ticket.eventBanner,
               tickets: []
             };
           }
@@ -49,139 +56,53 @@ export default function MyTicketsPage() {
         // Sort newest first based on first ticket's creation date
         bookingsArray.sort((a: any, b: any) => new Date(b.tickets[0].createdAt).getTime() - new Date(a.tickets[0].createdAt).getTime());
         setBookings(bookingsArray);
+      } else {
+        toast.error(data.message || 'Failed to load tickets');
       }
     } catch (err) {
       console.error('Failed to load tickets', err);
-    }
-  };
-
-  const handleRequestOTP = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!/^[6-9]\d{9}$/.test(phone)) {
-      toast.error('Please enter a valid 10-digit mobile number');
-      return;
-    }
-    setLoading(true);
-    // Mock API call
-    setTimeout(() => {
+      toast.error('Failed to load tickets');
+    } finally {
       setLoading(false);
-      setStep('otp');
-      toast.success('OTP sent successfully! (Use any 6 digits for demo)');
-    }, 1500);
-  };
-
-  const handleVerifyOTP = (e: React.FormEvent) => {
-    e.preventDefault();
-    const isDemo = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
-    if (!isDemo && otp.length !== 6) {
-      toast.error('Please enter the 6-digit OTP');
-      return;
     }
-    setLoading(true);
-    // Mock API call or Demo Booking Lookup
-    setTimeout(() => {
-      setLoading(false);
-      sessionStorage.setItem('mock_auth_phone', phone);
-      setStep('authenticated');
-      if (isDemo) {
-        loadBookings(phone, otp);
-      } else {
-        loadBookings(phone);
-      }
-      toast.success('Successfully logged in!');
-    }, 1500);
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('mock_auth_phone');
-    setStep('phone');
-    setPhone('');
-    setOtp('');
-  };
-
-  // UI for Login
-  if (step !== 'authenticated') {
-    const isDemo = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
-
+  // UI for Not Logged In
+  if (authLoading || (loading && user)) {
     return (
-      <div className="min-h-screen bg-navratri-bg flex items-center justify-center p-4 selection:bg-navratri-accent selection:text-white pt-[60px]">
-        <div className="bg-white max-w-md w-full rounded-card p-8 md:p-10 shadow-card border border-navratri-lightGrey relative overflow-hidden animate-fade-in-up">
-          <div className="absolute top-0 inset-x-0 h-[2px]" style={{ background: 'linear-gradient(90deg, #7C3AED, #FF4D6D, #00E5FF)' }}></div>
-          <div className="w-16 h-16 bg-navratri-accent/5 rounded-[16px] flex items-center justify-center mb-8 relative border border-navratri-accent/10">
-            <Lock className="w-8 h-8 text-navratri-primary" />
-            {isDemo && (
-              <span className="absolute -top-2 -right-12 bg-orange-50 text-orange-600 text-[10px] font-[700] px-2 py-0.5 rounded-full uppercase border border-orange-100 tracking-wider">
-                DEMO
-              </span>
-            )}
+      <div className="min-h-[calc(100vh-50px)] bg-gray-50 flex items-center justify-center pt-[80px]">
+        <Loader2 className="w-8 h-8 animate-spin text-navratri-primary" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col pt-[80px] px-4 sm:px-6">
+        <div className="max-w-md w-full mx-auto animate-fade-in-up">
+          <div className="w-12 h-12 bg-white rounded-[12px] flex items-center justify-center mb-6 border border-gray-200 shadow-sm">
+            <Lock className="w-6 h-6 text-gray-900" />
           </div>
           
-          <h1 className="text-[32px] font-display font-[700] text-navratri-text mb-2 tracking-tight">
-            {isDemo ? 'Demo Ticket Lookup' : (step === 'phone' ? 'My Tickets' : 'Verify Identity')}
+          <h1 className="text-[28px] md:text-[32px] font-[850] text-gray-900 mb-2 tracking-tight">
+            My Tickets
           </h1>
-          <p className="text-[15px] text-navratri-muted font-[500] mb-8">
-            {isDemo 
-              ? 'Enter your mobile number and Booking ID to view your tickets.' 
-              : (step === 'phone' 
-                  ? 'Enter your mobile number to view your bookings and tickets.' 
-                  : `Enter the 6-digit code sent to +91 ${phone}`)
-            }
+          <p className="text-[14px] text-gray-500 font-[500] mb-8">
+            Sign in to view your bookings and manage your event passes securely.
           </p>
 
-          <>
-            {step === 'phone' || isDemo ? (
-              <form onSubmit={isDemo ? handleVerifyOTP : handleRequestOTP} className="space-y-6">
-                <div>
-                  <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">Mobile Number</label>
-                  <div className="relative">
-                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-navratri-muted font-[700]">+91</span>
-                    <input 
-                      type="tel" 
-                      value={phone} 
-                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))} 
-                      placeholder="Enter 10 digits" 
-                      className="w-full pl-14 pr-5 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:ring-1 focus:ring-navratri-accent focus:border-navratri-accent bg-navratri-bg font-[600] text-[16px] text-navratri-text tracking-widest transition-all" 
-                    />
-                  </div>
-                </div>
-                {isDemo && (
-                  <div>
-                    <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">Booking ID</label>
-                    <input 
-                      type="text" 
-                      value={otp} // Reusing OTP state for Booking ID
-                      onChange={(e) => setOtp(e.target.value)} 
-                      placeholder="e.g. RP-2026-123456" 
-                      className="w-full px-5 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:ring-1 focus:ring-navratri-accent focus:border-navratri-accent bg-navratri-bg font-[600] text-[16px] text-navratri-text transition-all" 
-                    />
-                  </div>
-                )}
-                <button type="submit" disabled={loading || phone.length !== 10 || (isDemo && !otp)} className="w-full bg-gradient-premium text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 hover:shadow-lg hover:-translate-y-0.5 shadow-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 text-[15px]">
-                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (isDemo ? <>View Tickets <ArrowRight className="w-5 h-5" /></> : <>Request OTP <ArrowRight className="w-5 h-5" /></>)}
-                </button>
-              </form>
-            ) : (
-              <form onSubmit={handleVerifyOTP} className="space-y-6">
-                <div>
-                  <label className="block text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-2">6-Digit OTP</label>
-                  <input 
-                    type="text" 
-                    value={otp} 
-                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))} 
-                    placeholder="• • • • • •" 
-                    className="w-full px-5 py-4 border border-navratri-lightGrey rounded-[16px] focus:outline-none focus:ring-1 focus:ring-navratri-accent focus:border-navratri-accent bg-navratri-bg font-[700] text-[24px] text-center text-navratri-text tracking-[0.5em] transition-all" 
-                    autoFocus
-                  />
-                </div>
-                <button type="submit" disabled={loading || otp.length !== 6} className="w-full bg-gradient-premium text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 transition-all disabled:opacity-60 shadow-sm hover:shadow-lg hover:-translate-y-0.5 disabled:hover:translate-y-0 text-[15px]">
-                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Verify & Login <ShieldCheck className="w-5 h-5" /></>}
-                </button>
-                <button type="button" onClick={() => setStep('phone')} className="w-full text-center text-[14px] text-navratri-muted font-[600] hover:text-navratri-text transition-colors pt-2">
-                  Change mobile number
-                </button>
-              </form>
-            )}
-          </>
+          <button 
+            onClick={signInWithGoogle}
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-[700] py-3.5 rounded-[12px] transition-colors active:scale-95 shadow-sm"
+          >
+            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+            </svg>
+            Continue with Google
+          </button>
         </div>
       </div>
     );
@@ -189,65 +110,64 @@ export default function MyTicketsPage() {
 
   // UI for Authenticated View
   return (
-    <div className="bg-navratri-bg min-h-screen pb-20 pt-[80px] font-sans selection:bg-navratri-accent selection:text-white">
-      <div className="max-w-[1024px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 mt-8">
-          <div>
-            <h1 className="text-[36px] font-display font-[800] text-navratri-text tracking-tight mb-2">My Tickets</h1>
-            <p className="text-navratri-muted font-[500] text-[18px]">Manage your event bookings and QR passes.</p>
-          </div>
-          <button onClick={handleLogout} className="text-[13px] font-[600] text-navratri-muted hover:text-navratri-accent bg-white px-5 py-2.5 rounded-button border border-navratri-lightGrey transition-colors self-start sm:self-auto shadow-sm hover:shadow-md">
-            Log out
+    <div className="bg-gray-50 min-h-[calc(100vh-50px)] pb-24 pt-[60px] font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-[24px] md:text-[28px] font-[850] text-gray-900 tracking-tight">My Tickets</h1>
+          <button onClick={signOut} className="flex items-center gap-2 text-[13px] font-[700] text-gray-500 hover:text-gray-900 transition-colors">
+            <LogOut className="w-4 h-4" />
+            Sign out
           </button>
         </div>
 
         {bookings.length === 0 ? (
-          <div className="bg-white rounded-card p-12 text-center border border-navratri-lightGrey shadow-sm flex flex-col items-center">
-            <div className="w-24 h-24 bg-navratri-bg rounded-full flex items-center justify-center mb-6 border border-navratri-lightGrey">
-              <Ticket className="w-10 h-10 text-navratri-muted/50" />
+          <div className="bg-white rounded-[16px] p-10 text-center border border-gray-200 shadow-sm flex flex-col items-center">
+            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-100">
+              <Ticket className="w-6 h-6 text-gray-400" />
             </div>
-            <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-2">No Bookings Found</h2>
-            <p className="text-navratri-muted font-[500] max-w-sm mb-8 text-[15px]">You haven't booked any tickets yet. Explore our premium events and book your passes.</p>
-            <button onClick={() => router.push('/')} className="bg-gradient-premium text-white font-[700] px-8 py-3.5 rounded-button shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all text-[15px]">
+            <h2 className="text-[18px] font-[800] text-gray-900 mb-2">No Bookings Found</h2>
+            <p className="text-gray-500 font-[500] max-w-sm mb-6 text-[13px]">You haven't booked any tickets yet. Explore our events and book your passes.</p>
+            <button onClick={() => router.push('/events')} className="bg-gray-900 text-white font-[700] px-6 py-2.5 rounded-[12px] active:scale-95 transition-transform text-[13px]">
               Explore Events
             </button>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {bookings.map((booking) => {
               const totalTickets = booking.tickets ? booking.tickets.length : 0;
+              const bannerImage = booking.eventBanner || booking.tickets[0]?.eventBanner;
               
               return (
-                <div key={booking.id} onClick={() => router.push(`/tickets/${booking.id}`)} className="bg-white rounded-card p-6 border border-navratri-lightGrey shadow-card hover:shadow-card-hover transition-all cursor-pointer group flex flex-col md:flex-row gap-6 md:items-center">
+                <div key={booking.id} className="bg-white rounded-[16px] p-4 border border-gray-200 shadow-sm flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                   
-                  <div className="w-24 h-24 bg-navratri-bg rounded-[16px] border border-navratri-lightGrey flex items-center justify-center shrink-0 overflow-hidden">
-                    {booking.tickets[0]?.eventBanner ? (
-                      <img src={booking.tickets[0].eventBanner} alt={booking.eventName} className="w-full h-full object-cover" />
-                    ) : (
-                      <Ticket className="w-8 h-8 text-navratri-accent" />
-                    )}
+                  <div className="flex gap-4 flex-1 w-full">
+                    <div className="w-24 h-24 sm:w-20 sm:h-20 bg-gray-100 rounded-[12px] flex items-center justify-center shrink-0 overflow-hidden border border-gray-200">
+                      {bannerImage ? (
+                        <img src={bannerImage} alt={booking.eventName} className="w-full h-full object-cover" />
+                      ) : (
+                        <Ticket className="w-6 h-6 text-gray-400" />
+                      )}
+                    </div>
+                    
+                    <div className="flex-1 min-w-0 flex flex-col justify-center">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] bg-green-50 border border-green-200 text-green-700 font-[800] uppercase tracking-wider px-2 py-0.5 rounded-[6px]">Paid</span>
+                      </div>
+                      <h3 className="text-[15px] font-[800] text-gray-900 mb-1 truncate">{booking.eventName}</h3>
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-gray-500 font-[600]">
+                        <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {new Date(booking.eventDate || booking.tickets[0]?.createdAt).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})}</span>
+                        <span className="flex items-center gap-1 bg-gray-100 px-2 rounded-sm text-gray-700">{booking.tickets[0]?.ticketType || 'Pass'} x {totalTickets}</span>
+                      </div>
+                    </div>
                   </div>
                   
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-[10px] bg-green-50 border border-green-100 text-green-700 font-[700] uppercase tracking-wider px-2.5 py-1 rounded-[8px]">Confirmed</span>
-                      <span className="text-[11px] text-navratri-muted font-[700] uppercase tracking-widest">Ref: {booking.id}</span>
-                    </div>
-                    <h3 className="text-[20px] font-display font-[700] text-navratri-text mb-2 group-hover:text-navratri-accent transition-colors">{booking.eventName}</h3>
-                    <div className="flex flex-wrap gap-4 text-[13px] text-navratri-muted font-[500]">
-                      <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-navratri-accent/70" /> {new Date(booking.eventDate).toLocaleDateString()}</span>
-                      <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-navratri-accent/70" /> {booking.venue}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between md:flex-col md:items-end gap-2 shrink-0 md:border-l md:border-navratri-lightGrey md:pl-6">
-                    <div className="text-left md:text-right">
-                      <p className="text-[11px] text-navratri-muted uppercase tracking-widest font-[700] mb-0.5">Tickets</p>
-                      <p className="font-[700] text-navratri-text text-[18px]">{totalTickets} Pass{totalTickets > 1 ? 'es' : ''}</p>
-                    </div>
-                    <div className="w-10 h-10 bg-navratri-bg border border-navratri-lightGrey rounded-full flex items-center justify-center group-hover:bg-navratri-primary transition-colors">
-                      <ChevronRight className="w-5 h-5 text-navratri-muted group-hover:text-white transition-colors" />
-                    </div>
+                  <div className="w-full sm:w-auto shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-100 mt-1 sm:mt-0">
+                    <button 
+                      onClick={() => router.push(`/tickets/${booking.id}`)}
+                      className="w-full sm:w-auto bg-gray-900 text-white font-[700] px-5 py-2.5 rounded-[10px] hover:bg-gray-800 active:scale-95 transition-transform text-[13px] shadow-sm flex justify-center items-center gap-2"
+                    >
+                      View Ticket <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               );

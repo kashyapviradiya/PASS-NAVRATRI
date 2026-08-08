@@ -149,7 +149,7 @@ export default function TicketSelectionPage({ params }: { params: { id: string }
             <div className="bg-white rounded-card p-6 md:p-8 border border-navratri-lightGrey shadow-sm">
               <h3 className="text-[11px] font-[700] text-navratri-muted uppercase tracking-widest mb-4">Event Summary</h3>
               <div className="flex items-center gap-4 mb-6 pb-6 border-b border-navratri-lightGrey">
-                <img src={event.bannerImage || 'https://images.unsplash.com/photo-1540039155733-d7696d4eb98e?q=80&w=1974&auto=format&fit=crop'} alt={event.title} className="w-20 h-20 object-cover rounded-[16px]" />
+                <img src={event.bannerImage || event.bannerUrl || '/demo/events/poster_navratri.jpg'} alt={event.title || event.name} className="w-20 h-20 object-cover rounded-[16px]" />
                 <div>
                   <h4 className="font-display font-[700] text-navratri-text leading-tight mb-2 text-[18px]">{event.title}</h4>
                   <div className="flex flex-wrap items-center gap-4 text-[13px] font-[600] text-navratri-muted">

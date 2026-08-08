@@ -462,12 +462,12 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-center justify-center py-8 bg-slate-50 rounded-[24px] border border-slate-100 relative group overflow-hidden">
-                    <div className="p-3 bg-white rounded-[20px] shadow-sm border border-slate-200/60 relative z-10 isolate">
+                  <div className="flex flex-col items-center justify-center py-8 bg-slate-50 rounded-[24px] border border-slate-100 relative overflow-hidden">
+                    <div className="p-4 bg-white rounded-[16px] shadow-sm border border-gray-200 relative z-10 isolate">
                       {codeUrl ? (
-                        <img src={codeUrl} alt="QR Code" className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] object-contain block mix-blend-multiply" />
+                        <img src={codeUrl} alt="QR Code" className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] object-contain block bg-white" />
                       ) : (
-                        <div className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] bg-slate-100 animate-pulse rounded-xl"></div>
+                        <div className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] bg-slate-100 rounded-xl"></div>
                       )}
                     </div>
                     <p className="text-[11px] text-slate-400 font-[800] uppercase tracking-widest mt-4">Scan at Entry</p>

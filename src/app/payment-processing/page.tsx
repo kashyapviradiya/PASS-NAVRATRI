@@ -62,6 +62,7 @@ export default function PaymentProcessing() {
             customerPhone: orderData.customer.phone,
             customerEmail: orderData.customer.email,
             customerCity: orderData.customer.city,
+            customerUid: orderData.customerUid || null,
             passes: formattedPasses,
             totalAmount: orderData.amount
           })

@@ -36,8 +36,8 @@ export default function BookingSuccess({ params }: { params: { bookingId: string
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0F172A] flex items-center justify-center">
-        <div className="w-16 h-16 border-4 border-navratri-accent border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="w-10 h-10 border-3 border-gray-200 border-t-gray-900 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -47,105 +47,102 @@ export default function BookingSuccess({ params }: { params: { bookingId: string
   const { event, customerName, totalAmount, bookingId, passes, demo } = orderDetails;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0F172A] via-[#1E1B4B] to-[#312E81] flex items-center justify-center p-4 sm:p-6 lg:p-8 selection:bg-navratri-accent selection:text-white py-20 pt-[100px] relative overflow-hidden">
-      {/* Floating particles background effect */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none z-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:32px_32px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_60%,transparent_100%)]"></div>
-
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans">
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="max-w-[600px] w-full bg-white/[0.08] backdrop-blur-[24px] rounded-[28px] p-8 md:p-12 shadow-[0_24px_64px_rgba(0,0,0,0.4)] border border-white/[0.12] relative overflow-hidden z-10"
+        className="max-w-[500px] w-full bg-white rounded-[24px] p-8 md:p-10 shadow-sm border border-gray-200 relative overflow-hidden z-10"
       >
         
         {demo && (
-          <div className="absolute top-4 right-4 bg-orange-500/10 text-orange-400 text-[11px] font-[800] px-3.5 py-1.5 rounded-[12px] uppercase tracking-wider border border-orange-500/20 backdrop-blur-md">
+          <div className="absolute top-4 right-4 bg-orange-50 text-orange-600 text-[10px] font-[800] px-3 py-1 rounded-[8px] uppercase tracking-wider border border-orange-200">
             Demo Booking
           </div>
         )}
-        <div className="text-center mb-10 mt-4">
-          <div className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/30 shadow-[0_0_32px_rgba(16,185,129,0.35)] relative">
+        <div className="text-center mb-8 mt-2">
+          <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-100 relative">
             <motion.svg 
               viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-              className="w-12 h-12 text-emerald-400 drop-shadow-[0_0_12px_rgba(52,211,153,0.4)] z-10"
+              className="w-10 h-10 text-green-500 z-10"
             >
               <motion.path
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+                transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
                 d="M20 6L9 17l-5-5"
               />
             </motion.svg>
           </div>
           <motion.h1 
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-            className="text-[36px] font-display font-[850] text-white tracking-tight leading-tight mb-3"
+            className="text-[28px] font-[850] text-gray-900 tracking-tight leading-tight mb-2"
           >
             Booking Confirmed!
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-            className="text-[#CBD5E1] font-[500] text-[16px] leading-relaxed max-w-md mx-auto"
+            className="text-gray-500 font-[500] text-[15px] leading-relaxed max-w-sm mx-auto"
           >
-            Thank you, {customerName}. Your payment of <strong className="text-white font-[800]">{formatCurrency(totalAmount)}</strong> was successful.
+            Thank you, {customerName}. Your payment of <strong className="text-gray-900 font-[700]">{formatCurrency(totalAmount)}</strong> was successful.
           </motion.p>
         </div>
 
         {/* Premium ticket-graphic box */}
-        <div className="bg-white/[0.06] rounded-[24px] p-6 md:p-8 border border-white/[0.08] mb-8 relative overflow-hidden backdrop-blur-md shadow-inner">
+        <div className="bg-gray-50 rounded-[20px] p-6 border border-gray-200 mb-8 relative overflow-hidden shadow-sm">
           {/* Ticket styling edges */}
-          <div className="absolute top-1/2 -left-3 w-6 h-6 bg-[#1E1B4B] rounded-full -translate-y-1/2 border-r border-white/[0.08] z-20"></div>
-          <div className="absolute top-1/2 -right-3 w-6 h-6 bg-[#1E1B4B] rounded-full -translate-y-1/2 border-l border-white/[0.08] z-20"></div>
-          <div className="absolute top-1/2 left-4 right-4 h-px bg-transparent border-dashed border-t-2 border-white/10 z-10"></div>
+          <div className="absolute top-1/2 -left-3 w-6 h-6 bg-white rounded-full -translate-y-1/2 border-r border-gray-200 z-20"></div>
+          <div className="absolute top-1/2 -right-3 w-6 h-6 bg-white rounded-full -translate-y-1/2 border-l border-gray-200 z-20"></div>
+          <div className="absolute top-1/2 left-4 right-4 h-px bg-transparent border-dashed border-t border-gray-300 z-10"></div>
           
-          <div className="pb-6 relative z-10 border-b border-white/5">
+          <div className="pb-5 relative z-10 border-b border-gray-200/50">
             <div className="flex gap-4 text-left">
-              <img src={event.bannerImage || 'https://images.unsplash.com/photo-1540039155733-d7696d4eb98e?q=80&w=1974&auto=format&fit=crop'} alt={event.title} className="w-20 h-20 object-cover rounded-[16px] border border-white/10" />
+              <img src={event.bannerImage || event.bannerUrl || '/demo/events/poster_navratri.jpg'} alt={event.title || event.name} className="w-16 h-16 object-cover rounded-[12px] border border-gray-200" />
               <div>
-                <h3 className="font-display font-[850] text-white text-[18px] leading-tight mb-2 line-clamp-2">{event.title}</h3>
-                <div className="flex items-center gap-1.5 text-[13px] text-[#CBD5E1] font-[600] mb-1">
-                  <Calendar className="w-3.5 h-3.5 text-[#00E5FF]" /> {new Date(event.startDate).toLocaleDateString()}
+                <h3 className="font-[800] text-gray-900 text-[16px] leading-tight mb-1 line-clamp-2">{event.title || event.name}</h3>
+                <div className="flex items-center gap-1.5 text-[12px] text-gray-500 font-[600] mb-0.5">
+                  <Calendar className="w-3 h-3 text-navratri-primary" /> {new Date(event.startDate || event.dates || Date.now()).toLocaleDateString()}
                 </div>
-                <div className="flex items-center gap-1.5 text-[13px] text-[#CBD5E1] font-[600]">
-                  <Clock className="w-3.5 h-3.5 text-[#00E5FF]" /> {new Date(event.startDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                <div className="flex items-center gap-1.5 text-[12px] text-gray-500 font-[600]">
+                  <Clock className="w-3 h-3 text-navratri-primary" /> {new Date(event.startDate || event.dates || Date.now()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="pt-8 relative z-10 text-left">
-            <div className="flex justify-between items-end mb-6">
+          <div className="pt-5 relative z-10 text-left">
+            <div className="flex justify-between items-end mb-4">
               <div>
-                <p className="text-[10px] font-[800] text-[#94A3B8] uppercase tracking-widest mb-1.5">Booking ID</p>
-                <p className="font-mono font-[800] text-white text-[15px] tracking-wider">{bookingId}</p>
+                <p className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-1">Booking ID</p>
+                <p className="font-mono font-[800] text-gray-900 text-[14px] tracking-wider">{bookingId}</p>
               </div>
               <div className="text-right">
-                <p className="text-[10px] font-[800] text-[#94A3B8] uppercase tracking-widest mb-1.5">Venue</p>
-                <p className="font-[800] text-white text-[14px] max-w-[150px] truncate">{event.venue}</p>
+                <p className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-1">Status</p>
+                <p className="font-[800] text-green-600 text-[13px] uppercase">Paid</p>
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {passes && passes.map((pass: any, idx: number) => (
-                <div key={idx} className="flex justify-between items-center text-[15px] bg-white/[0.04] p-4 rounded-[16px] border border-white/[0.06] shadow-sm hover:border-white/[0.12] transition-colors">
-                  <span className="font-[800] text-white">{pass.passName}</span>
-                  <span className="text-white font-[800] text-[13px] px-3.5 py-1 bg-white/[0.08] rounded-[10px] border border-white/10">Qty: {pass.quantity}</span>
+                <div key={idx} className="flex justify-between items-center text-[14px] bg-white p-3 rounded-[12px] border border-gray-200 shadow-sm">
+                  <span className="font-[800] text-gray-900">{pass.passName || pass.ticketTypeName}</span>
+                  <span className="text-gray-900 font-[800] text-[12px] px-2 py-0.5 bg-gray-100 rounded-[6px] border border-gray-200">Qty: {pass.quantity}</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4 relative z-10">
-          <Link href="/my-tickets" className="w-full sm:w-auto flex-1 bg-gradient-to-r from-[#7C3AED] to-[#FF4D6D] text-white font-[800] py-4 rounded-full flex justify-center items-center gap-2 hover:shadow-[0_8px_32px_rgba(124,58,237,0.3)] hover:-translate-y-0.5 active:scale-[0.98] transition-all text-[15px]">
+        <div className="flex flex-col gap-3 relative z-10">
+          <Link href="/my-tickets" className="w-full bg-gray-900 text-white font-[800] py-3.5 rounded-[12px] flex justify-center items-center gap-2 shadow-sm active:scale-95 transition-transform text-[15px]">
             <Ticket className="w-5 h-5" /> View My Tickets
           </Link>
-          <Link href="/" className="w-full sm:w-auto flex-1 bg-white/[0.08] border border-white/[0.12] text-white font-[800] py-4 rounded-full flex justify-center items-center gap-2 hover:bg-white/[0.15] active:scale-[0.98] transition-all text-[15px] backdrop-blur-md">
+          <Link href="/" className="w-full bg-white border border-gray-200 text-gray-900 font-[800] py-3.5 rounded-[12px] flex justify-center items-center gap-2 hover:bg-gray-50 active:scale-95 transition-transform text-[15px]">
             <Home className="w-5 h-5" /> Back to Home
           </Link>
         </div>
 
-      </div>
+      </motion.div>
     </div>
   );
 }
