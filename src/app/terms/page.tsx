@@ -2,7 +2,7 @@ export default function TermsPage() {
   return (
     <div className="bg-navratri-bg min-h-screen pb-32 font-sans">
       {/* Page Header */}
-      <section className="pt-16 pb-24 text-center relative overflow-hidden border-b border-navratri-border bg-navratri-dark">
+      <section className="pt-16 pb-24 text-center relative overflow-hidden border-b border-navratri-border bg-[#5A2132]">
         <div className="absolute inset-0 z-0 opacity-30">
           <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-navratri-primary/20 rounded-full blur-[120px] animate-pulse-slow"></div>
         </div>

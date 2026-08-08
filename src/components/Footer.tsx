@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="relative pt-20 pb-10 overflow-hidden bg-navratri-dark">
+    <footer className="relative pt-20 pb-10 overflow-hidden bg-[#5A2132]">
       {/* ── Top border ────────────────────────────────── */}
       <div className="absolute top-0 inset-x-0 h-[1px] bg-white/10" />
 

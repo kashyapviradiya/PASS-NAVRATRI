@@ -8,7 +8,7 @@ export default function ForOrganizers() {
     <div className="bg-navratri-bg min-h-screen pb-20 font-sans">
       
       {/* Hero Section */}
-      <section className="relative pt-20 pb-24 overflow-hidden bg-navratri-dark">
+      <section className="relative pt-20 pb-24 overflow-hidden bg-[#5A2132]">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-navratri-primary/20 rounded-full blur-[100px] animate-pulse-slow"></div>
           <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-navratri-accent/10 rounded-full blur-[80px] animate-pulse-slow"></div>
@@ -76,7 +76,7 @@ export default function ForOrganizers() {
       </section>
 
       {/* Dashboard Preview */}
-      <section className="py-24 relative overflow-hidden bg-navratri-dark">
+      <section className="py-24 relative overflow-hidden bg-[#5A2132]">
         <div className="absolute inset-0 bg-gradient-premium opacity-10"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
