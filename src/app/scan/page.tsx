@@ -90,42 +90,78 @@ export default function ScannerDashboard() {
     loadGates();
 
     // Real-time listener for the event tickets
+    let unsubTickets: any = null;
+    let fallbackInterval: NodeJS.Timeout | null = null;
+    let usingFallback = false;
+
+    const startFallbackPolling = () => {
+      if (usingFallback) return;
+      usingFallback = true;
+      if (unsubTickets) unsubTickets();
+
+      const poll = async () => {
+        try {
+          const res = await fetch(`/api/scan-stats?eventId=${selectedEventId}`);
+          const data = await res.json();
+          if (data.success && data.stats) {
+            setStats({
+              total: data.stats.total,
+              checkedIn: data.stats.total - (data.stats.remaining || 0), // fallback math
+              remaining: data.stats.remaining || 0,
+              vip: data.stats.vip,
+              regular: data.stats.regular
+            });
+          }
+        } catch (e) { console.error(e); }
+      };
+      poll();
+      fallbackInterval = setInterval(poll, 3000);
+    };
+
     import('@/lib/firebase').then(({ db }) => {
       import('firebase/firestore').then(({ collection, query, where, onSnapshot }) => {
-        const q = query(collection(db, 'tickets'), where('eventId', '==', selectedEventId));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-          let total = 0, checkedIn = 0, vip = 0, regular = 0;
-          
-          snapshot.forEach((doc) => {
-            const t = doc.data();
-            total++;
+        try {
+          const q = query(collection(db, 'tickets'), where('eventId', '==', selectedEventId));
+          unsubTickets = onSnapshot(q, (snapshot) => {
+            let total = 0, checkedIn = 0, vip = 0, regular = 0;
             
-            const isUsed = t.checkedIn === true || t.status === 'used';
-            if (isUsed) {
-              checkedIn++;
-              const type = (t.ticketType || '').toLowerCase();
-              if (type.includes('vip') || type.includes('gold')) {
-                vip++;
-              } else {
-                regular++;
+            snapshot.forEach((doc) => {
+              const t = doc.data();
+              total++;
+              
+              const isUsed = t.checkedIn === true || t.status === 'used';
+              if (isUsed) {
+                checkedIn++;
+                const type = (t.ticketType || '').toLowerCase();
+                if (type.includes('vip') || type.includes('gold')) {
+                  vip++;
+                } else {
+                  regular++;
+                }
               }
-            }
-          });
+            });
 
-          setStats({
-            total,
-            checkedIn,
-            remaining: total - checkedIn,
-            vip,
-            regular
+            setStats({
+              total,
+              checkedIn,
+              remaining: total - checkedIn,
+              vip,
+              regular
+            });
+          }, (error) => {
+            console.error("Scanner Listener Error:", error);
+            startFallbackPolling();
           });
-        });
-        
-        // Save unsubscribe to cleanup later if needed, but here it's fine
-        // Actually, we should clean up if eventId changes
-        return () => unsubscribe();
+        } catch (e) {
+          startFallbackPolling();
+        }
       });
-    });
+    }).catch(() => startFallbackPolling());
+
+    return () => {
+      if (unsubTickets) unsubTickets();
+      if (fallbackInterval) clearInterval(fallbackInterval);
+    };
   }, [selectedEventId]);
 
   const playSound = (type: 'success' | 'error') => {
