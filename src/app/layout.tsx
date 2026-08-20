@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import ToasterWrapper from '@/components/ToasterWrapper';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 import { AuthProvider } from '@/contexts/AuthContext';
+import BrandIntro from '@/components/BrandIntro';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -32,6 +33,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
       <body className="font-sans min-h-screen flex flex-col bg-navratri-bg text-navratri-text antialiased">
         <AuthProvider>
+          <BrandIntro />
           <ToasterWrapper />
           <ClientLayoutWrapper>
             {children}
