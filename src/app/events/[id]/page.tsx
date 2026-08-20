@@ -221,6 +221,20 @@ export default function EventDetails({ params }: { params: { id: string } }) {
                 ))}
                 {!hasTickets && <div className="text-center p-6 card-base rounded-2xl font-bold text-navratri-muted">Sold Out</div>}
               </div>
+              {hasTickets && (
+                <button 
+                  onClick={() => {
+                    if (!selectedPassId || !hasTickets) return;
+                    localStorage.setItem('checkout_event', JSON.stringify(event));
+                    localStorage.setItem('checkout_ticketTypes', JSON.stringify({ [selectedPassId]: quantity }));
+                    router.push(`/checkout/${event.id}`);
+                  }}
+                  disabled={!hasTickets}
+                  className="btn-primary w-full mt-6 py-4 rounded-xl text-lg flex items-center justify-center gap-2"
+                >
+                  Book {quantity} Ticket{quantity > 1 ? 's' : ''} • {formatCurrency(totalPrice)}
+                </button>
+              )}
             </div>
 
             {/* FAQs */}
@@ -339,7 +353,7 @@ export default function EventDetails({ params }: { params: { id: string } }) {
       </div>
 
       {/* MOBILE STICKY BOTTOM BAR (TICKET SELECTION & BOOKING CTA) */}
-      <div className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-navratri-border lg:hidden z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] px-4 flex items-center justify-between">
+      <div className="fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-navratri-border lg:hidden z-[60] shadow-[0_-10px_20px_rgba(0,0,0,0.05)] px-4 pb-[env(safe-area-inset-bottom)] flex items-center justify-between">
         <div className="flex flex-col shrink-0">
           <span className="text-xs text-navratri-muted font-bold">Total Price</span>
           <span className="text-xl font-extrabold text-navratri-dark leading-none mt-1">

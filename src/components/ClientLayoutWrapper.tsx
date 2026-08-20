@@ -37,7 +37,10 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
         </AnimatePresence>
       </main>
       <Footer />
-      <MobileBottomNav onMenuClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+      {/* Hide MobileBottomNav on deep detail pages to prevent overlapping Sticky CTAs */}
+      {!(pathname?.startsWith('/events/') || pathname?.startsWith('/checkout') || pathname?.startsWith('/tickets/')) && (
+        <MobileBottomNav onMenuClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+      )}
     </>
   );
 }
