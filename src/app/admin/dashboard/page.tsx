@@ -18,25 +18,27 @@ export default function AdminDashboard() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [checkins, setCheckins] = useState<any[]>([]);
 
-  // 1. Fetch Events (once or real-time)
+  // 1. Fetch Events
   useEffect(() => {
-    const eventsRef = collection(db, 'events');
-    const q = query(eventsRef, where('status', 'in', ['published', 'draft', 'sold_out']));
-    
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const evts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setEvents(evts);
-      if (evts.length > 0 && !selectedEventId) {
-        setSelectedEventId(evts[0].id);
+    const fetchEvents = async () => {
+      try {
+        const res = await fetch('/api/get-events');
+        const data = await res.json();
+        if (data.success && data.events) {
+          setEvents(data.events);
+          if (data.events.length > 0 && !selectedEventId) {
+            setSelectedEventId(data.events[0].id);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }, (error) => {
-      console.error("Error fetching events:", error);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [selectedEventId]);
+    };
+    
+    fetchEvents();
+  }, []);
 
   // 2. Real-time Listeners for the Selected Event
   useEffect(() => {

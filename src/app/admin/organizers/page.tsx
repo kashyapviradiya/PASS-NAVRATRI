@@ -361,13 +361,22 @@ export default function AdminOrganizersPage() {
 
               {/* Password */}
               <div>
-                <label className="block text-[12px] font-[800] text-navratri-muted uppercase tracking-widest mb-2">Login Password *</label>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="text-[12px] font-[800] text-navratri-muted uppercase tracking-widest">Login Password *</label>
+                  <button 
+                    type="button" 
+                    onClick={generatePassword} 
+                    className="text-[11px] font-[800] text-navratri-primary hover:text-navratri-secondary transition-colors flex items-center gap-1"
+                  >
+                    <Plus className="w-3 h-3" /> Auto Generate
+                  </button>
+                </div>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={form.password}
                     onChange={e => setForm(prev => ({ ...prev, password: e.target.value }))}
-                    placeholder="Enter password"
+                    placeholder="Enter custom password"
                     className="input-field pr-12"
                   />
                   <button
