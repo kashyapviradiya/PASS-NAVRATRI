@@ -65,7 +65,11 @@ export async function POST(request: NextRequest) {
           ticketTypeName: passData.name,
           quantity: qty,
           unitPrice: passData.price,
-          subtotal: passData.price * qty
+          subtotal: passData.price * qty,
+          gateRestriction: passData.gateRestriction,
+          gateId: passData.gateId,
+          gateName: passData.gateName,
+          entryCount: passData.entryCount
         });
 
         // Update inventory in array
@@ -100,6 +104,10 @@ export async function POST(request: NextRequest) {
             email: customer.email,
             ticketTypeId: passId,
             ticketTypeName: passData.name,
+            gateRestriction: passData.gateRestriction || false,
+            gateId: passData.gateId || null,
+            gateName: passData.gateName || null,
+            entryCount: passData.entryCount || 1,
             status: 'valid',
             qrValue: finalQrValue,
             demo: true,

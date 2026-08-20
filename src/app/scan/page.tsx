@@ -23,11 +23,11 @@ type ScanStats = {
 export default function ScannerDashboard() {
   const router = useRouter();
   const [staffName, setStaffName] = useState('Staff Member');
-  const [gates, setGates] = useState<string[]>(['Main Entry']);
-  const [events, setEvents] = useState<string[]>(['evt-ahmedabad-royal-garba']);
+  const [gates, setGates] = useState<{id: string, name: string}[]>([]);
+  const [events, setEvents] = useState<{id: string, name: string}[]>([]);
   
-  const [selectedGate, setSelectedGate] = useState('Main Entry');
-  const [selectedEvent, setSelectedEvent] = useState('evt-ahmedabad-royal-garba');
+  const [selectedGateId, setSelectedGateId] = useState('');
+  const [selectedEventId, setSelectedEventId] = useState('');
   
   const [isScanning, setIsScanning] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -42,43 +42,57 @@ export default function ScannerDashboard() {
   useEffect(() => {
     const name = localStorage.getItem('scanner_staff_name');
     if (name) setStaffName(name);
-    
-    const savedGates = localStorage.getItem('scanner_gates');
-    if (savedGates) {
-      try {
-        const parsed = JSON.parse(savedGates);
-        if (parsed.length > 0) {
-          setGates(parsed);
-          setSelectedGate(parsed[0]);
-        }
-      } catch (e) {}
-    }
 
-    const savedEvents = localStorage.getItem('scanner_events');
-    if (savedEvents) {
+    // Fetch available events (for demo, just query the API which returns DEMO_EVENTS)
+    const loadEvents = async () => {
       try {
-        const parsed = JSON.parse(savedEvents);
-        if (parsed.length > 0) {
-          setEvents(parsed);
-          setSelectedEvent(parsed[0]);
+        const res = await fetch('/api/get-events');
+        const data = await res.json();
+        if (data.success && data.events && data.events.length > 0) {
+          const loadedEvents = data.events.map((e: any) => ({ id: e.id, name: e.title || e.name }));
+          setEvents(loadedEvents);
+          
+          const savedEvent = localStorage.getItem('scanner_event_id');
+          const initialEvent = loadedEvents.find((e: any) => e.id === savedEvent) ? savedEvent : loadedEvents[0].id;
+          setSelectedEventId(initialEvent);
         }
-      } catch (e) {}
-    }
+      } catch (e) {
+        console.error('Failed to load events', e);
+      }
+    };
+    loadEvents();
 
     return () => {
       stopScanner();
     };
   }, []);
 
+  // Update gates when event changes
   useEffect(() => {
-    if (selectedEvent) {
-      fetchStats();
-    }
-  }, [selectedEvent]);
+    if (!selectedEventId) return;
+    localStorage.setItem('scanner_event_id', selectedEventId);
+
+    const loadGates = async () => {
+      try {
+        const res = await fetch(`/api/get-events?id=${selectedEventId}`);
+        const data = await res.json();
+        if (data.success && data.event) {
+          const eventGates = data.event.gates || [{ id: 'gate_default', name: 'Main Entry' }];
+          setGates(eventGates);
+          
+          const savedGate = localStorage.getItem('scanner_gate_id');
+          const initialGate = eventGates.find((g: any) => g.id === savedGate) ? savedGate : eventGates[0].id;
+          setSelectedGateId(initialGate);
+        }
+      } catch (e) {}
+    };
+    loadGates();
+    fetchStats();
+  }, [selectedEventId]);
 
   const fetchStats = async () => {
     try {
-      const res = await fetch(`/api/scan-stats?eventId=${selectedEvent}`);
+      const res = await fetch(`/api/scan-stats?eventId=${selectedEventId}`);
       const data = await res.json();
       if (data.success) {
         setStats(data.stats);
@@ -146,8 +160,8 @@ export default function ScannerDashboard() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           qrValue: decodedText, 
-          gateName: selectedGate,
-          eventId: selectedEvent
+          gateId: selectedGateId,
+          eventId: selectedEventId
         })
       });
 
@@ -245,7 +259,7 @@ export default function ScannerDashboard() {
               </div>
               <div className="text-right">
                 <p className="text-white/70 text-[10px] font-[800] uppercase tracking-widest mb-1">Gate</p>
-                <p className="font-[800] text-[16px]">{selectedGate}</p>
+                <p className="font-[800] text-[16px]">{gates.find(g => g.id === selectedGateId)?.name || selectedGateId}</p>
               </div>
             </div>
             <div>
@@ -377,21 +391,24 @@ export default function ScannerDashboard() {
           <div className="flex items-center gap-2.5 bg-white/5 px-3.5 py-2.5 rounded-[12px] border border-white/10">
             <Calendar className="w-4 h-4 text-[#FF4D6D]" />
             <select 
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
+              value={selectedEventId}
+              onChange={(e) => setSelectedEventId(e.target.value)}
               className="bg-transparent text-white text-[14px] font-[700] py-1 outline-none w-full cursor-pointer"
             >
-              {events.map(ev => <option key={ev} value={ev} className="text-black">{ev}</option>)}
+              {events.map(ev => <option key={ev.id} value={ev.id} className="text-black">{ev.name}</option>)}
             </select>
           </div>
           <div className="flex items-center gap-2.5 bg-white/5 px-3.5 py-2.5 rounded-[12px] border border-white/10">
             <Ticket className="w-4 h-4 text-[#00E5FF]" />
             <select 
-              value={selectedGate}
-              onChange={(e) => setSelectedGate(e.target.value)}
+              value={selectedGateId}
+              onChange={(e) => {
+                setSelectedGateId(e.target.value);
+                localStorage.setItem('scanner_gate_id', e.target.value);
+              }}
               className="bg-transparent text-white text-[14px] font-[700] py-1 outline-none w-full cursor-pointer"
             >
-              {gates.map(gate => <option key={gate} value={gate} className="text-black">{gate}</option>)}
+              {gates.map(gate => <option key={gate.id} value={gate.id} className="text-black">{gate.name}</option>)}
             </select>
           </div>
         </div>

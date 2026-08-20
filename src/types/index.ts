@@ -26,6 +26,10 @@ export interface Event {
     washroom?: boolean;
     security?: boolean;
   };
+  gates?: {
+    id: string;
+    name: string;
+  }[];
 }
 
 export interface TicketType {

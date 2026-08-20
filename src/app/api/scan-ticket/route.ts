@@ -20,10 +20,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, message: 'Invalid session' }, { status: 401 });
     }
 
-    const { qrValue, gateName, eventId } = await request.json();
+    const { qrValue, gateId, eventId } = await request.json();
 
-    if (!qrValue || !gateName || !eventId) {
-      return NextResponse.json({ success: false, message: 'Missing qrValue, gateName, or eventId' }, { status: 400 });
+    if (!qrValue || !gateId || !eventId) {
+      return NextResponse.json({ success: false, message: 'Missing qrValue, gateId, or eventId' }, { status: 400 });
     }
 
     let parsedQr;
@@ -79,16 +79,17 @@ export async function POST(request: NextRequest) {
       const ticketDoc = querySnapshot.docs[0];
       const ticket = ticketDoc.data();
 
+      // Check event match strictly (using BOTH ticket payload eventId and firestore eventId)
       if (ticket.eventId !== eventId && ticketEventId !== eventId) {
         throw new Error('WRONG_EVENT');
       }
 
-      // Enforce Gate Restriction check
-      if (ticket.gateRestriction) {
-        if (ticket.gateName && ticket.gateName !== gateName) {
+      // Enforce Gate Restriction check strictly by gateId
+      if (ticket.gateRestriction || ticket.gateId) {
+        if (ticket.gateId && ticket.gateId !== gateId) {
           throw new Error(JSON.stringify({
             code: 'WRONG_GATE',
-            correctGate: ticket.gateName,
+            correctGate: ticket.gateName || 'Assigned Gate',
             customerName: ticket.customerName,
             bookingId: ticket.bookingId,
             ticketType: ticket.ticketType
@@ -128,7 +129,8 @@ export async function POST(request: NextRequest) {
         ticketType: ticket.ticketType,
         qrValue: ticket.qrValue,
         scannedBy: staff.name,
-        gateName: gateName,
+        gateId: gateId,
+        gateName: ticket.gateName || 'Gate',
         scannedAt: new Date().toISOString()
       };
       
