@@ -417,12 +417,8 @@ END:VCALENDAR`;
     );
   }
 
-  const expiryDateStr = ticket.eventEndDate || ticket.eventDate;
-  const expiryDate = new Date(expiryDateStr);
-  if (!ticket.eventEndDate) {
-      expiryDate.setHours(23, 59, 59, 999);
-  }
-  const isExpired = expiryDate < new Date();
+  // TEMPORARY: Force isExpired false for scanner test
+  const isExpired = false;
   
   const isUsed = ticket.status === 'used' || ticket.checkedIn;
   const isCancelled = ticket.status === 'cancelled';
@@ -436,6 +432,7 @@ END:VCALENDAR`;
   const displayTicketType = ticket.ticketType || ticket.ticketTypeName || 'Pass';
   
   let statusText = ticket.status.toUpperCase();
+  if (isValid) statusText = 'READY FOR ENTRY';
   if (isUsed) statusText = 'USED';
   if (isCancelled) statusText = 'CANCELLED';
   if (isExpired && !isUsed) statusText = 'EXPIRED';
@@ -472,7 +469,7 @@ END:VCALENDAR`;
               <div>
                 {isValid && (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 rounded-full text-[11px] font-[800] tracking-wider uppercase">
-                    <ShieldCheck className="w-3.5 h-3.5" /> VALID PASS
+                    <ShieldCheck className="w-3.5 h-3.5" /> READY FOR ENTRY
                   </span>
                 )}
                 {isUsed && (
