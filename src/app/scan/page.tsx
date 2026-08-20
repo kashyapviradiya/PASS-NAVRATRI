@@ -34,7 +34,6 @@ export default function ScannerDashboard() {
   
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [recentScans, setRecentScans] = useState<ScanResult[]>([]);
-  const [stats, setStats] = useState<ScanStats>({ total: 0, vip: 0, regular: 0 });
   
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const scanRegionId = "qr-reader";
@@ -67,6 +66,8 @@ export default function ScannerDashboard() {
     };
   }, []);
 
+  const [stats, setStats] = useState({ total: 0, checkedIn: 0, remaining: 0, vip: 0, regular: 0 });
+
   // Update gates when event changes
   useEffect(() => {
     if (!selectedEventId) return;
@@ -87,20 +88,45 @@ export default function ScannerDashboard() {
       } catch (e) {}
     };
     loadGates();
-    fetchStats();
-  }, [selectedEventId]);
 
-  const fetchStats = async () => {
-    try {
-      const res = await fetch(`/api/scan-stats?eventId=${selectedEventId}`);
-      const data = await res.json();
-      if (data.success) {
-        setStats(data.stats);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
+    // Real-time listener for the event tickets
+    import('@/lib/firebase').then(({ db }) => {
+      import('firebase/firestore').then(({ collection, query, where, onSnapshot }) => {
+        const q = query(collection(db, 'tickets'), where('eventId', '==', selectedEventId));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          let total = 0, checkedIn = 0, vip = 0, regular = 0;
+          
+          snapshot.forEach((doc) => {
+            const t = doc.data();
+            total++;
+            
+            const isUsed = t.checkedIn === true || t.status === 'used';
+            if (isUsed) {
+              checkedIn++;
+              const type = (t.ticketType || '').toLowerCase();
+              if (type.includes('vip') || type.includes('gold')) {
+                vip++;
+              } else {
+                regular++;
+              }
+            }
+          });
+
+          setStats({
+            total,
+            checkedIn,
+            remaining: total - checkedIn,
+            vip,
+            regular
+          });
+        });
+        
+        // Save unsubscribe to cleanup later if needed, but here it's fine
+        // Actually, we should clean up if eventId changes
+        return () => unsubscribe();
+      });
+    });
+  }, [selectedEventId]);
 
   const playSound = (type: 'success' | 'error') => {
     try {
@@ -419,17 +445,19 @@ export default function ScannerDashboard() {
 
       {/* Live Stats */}
       <div className="bg-slate-900 border-b border-slate-800 px-4 py-4 flex gap-3 shrink-0 overflow-x-auto hide-scrollbar sticky top-0 z-20 shadow-lg">
+        <div className="bg-slate-800 border border-slate-700 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-2 h-full bg-green-500"></div>
+          <p className="text-[10px] uppercase font-[800] text-slate-400 tracking-widest mb-1">Checked In</p>
+          <p className="text-[22px] font-display font-[800] text-white">{stats.checkedIn}</p>
+        </div>
+        <div className="bg-slate-800 border border-slate-700 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-2 h-full bg-orange-500"></div>
+          <p className="text-[10px] uppercase font-[800] text-slate-400 tracking-widest mb-1">Remaining</p>
+          <p className="text-[22px] font-display font-[800] text-white">{stats.remaining}</p>
+        </div>
         <div className="bg-slate-800 border border-slate-700 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm">
-          <p className="text-[10px] uppercase font-[800] text-slate-400 tracking-widest mb-1">Total Entry</p>
+          <p className="text-[10px] uppercase font-[800] text-slate-400 tracking-widest mb-1">Total</p>
           <p className="text-[22px] font-display font-[800] text-white">{stats.total}</p>
-        </div>
-        <div className="bg-slate-800 border border-slate-700 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm">
-          <p className="text-[10px] uppercase font-[800] text-[#FF4D6D] tracking-widest mb-1">VIP</p>
-          <p className="text-[22px] font-display font-[800] text-white">{stats.vip}</p>
-        </div>
-        <div className="bg-slate-800 border border-slate-700 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm">
-          <p className="text-[10px] uppercase font-[800] text-[#00E5FF] tracking-widest mb-1">Regular</p>
-          <p className="text-[22px] font-display font-[800] text-white">{stats.regular}</p>
         </div>
       </div>
 

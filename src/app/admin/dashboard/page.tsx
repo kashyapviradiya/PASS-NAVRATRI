@@ -2,36 +2,77 @@
 
 import { useState, useEffect } from 'react';
 import { formatCurrency } from '@/lib/utils';
-import { IndianRupee, TrendingUp, Ticket, CheckCircle2, Download, Plus, ExternalLink, CalendarDays, Loader2, ArrowRight } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import Link from 'next/link';
-import toast from 'react-hot-toast';
-import { motion } from 'framer-motion';
+import { IndianRupee, Ticket, CheckCircle2, Wifi, WifiOff, Users, Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { db } from '@/lib/firebase';
+import { collection, query, where, onSnapshot, orderBy, limit } from 'firebase/firestore';
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<any>(null);
-  const [filter, setFilter] = useState<'daily' | 'weekly' | 'monthly'>('daily');
+  const [isLive, setIsLive] = useState(false);
+  
+  const [events, setEvents] = useState<any[]>([]);
+  const [selectedEventId, setSelectedEventId] = useState<string>('');
+  
+  const [tickets, setTickets] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [checkins, setCheckins] = useState<any[]>([]);
 
+  // 1. Fetch Events (once or real-time)
   useEffect(() => {
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
-    try {
-      const res = await fetch('/api/admin/dashboard-stats');
-      const data = await res.json();
-      if (data.success) {
-        setStats(data);
-      } else {
-        toast.error('Failed to load dashboard data');
+    const eventsRef = collection(db, 'events');
+    const q = query(eventsRef, where('status', 'in', ['published', 'draft', 'sold_out']));
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const evts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setEvents(evts);
+      if (evts.length > 0 && !selectedEventId) {
+        setSelectedEventId(evts[0].id);
       }
-    } catch (error) {
-      toast.error('Network error');
-    } finally {
       setLoading(false);
-    }
-  };
+    }, (error) => {
+      console.error("Error fetching events:", error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [selectedEventId]);
+
+  // 2. Real-time Listeners for the Selected Event
+  useEffect(() => {
+    if (!selectedEventId) return;
+    setIsLive(false);
+
+    // Listen to Tickets
+    const ticketsQ = query(collection(db, 'tickets'), where('eventId', '==', selectedEventId));
+    const unsubTickets = onSnapshot(ticketsQ, (snapshot) => {
+      setTickets(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      setIsLive(true);
+    }, () => setIsLive(false));
+
+    // Listen to Bookings (Orders)
+    const bookingsQ = query(collection(db, 'orders'), where('eventId', '==', selectedEventId));
+    const unsubBookings = onSnapshot(bookingsQ, (snapshot) => {
+      setBookings(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    });
+
+    // Listen to Check-ins (Recent)
+    const checkinsQ = query(
+      collection(db, 'checkins'), 
+      where('eventId', '==', selectedEventId),
+      orderBy('scannedAt', 'desc'),
+      limit(20)
+    );
+    const unsubCheckins = onSnapshot(checkinsQ, (snapshot) => {
+      setCheckins(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    });
+
+    return () => {
+      unsubTickets();
+      unsubBookings();
+      unsubCheckins();
+    };
+  }, [selectedEventId]);
 
   if (loading) {
     return (
@@ -41,306 +82,226 @@ export default function AdminDashboard() {
     );
   }
 
-  const { stats: kpis, events = [], bookings = [], tickets = [] } = stats || {};
+  // Calculate Real-Time Stats
+  const totalTickets = tickets.length;
+  const validTickets = tickets.filter(t => t.status === 'valid').length;
+  const checkedInTickets = tickets.filter(t => t.checkedIn === true || t.status === 'used').length;
+  const remainingTickets = totalTickets - checkedInTickets;
+  const revenue = bookings.reduce((sum, b) => sum + (b.totalAmount || b.grandTotal || b.amount || 0), 0);
+  const checkinPercentage = totalTickets > 0 ? ((checkedInTickets / totalTickets) * 100).toFixed(1) : '0.0';
 
-  // Computed metrics
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const todaysRevenue = bookings
-    .filter((b: any) => new Date(b.createdAt) >= today)
-    .reduce((sum: number, b: any) => sum + (b.amount || b.totalAmount || b.grandTotal || 0), 0);
-
-  const todaysCheckins = tickets
-    .filter((t: any) => {
-      if (!t.checkedIn && !t.scanned) return false;
-      const entryTime = new Date(t.scannedAt || t.checkedInAt || t.updatedAt || t.createdAt);
-      return entryTime >= today;
-    }).length;
-
-  const checkedInCount = tickets.filter((t: any) => t.checkedIn || t.scanned).length;
-  const totalTicketsCount = tickets.length || 1; 
-  const occupancyPct = ((checkedInCount / totalTicketsCount) * 100).toFixed(1);
-
-  // KPI Cards
-  const statCards = [
-    { label: "Today's Revenue", value: formatCurrency(todaysRevenue), icon: IndianRupee, borderColor: 'border-navratri-primary' },
-    { label: "Today's Check-ins", value: todaysCheckins.toLocaleString(), icon: CheckCircle2, borderColor: 'border-navratri-secondary' },
-    { label: "Occupancy %", value: `${occupancyPct}%`, icon: TrendingUp, borderColor: 'border-navratri-primary' },
-    { label: 'Total Issued Tickets', value: (kpis?.totalTicketsSold || 0).toLocaleString(), icon: Ticket, borderColor: 'border-navratri-accent' },
-    { label: 'Valid / Unused', value: (kpis?.validTickets || 0).toLocaleString(), icon: Ticket, borderColor: 'border-navratri-primary' },
-    { label: 'Scanned / Used', value: (kpis?.successfulEntries || 0).toLocaleString(), icon: CheckCircle2, borderColor: 'border-green-500' },
-  ];
-
-  // Advanced Pass Distribution logic
-  const passDistributionMap = tickets.reduce((acc: Record<string, number>, t: any) => {
-    const type = t.passType || t.ticketType || t.name || 'Regular';
-    acc[type] = (acc[type] || 0) + 1;
+  // Calculate Gate-wise Stats
+  const gateStats = tickets.reduce((acc: any, t) => {
+    const gateId = t.gateId || 'unknown';
+    const gateName = t.gateName || 'Assigned Gate';
+    if (!acc[gateId]) acc[gateId] = { name: gateName, total: 0, checkedIn: 0 };
+    acc[gateId].total += 1;
+    if (t.checkedIn || t.status === 'used') acc[gateId].checkedIn += 1;
     return acc;
   }, {});
-  
-  const chartColors = ['#A91D3A', '#C73659', '#151515', '#EEEEEE', '#F59E0B', '#6366F1', '#EC4899'];
-  const passDistribution = Object.keys(passDistributionMap).map((key, idx) => ({
-    name: key,
-    value: passDistributionMap[key],
-    color: chartColors[idx % chartColors.length]
-  }));
-
-  // Computed Revenue Chart Data
-  const last7DaysData = Array.from({ length: 7 }).map((_, i) => {
-    const d = new Date();
-    d.setDate(d.getDate() - (6 - i));
-    return { 
-      dateStrKey: d.toDateString(), 
-      name: d.toLocaleDateString('en-US', { weekday: 'short' }), 
-      revenue: 0 
-    };
-  });
-
-  bookings.forEach((b: any) => {
-    const bDate = new Date(b.createdAt).toDateString();
-    const dayObj = last7DaysData.find(d => d.dateStrKey === bDate);
-    if (dayObj) {
-      dayObj.revenue += (b.amount || b.totalAmount || b.grandTotal || 0);
-    }
-  });
-  const revenueData = last7DaysData.map(d => ({ name: d.name, revenue: d.revenue }));
-
-  const exportCSV = () => {
-    if (bookings.length === 0) return toast.error('No bookings to export');
-    const headers = ['Booking ID', 'Customer', 'Phone', 'Event', 'Amount', 'Status', 'Date'];
-    const rows = bookings.map((b: any) => [
-      b.id, b.customerName, b.customerPhone, b.eventId, b.totalAmount, b.status, new Date(b.createdAt).toLocaleDateString()
-    ]);
-    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `bookings-${Date.now()}.csv`;
-    a.click();
-  };
 
   return (
     <div className="p-6 lg:p-8 space-y-8 max-w-[1400px] mx-auto selection:bg-navratri-accent selection:text-white">
       
-      {/* Quick Actions Header */}
+      {/* Header & Connection Status */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-[32px] font-display font-[800] text-navratri-text tracking-tight">Overview</h1>
-          <p className="text-navratri-muted font-[500] text-[15px] mt-1">Welcome back to the Admin Dashboard.</p>
+          <h1 className="text-[32px] font-display font-[800] text-navratri-text tracking-tight">Live Operations</h1>
+          <div className="flex items-center gap-3 mt-2">
+            {isLive ? (
+              <span className="flex items-center gap-1.5 text-[12px] font-[800] uppercase tracking-widest text-green-600 bg-green-50 px-3 py-1 rounded-full border border-green-200">
+                <Wifi className="w-3.5 h-3.5" /> Live
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 text-[12px] font-[800] uppercase tracking-widest text-red-600 bg-red-50 px-3 py-1 rounded-full border border-red-200">
+                <WifiOff className="w-3.5 h-3.5" /> Offline
+              </span>
+            )}
+            <p className="text-navratri-muted font-[500] text-[14px]">Real-time dashboard</p>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <button onClick={exportCSV} className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300 px-5 py-2.5 rounded-[12px] text-[14px] font-[700] shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
-            <Download className="w-4 h-4" /> Export CSV
-          </button>
-          <Link href="/" target="_blank" className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300 px-5 py-2.5 rounded-[12px] text-[14px] font-[700] shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
-            <ExternalLink className="w-4 h-4" /> Public Site
-          </Link>
-          <Link href="/admin/events/new" className="flex items-center gap-2 btn-primary px-5 py-2.5 rounded-[12px] text-[14px] shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 relative overflow-hidden">
-            <span className="relative z-10 flex items-center gap-2"><Plus className="w-4 h-4" /> Create Event</span>
-          </Link>
+
+        {/* Event Selector */}
+        <div className="bg-white px-4 py-2.5 rounded-[12px] border border-navratri-lightGrey shadow-sm flex items-center gap-3 w-full md:w-auto">
+          <span className="text-[11px] font-[800] uppercase tracking-widest text-navratri-muted whitespace-nowrap">Event:</span>
+          <select 
+            value={selectedEventId}
+            onChange={(e) => setSelectedEventId(e.target.value)}
+            className="bg-transparent text-navratri-text font-[800] text-[14px] outline-none w-full md:w-48 cursor-pointer"
+          >
+            {events.map(ev => <option key={ev.id} value={ev.id}>{ev.title || ev.name}</option>)}
+          </select>
+        </div>
+      </div>
+
+      {/* Check-in Progress Bar */}
+      <div className="bg-white p-6 rounded-[24px] border border-navratri-lightGrey shadow-sm">
+        <div className="flex justify-between items-end mb-4">
+          <div>
+            <p className="text-[12px] font-[800] uppercase tracking-widest text-navratri-muted mb-1">Total Check-ins</p>
+            <div className="flex items-baseline gap-2">
+              <AnimatedNumber value={checkedInTickets} className="text-[40px] font-display font-[800] text-navratri-text leading-none" />
+              <span className="text-[20px] font-display font-[700] text-navratri-muted">/ {totalTickets}</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-[24px] font-display font-[800] text-navratri-primary">{checkinPercentage}%</p>
+            <p className="text-[11px] font-[800] uppercase tracking-widest text-navratri-muted">Checked In</p>
+          </div>
+        </div>
+        <div className="w-full h-4 bg-slate-100 rounded-full overflow-hidden">
+          <motion.div 
+            className="h-full bg-gradient-premium"
+            initial={{ width: 0 }}
+            animate={{ width: `${checkinPercentage}%` }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          />
         </div>
       </div>
 
       {/* KPI Cards */}
-      <motion.div 
-        initial="hidden" animate="visible"
-        variants={{
-          hidden: { opacity: 0 },
-          visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-        }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
-      >
-        {statCards.map((stat, idx) => (
-          <motion.div 
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
-            }}
-            key={idx} 
-            className={`card-base border-l-4 ${stat.borderColor} p-6 hover:-translate-y-1 transition-all duration-300 group`}
-          >
-            <div className="flex justify-between items-start mb-4">
-              <div className="w-12 h-12 bg-navratri-lightGrey rounded-[12px] flex items-center justify-center text-navratri-primary group-hover:scale-110 transition-all duration-300">
-                <stat.icon className="w-5 h-5" />
-              </div>
-            </div>
-            <p className="text-[32px] font-display font-[800] tracking-tight mb-1 text-navratri-text leading-none">{stat.value}</p>
-            <p className="text-[12px] font-[700] uppercase tracking-widest text-navratri-muted mt-2">{stat.label}</p>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Revenue Chart */}
-        <div className="lg:col-span-2 card-base p-6 group">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-2xl font-display font-bold text-navratri-text transition-all w-fit">Revenue Performance</h3>
-            <div className="bg-slate-50 p-1.5 rounded-[12px] border border-navratri-lightGrey flex text-[12px] font-[700] text-navratri-muted">
-              {['daily', 'weekly', 'monthly'].map(f => (
-                <button key={f} onClick={() => setFilter(f as any)} className={`px-4 py-2 rounded-[8px] uppercase tracking-widest transition-all ${filter === f ? 'bg-white shadow-sm text-navratri-primary' : 'hover:text-navratri-text'}`}>
-                  {f}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          {bookings.length === 0 ? (
-            <div className="h-64 flex flex-col items-center justify-center text-navratri-muted">
-              <TrendingUp className="w-8 h-8 mb-2 opacity-50 text-navratri-primary" />
-              <p className="text-[14px] font-[600] uppercase tracking-widest">No revenue data yet</p>
-            </div>
-          ) : (
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={revenueData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
-                <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#64748B', fontWeight: 700 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 12, fill: '#64748B', fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={(value) => `₹${value/1000}k`} />
-                <Tooltip cursor={{ fill: '#F8FAFC' }} formatter={(value: any) => formatCurrency(Number(value) || 0)} contentStyle={{ borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.05)', backdropFilter: 'blur(12px)', backgroundColor: 'rgba(255, 255, 255, 0.9)' }} labelStyle={{ fontWeight: 800, color: '#0F172A', fontFamily: 'var(--font-outfit)' }} itemStyle={{ fontWeight: 700, color: '#A91D3A' }} />
-                <Bar dataKey="revenue" fill="url(#colorRevenue)" radius={[8, 8, 0, 0]} />
-                <defs>
-                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#A91D3A" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#C73659" stopOpacity={0.8}/>
-                  </linearGradient>
-                </defs>
-              </BarChart>
-            </ResponsiveContainer>
-          )}
-        </div>
-
-        {/* Pass Distribution */}
-        <div className="card-base p-6 group">
-          <h3 className="text-2xl font-display font-bold text-navratri-text mb-6 transition-all w-fit">Pass Distribution</h3>
-          {passDistribution.length === 0 ? (
-            <div className="h-64 flex flex-col items-center justify-center text-navratri-muted">
-              <PieChart className="w-8 h-8 mb-2 opacity-50 text-navratri-primary" />
-              <p className="text-[14px] font-[600] uppercase tracking-widest">No tickets sold yet</p>
-            </div>
-          ) : (
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie data={passDistribution} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={5}>
-                  {passDistribution.map((entry, idx) => (
-                    <Cell key={`cell-${idx}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={{ borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.05)', backdropFilter: 'blur(12px)', backgroundColor: 'rgba(255, 255, 255, 0.9)' }} itemStyle={{ fontWeight: 700 }} />
-              </PieChart>
-            </ResponsiveContainer>
-          )}
-          {passDistribution.length > 0 && (
-             <div className="flex flex-wrap justify-center gap-4 mt-4">
-               {passDistribution.map(d => (
-                 <div key={d.name} className="flex items-center gap-2 text-[12px] font-[800] text-navratri-muted uppercase tracking-widest">
-                   <div className="w-3.5 h-3.5 rounded-[4px]" style={{ backgroundColor: d.color }}></div>
-                   {d.name}
-                 </div>
-               ))}
-             </div>
-          )}
-        </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+        <StatCard label="Tickets Sold" value={totalTickets.toLocaleString()} icon={Ticket} color="bg-indigo-50 text-indigo-600 border-indigo-100" />
+        <StatCard label="Remaining" value={remainingTickets.toLocaleString()} icon={Users} color="bg-orange-50 text-orange-600 border-orange-100" />
+        <StatCard label="Checked In" value={checkedInTickets.toLocaleString()} icon={CheckCircle2} color="bg-emerald-50 text-emerald-600 border-emerald-100" />
+        <StatCard label="Revenue" value={formatCurrency(revenue)} icon={IndianRupee} color="bg-rose-50 text-rose-600 border-rose-100" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-        
-        {/* Recent Bookings */}
-        <div className="card-base overflow-hidden group">
-          <div className="p-6 border-b border-navratri-lightGrey flex justify-between items-center bg-slate-50/50">
-            <h3 className="text-2xl font-display font-bold text-navratri-text transition-all">Recent Bookings</h3>
-            <button className="text-[14px] font-[800] text-navratri-primary hover:text-navratri-secondary flex items-center gap-1 transition-colors">
-              View All <ArrowRight className="w-4 h-4" />
-            </button>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Gate Statistics */}
+        <div className="card-base overflow-hidden flex flex-col">
+          <div className="p-6 border-b border-navratri-lightGrey bg-slate-50/50">
+            <h3 className="text-[20px] font-display font-[800] text-navratri-text">Gate Statistics</h3>
           </div>
-          {bookings.length === 0 ? (
-            <div className="p-12 text-center text-navratri-muted">
-              <Ticket className="w-8 h-8 mx-auto mb-3 opacity-50 text-navratri-primary" />
-              <p className="text-[14px] font-[600] uppercase tracking-widest">No recent bookings</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="bg-slate-50 text-navratri-muted font-[800] text-[10px] uppercase tracking-widest">
-                    <th className="px-6 py-4">Customer</th>
-                    <th className="px-6 py-4">Amount</th>
-                    <th className="px-6 py-4">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-navratri-lightGrey text-[14px]">
-                  {bookings.slice(0, 5).map((booking: any) => (
-                    <tr key={booking.id} className="hover:bg-slate-50/50 transition-colors">
-                      <td className="px-6 py-4">
-                        <p className="font-[700] text-navratri-text">{booking.customerName}</p>
-                        <p className="text-[11px] text-navratri-muted font-mono mt-0.5">{booking.id}</p>
-                      </td>
-                      <td className="px-6 py-4 font-[800] text-navratri-text">{formatCurrency(booking.amount || booking.totalAmount || booking.grandTotal || 0)}</td>
-                      <td className="px-6 py-4">
-                        <span className={`px-3 py-1.5 rounded-[8px] text-[10px] font-[800] uppercase tracking-widest border ${booking.paymentStatus === 'paid' || booking.status === 'confirmed' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-slate-50 text-slate-500 border-slate-200'}`}>
-                          {booking.paymentStatus || booking.status || 'unknown'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-
-        {/* Upcoming Events */}
-        <div className="card-base overflow-hidden group">
-          <div className="p-6 border-b border-navratri-lightGrey flex justify-between items-center bg-slate-50/50">
-            <h3 className="text-2xl font-display font-bold text-navratri-text transition-all">Upcoming Events</h3>
-            <Link href="/admin/events" className="text-[14px] font-[800] text-navratri-primary hover:text-navratri-secondary flex items-center gap-1 transition-colors">
-              Manage <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-          {events.length === 0 ? (
-            <div className="p-12 text-center text-navratri-muted">
-              <CalendarDays className="w-8 h-8 mx-auto mb-3 opacity-50 text-navratri-primary" />
-              <p className="text-[14px] font-[600] uppercase tracking-widest">No upcoming events</p>
-            </div>
-          ) : (
-            <div className="divide-y divide-navratri-lightGrey">
-              {events.slice(0, 4).map((event: any) => {
-                const sold = (event.ticketTypes || []).reduce((sum: number, tt: any) => sum + (tt.soldQuantity || 0), 0);
-                const total = (event.ticketTypes || []).reduce((sum: number, tt: any) => sum + (tt.totalInventory || 0), 0);
-                const pct = total > 0 ? (sold / total) * 100 : 0;
-                
+          <div className="p-6 flex-1 space-y-6">
+            {Object.keys(gateStats).length === 0 ? (
+              <p className="text-center text-navratri-muted text-[14px] font-[600] py-10">No gate data available</p>
+            ) : (
+              Object.keys(gateStats).map(gateId => {
+                const gate = gateStats[gateId];
+                const pct = gate.total > 0 ? ((gate.checkedIn / gate.total) * 100).toFixed(1) : 0;
                 return (
-                  <div key={event.id} className="p-6 hover:bg-slate-50/50 transition-colors">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h4 className="font-[800] text-navratri-text line-clamp-1 text-[16px]">{event.title}</h4>
-                        <p className="text-[12px] text-navratri-muted mt-1 font-[600] flex items-center gap-1.5">
-                          <CalendarDays className="w-3.5 h-3.5" />
-                          {new Date(event.startDate).toLocaleDateString()} • {event.venue}
-                        </p>
-                      </div>
-                      <span className={`px-3 py-1.5 rounded-[8px] text-[10px] font-[800] uppercase tracking-widest shrink-0 border ${event.status === 'published' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-slate-50 text-slate-500 border-slate-200'}`}>
-                        {event.status}
-                      </span>
+                  <div key={gateId} className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <p className="font-[800] text-[14px] text-navratri-text">{gate.name}</p>
+                      <p className="text-[12px] font-[800] text-navratri-muted"><AnimatedNumber value={gate.checkedIn} /> / {gate.total}</p>
                     </div>
-                    <div className="space-y-2 bg-slate-50 p-3 rounded-[12px] border border-slate-100">
-                      <div className="flex justify-between text-[11px] font-[800] uppercase tracking-widest">
-                        <span className="text-navratri-muted">Tickets Sold</span>
-                        <span className="text-navratri-primary">{sold} / {total}</span>
-                      </div>
-                      <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-premium" style={{ width: `${pct}%` }}></div>
-                      </div>
+                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <motion.div 
+                        className="h-full bg-navratri-secondary"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${pct}%` }}
+                        transition={{ duration: 0.5 }}
+                      />
                     </div>
                   </div>
                 );
-              })}
-            </div>
-          )}
+              })
+            )}
+          </div>
         </div>
 
+        {/* Recent Check-ins */}
+        <div className="lg:col-span-2 card-base overflow-hidden flex flex-col h-[500px]">
+          <div className="p-6 border-b border-navratri-lightGrey bg-slate-50/50 flex justify-between items-center">
+            <h3 className="text-[20px] font-display font-[800] text-navratri-text">Recent Check-ins (Live)</h3>
+            <span className="flex h-3 w-3 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+          </div>
+          <div className="flex-1 overflow-auto p-0">
+            {checkins.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full text-navratri-muted">
+                <CheckCircle2 className="w-8 h-8 mb-2 opacity-50 text-navratri-primary" />
+                <p className="text-[14px] font-[600] uppercase tracking-widest">Waiting for scans...</p>
+              </div>
+            ) : (
+              <table className="w-full text-left">
+                <thead className="sticky top-0 bg-white/95 backdrop-blur-sm z-10 border-b border-navratri-lightGrey">
+                  <tr className="text-navratri-muted font-[800] text-[10px] uppercase tracking-widest">
+                    <th className="px-6 py-4">Customer</th>
+                    <th className="px-6 py-4">Ticket Type</th>
+                    <th className="px-6 py-4">Gate</th>
+                    <th className="px-6 py-4">Time</th>
+                    <th className="px-6 py-4 text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-navratri-lightGrey text-[14px]">
+                  <AnimatePresence>
+                    {checkins.map((checkin) => (
+                      <motion.tr 
+                        key={checkin.id}
+                        initial={{ opacity: 0, backgroundColor: '#f0fdf4' }}
+                        animate={{ opacity: 1, backgroundColor: '#ffffff' }}
+                        transition={{ duration: 1 }}
+                        className="hover:bg-slate-50/50 transition-colors"
+                      >
+                        <td className="px-6 py-4">
+                          <p className="font-[800] text-navratri-text flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-green-500" />
+                            {checkin.customerName}
+                          </p>
+                          <p className="text-[11px] text-navratri-muted font-mono mt-0.5 ml-6">{checkin.ticketId}</p>
+                        </td>
+                        <td className="px-6 py-4 font-[700] text-navratri-text">{checkin.ticketType}</td>
+                        <td className="px-6 py-4">
+                          <span className="px-2.5 py-1 rounded-[6px] text-[10px] font-[800] uppercase tracking-widest bg-slate-100 text-slate-600">
+                            {checkin.gateName}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 font-[600] text-navratri-muted">
+                          {new Date(checkin.scannedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                           <span className="px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-[8px] text-[10px] font-[800] uppercase tracking-widest">
+                             Checked In
+                           </span>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </AnimatePresence>
+                </tbody>
+              </table>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
+// Helper components
+function StatCard({ label, value, icon: Icon, color }: { label: string, value: string | number, icon: any, color: string }) {
+  return (
+    <div className="card-base p-6 hover:-translate-y-1 transition-all duration-300">
+      <div className={`w-10 h-10 rounded-[10px] flex items-center justify-center mb-4 border ${color}`}>
+        <Icon className="w-5 h-5" />
+      </div>
+      <div className="font-display font-[800] text-[28px] text-navratri-text tracking-tight mb-1">
+        {typeof value === 'number' ? <AnimatedNumber value={value} /> : value}
+      </div>
+      <p className="text-[11px] font-[800] uppercase tracking-widest text-navratri-muted">{label}</p>
+    </div>
+  );
+}
+
+function AnimatedNumber({ value, className = "" }: { value: number, className?: string }) {
+  const [displayValue, setDisplayValue] = useState(value);
+
+  useEffect(() => {
+    setDisplayValue(value);
+  }, [value]);
+
+  return (
+    <motion.span
+      key={displayValue}
+      initial={{ opacity: 0.5, y: -5 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={className}
+    >
+      {displayValue}
+    </motion.span>
+  );
+}
+
