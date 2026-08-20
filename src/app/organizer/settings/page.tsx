@@ -42,50 +42,50 @@ export default function OrganizerSettings() {
   };
 
   return (
-    <div className="p-6 lg:p-10 max-w-4xl mx-auto space-y-8 pb-20 bg-[#F7F7F8] min-h-screen">
+    <div className="p-6 lg:p-10 max-w-4xl mx-auto space-y-8 pb-20 bg-navratri-bg min-h-screen">
       <div>
-        <h1 className="text-3xl font-[900] tracking-tight text-[#111111]">Settings</h1>
-        <p className="text-gray-500 font-[500] mt-1 text-sm">Manage your organizer account preferences and security.</p>
+        <h1 className="text-[32px] font-display font-bold tracking-tight text-navratri-dark">Settings</h1>
+        <p className="text-navratri-muted font-medium mt-1 text-[15px]">Manage your organizer account preferences and security.</p>
       </div>
 
-      <div className="bg-white rounded-[1.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex items-center gap-3 bg-gray-50/50">
-          <Lock className="w-5 h-5 text-gray-500" />
-          <h2 className="text-lg font-[800] text-[#111111]">Security & Password</h2>
+      <div className="card-base overflow-hidden">
+        <div className="p-6 border-b border-navratri-border flex items-center gap-3 bg-navratri-softBg/50">
+          <Lock className="w-5 h-5 text-navratri-muted" />
+          <h2 className="text-lg font-bold text-navratri-dark">Security & Password</h2>
         </div>
         
         <form onSubmit={handlePasswordUpdate} className="p-6 space-y-5">
           <div className="max-w-md space-y-5">
             <div>
-              <label className="block text-xs font-[800] text-gray-500 uppercase tracking-wide mb-2">Current Password</label>
+              <label className="block text-xs font-bold text-navratri-muted uppercase tracking-wide mb-2">Current Password</label>
               <input 
                 type="password" 
                 value={currentPassword}
                 onChange={e => setCurrentPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
+                className="input-field"
                 placeholder="Enter current password"
               />
             </div>
             <div>
-              <label className="block text-xs font-[800] text-gray-500 uppercase tracking-wide mb-2">New Password</label>
+              <label className="block text-xs font-bold text-navratri-muted uppercase tracking-wide mb-2">New Password</label>
               <input 
                 type="password" 
                 value={newPassword}
                 onChange={e => setNewPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
+                className="input-field"
                 placeholder="Enter new password"
               />
             </div>
             <div>
-              <label className="block text-xs font-[800] text-gray-500 uppercase tracking-wide mb-2">Confirm New Password</label>
+              <label className="block text-xs font-bold text-navratri-muted uppercase tracking-wide mb-2">Confirm New Password</label>
               <input 
                 type="password" 
                 value={confirmPassword}
                 onChange={e => setConfirmPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
+                className="input-field"
                 placeholder="Confirm new password"
               />
             </div>
@@ -95,7 +95,7 @@ export default function OrganizerSettings() {
             <button 
               type="submit"
               disabled={updating}
-              className="px-6 py-3 bg-[#111111] text-white font-[800] rounded-xl hover:bg-gray-900 shadow-md transition-all text-sm flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="btn-primary flex items-center gap-2"
             >
               {updating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
               Update Password

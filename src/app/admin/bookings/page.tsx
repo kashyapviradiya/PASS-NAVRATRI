@@ -188,10 +188,10 @@ export default function AdminBookingsPage() {
               key={df}
               onClick={() => setDateFilter(df)}
               aria-label={`Filter by date: ${df}`}
-              className={`px-4 py-2 rounded-[20px] text-[13px] font-[800] uppercase tracking-widest transition-all border ${
+              className={`btn-secondary rounded-full text-[12px] px-4 py-2 font-[800] uppercase tracking-widest ${
                 dateFilter === df
-                  ? 'bg-navratri-primary text-white border-navratri-primary shadow-sm'
-                  : 'bg-white text-navratri-text border-slate-200 hover:border-navratri-primary/50'
+                  ? 'bg-navratri-primary text-white border-navratri-primary hover:bg-navratri-primary hover:text-white'
+                  : ''
               }`}
             >
               {df === 'all' ? 'All Time' : df === 'week' ? 'This Week' : df === 'month' ? 'This Month' : df}
@@ -203,10 +203,10 @@ export default function AdminBookingsPage() {
           onClick={() => setVipOnly(!vipOnly)}
           aria-pressed={vipOnly}
           aria-label="Toggle VIP Only Filter"
-          className={`flex items-center gap-2 px-4 py-2 rounded-[20px] text-[13px] font-[800] uppercase tracking-widest transition-all border ${
+          className={`btn-secondary rounded-full text-[12px] px-4 py-2 font-[800] uppercase tracking-widest flex items-center gap-2 ${
             vipOnly
-              ? 'bg-purple-600 text-white border-purple-600 shadow-sm'
-              : 'bg-white text-slate-600 border-slate-200 hover:border-purple-300'
+              ? 'bg-purple-600 text-white border-purple-600 hover:bg-purple-600 hover:text-white'
+              : 'hover:border-purple-300'
           }`}
         >
           <span className={`w-2 h-2 rounded-full ${vipOnly ? 'bg-white' : 'bg-purple-600'}`}></span>
@@ -285,41 +285,53 @@ export default function AdminBookingsPage() {
         ) : (
           <>
             <div className="overflow-x-auto">
-              <table role="table" className="w-full text-left border-collapse">
-                <thead role="rowgroup">
-                  <tr role="row" className="bg-slate-50/50 border-b border-slate-100 text-[11px] font-[800] text-slate-400 uppercase tracking-wider">
-                    <th role="columnheader" className="px-6 py-5">Booking ID & Date</th>
-                    <th role="columnheader" className="px-6 py-5">Customer</th>
-                    <th role="columnheader" className="px-6 py-5">Event</th>
-                    <th role="columnheader" className="px-6 py-5">Tickets (Stats)</th>
-                    <th role="columnheader" className="px-6 py-5">Amount</th>
-                    <th role="columnheader" className="px-6 py-5">Status</th>
-                    <th role="columnheader" className="px-6 py-5"></th>
+              <table role="table" className="w-full text-left border-collapse block md:table">
+                <thead role="rowgroup" className="hidden md:table-header-group">
+                  <tr role="row" className="bg-slate-50/50 border-b border-slate-100">
+                    <th role="columnheader" className="table-header">Booking ID & Date</th>
+                    <th role="columnheader" className="table-header">Customer</th>
+                    <th role="columnheader" className="table-header">Event</th>
+                    <th role="columnheader" className="table-header">Tickets (Stats)</th>
+                    <th role="columnheader" className="table-header">Amount</th>
+                    <th role="columnheader" className="table-header">Status</th>
+                    <th role="columnheader" className="table-header"></th>
                   </tr>
                 </thead>
-                <tbody role="rowgroup" className="divide-y divide-navratri-lightGrey">
+                <tbody role="rowgroup" className="block md:table-row-group divide-y divide-navratri-lightGrey">
                   {paginatedBookings.map((booking: any) => (
                     <tr 
                       role="row"
                       key={booking.id} 
                       onClick={() => router.push(`/admin/bookings/${booking.id}`)}
-                      className="hover:bg-slate-50/40 cursor-pointer transition-all duration-200 group/row"
+                      className="hover:bg-slate-50/40 cursor-pointer transition-all duration-200 group/row block md:table-row border border-slate-100 md:border-none rounded-[16px] md:rounded-none m-4 md:m-0 bg-white"
                     >
-                      <td role="cell" className="px-6 py-5">
-                        <p className="font-[800] text-navratri-text font-mono text-[14px]">{booking.id}</p>
-                        <p className="text-[12px] text-navratri-muted font-[600] mt-1">{formatDate(booking.createdAt)}</p>
-                        {booking.demo && <span className="inline-block mt-1.5 px-2.5 py-1 bg-yellow-50 text-yellow-700 text-[10px] font-[800] rounded-[6px] border border-yellow-200 tracking-widest uppercase">DEMO</span>}
+                      <td role="cell" className="table-cell block md:table-cell p-4 md:p-0 border-b border-slate-50 md:border-none">
+                        <div className="flex justify-between items-start md:block">
+                          <div>
+                            <p className="font-[800] text-navratri-text font-mono text-[14px]">{booking.id}</p>
+                            <p className="text-[12px] text-navratri-muted font-[600] mt-1">{formatDate(booking.createdAt)}</p>
+                          </div>
+                          <div className="md:hidden">
+                            {booking.demo && <span className="inline-block px-2.5 py-1 bg-yellow-50 text-yellow-700 text-[10px] font-[800] rounded-[6px] border border-yellow-200 tracking-widest uppercase">DEMO</span>}
+                          </div>
+                        </div>
+                        <div className="hidden md:block">
+                          {booking.demo && <span className="inline-block mt-1.5 px-2.5 py-1 bg-yellow-50 text-yellow-700 text-[10px] font-[800] rounded-[6px] border border-yellow-200 tracking-widest uppercase">DEMO</span>}
+                        </div>
                       </td>
-                      <td role="cell" className="px-6 py-5">
+                      <td role="cell" className="table-cell block md:table-cell p-4 md:p-0 border-b border-slate-50 md:border-none">
+                        <p className="text-[11px] font-[800] text-slate-400 uppercase tracking-wider md:hidden mb-1">Customer</p>
                         <p className="font-[800] text-navratri-text text-[15px]">{booking.customerName}</p>
                         <p className="text-[13px] text-navratri-muted font-[600] mt-1">{booking.mobile}</p>
                       </td>
-                      <td role="cell" className="px-6 py-5">
+                      <td role="cell" className="table-cell block md:table-cell p-4 md:p-0 border-b border-slate-50 md:border-none">
+                        <p className="text-[11px] font-[800] text-slate-400 uppercase tracking-wider md:hidden mb-1">Event</p>
                         <p className="font-[700] text-navratri-text text-[14px] max-w-[200px] truncate">
                           {events.find(e => e.id === booking.eventId)?.title || booking.eventId}
                         </p>
                       </td>
-                      <td role="cell" className="px-6 py-5">
+                      <td role="cell" className="table-cell block md:table-cell p-4 md:p-0 border-b border-slate-50 md:border-none">
+                        <p className="text-[11px] font-[800] text-slate-400 uppercase tracking-wider md:hidden mb-1">Tickets</p>
                         <div className="flex items-center gap-2 mb-2">
                           <div className="inline-flex items-center justify-center w-7 h-7 rounded-[8px] bg-slate-100 text-slate-700 font-[800] text-[12px] border border-slate-200" title="Total Tickets">
                             {booking.stats?.total || booking.ticketCount || 0}
@@ -333,11 +345,13 @@ export default function AdminBookingsPage() {
                            )}
                         </div>
                       </td>
-                      <td role="cell" className="px-6 py-5 font-[800] text-navratri-text text-[15px]">
+                      <td role="cell" className="table-cell block md:table-cell p-4 md:p-0 border-b border-slate-50 md:border-none font-[800] text-navratri-text text-[15px]">
+                        <p className="text-[11px] font-[800] text-slate-400 uppercase tracking-wider md:hidden mb-1">Amount</p>
                         {formatCurrency(booking.amount || booking.totalAmount || booking.grandTotal || 0)}
                       </td>
-                      <td role="cell" className="px-6 py-5 space-y-2.5">
-                        <div>
+                      <td role="cell" className="table-cell block md:table-cell p-4 md:p-0 border-b border-slate-50 md:border-none space-y-2.5">
+                        <p className="text-[11px] font-[800] text-slate-400 uppercase tracking-wider md:hidden mb-1">Status</p>
+                        <div className="flex flex-wrap gap-2">
                           {booking.paymentStatus === 'paid' ? (
                             <span className="inline-flex items-center gap-1.5 text-[11px] font-[800] tracking-widest uppercase text-emerald-700 bg-emerald-50/80 px-3 py-1.5 rounded-full border border-emerald-100/50 backdrop-blur-sm"><CheckCircle2 className="w-3.5 h-3.5"/> Paid</span>
                           ) : booking.paymentStatus === 'pending' ? (
@@ -345,8 +359,6 @@ export default function AdminBookingsPage() {
                           ) : (
                             <span className="inline-flex items-center gap-1.5 text-[11px] font-[800] tracking-widest uppercase text-red-700 bg-red-50/80 px-3 py-1.5 rounded-full border border-red-100/50 backdrop-blur-sm"><XCircle className="w-3.5 h-3.5"/> Failed</span>
                           )}
-                        </div>
-                        <div>
                           {(booking.status === 'confirmed' || !booking.status) ? (
                             <span className="inline-flex items-center gap-1.5 text-[11px] font-[800] tracking-widest uppercase text-blue-700 bg-blue-50/80 px-3 py-1.5 rounded-full border border-blue-100/50 backdrop-blur-sm">Confirmed</span>
                           ) : (
@@ -354,7 +366,7 @@ export default function AdminBookingsPage() {
                           )}
                         </div>
                       </td>
-                      <td role="cell" className="px-6 py-5 text-right">
+                      <td role="cell" className="table-cell hidden md:table-cell p-4 md:p-0 text-right">
                         <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shadow-sm group-hover/row:border-navratri-primary group-hover/row:bg-navratri-primary/5 transition-all ml-auto">
                           <ChevronRight className="w-4 h-4 text-slate-400 group-hover/row:text-navratri-primary transition-colors" />
                         </div>

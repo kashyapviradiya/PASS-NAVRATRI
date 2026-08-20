@@ -10,13 +10,29 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: false, message: 'Missing booking ID' }, { status: 400 });
     }
 
-    const ordersSnap = await adminDb.collection('orders').where('bookingId', '==', bookingId).get();
-    if (ordersSnap.empty) {
+    // The ID could be the document ID, 'id' field, or 'bookingId' field depending on demo vs real flow
+    let orderDoc: any = null;
+    
+    const docRef = await adminDb.collection('orders').doc(bookingId).get();
+    if (docRef.exists) {
+      orderDoc = docRef;
+    } else {
+      const byIdSnap = await adminDb.collection('orders').where('id', '==', bookingId).get();
+      if (!byIdSnap.empty) {
+        orderDoc = byIdSnap.docs[0];
+      } else {
+        const byBookingIdSnap = await adminDb.collection('orders').where('bookingId', '==', bookingId).get();
+        if (!byBookingIdSnap.empty) {
+          orderDoc = byBookingIdSnap.docs[0];
+        }
+      }
+    }
+
+    if (!orderDoc) {
       return NextResponse.json({ success: false, message: 'Booking not found' }, { status: 404 });
     }
 
-    const orderDoc = ordersSnap.docs[0];
-    const orderData = orderDoc.data();
+    const orderData = orderDoc.data()!;
 
     // Fetch event for banner image and venue details
     const eventDoc = await adminDb.collection('events').doc(orderData.eventId).get();

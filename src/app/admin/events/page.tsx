@@ -107,7 +107,7 @@ export default function AdminEventsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {events.map((event) => (
-            <div key={event.id} className="bg-white rounded-[24px] border border-slate-100 overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 group flex flex-col hover:-translate-y-1.5">
+            <div key={event.id} className="card-base p-0 overflow-hidden group flex flex-col hover:-translate-y-1.5 transition-all duration-300">
               <div className="h-56 bg-slate-100 relative overflow-hidden">
                 {event.bannerImage ? (
                   <img src={event.bannerImage} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
@@ -116,9 +116,9 @@ export default function AdminEventsPage() {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent pointer-events-none"></div>
                 <div className="absolute top-4 right-4">
-                  <span className={`px-4 py-1.5 rounded-full text-[10px] font-[800] uppercase tracking-widest backdrop-blur-md border ${
-                    event.status === 'published' ? 'bg-green-500/20 text-green-300 border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.3)]' :
-                    event.status === 'sold_out' ? 'bg-orange-500/20 text-orange-300 border-orange-500/30 shadow-[0_0_15px_rgba(249,115,22,0.3)]' :
+                  <span className={`px-3 py-1 rounded-full text-[11px] font-[800] uppercase tracking-widest backdrop-blur-md border ${
+                    event.status === 'published' ? 'badge-success shadow-[0_0_15px_rgba(34,197,94,0.3)]' :
+                    event.status === 'sold_out' ? 'badge-warning shadow-[0_0_15px_rgba(249,115,22,0.3)]' :
                     'bg-white/20 text-white border-white/30'
                   }`}>
                     {event.status}
@@ -153,17 +153,17 @@ export default function AdminEventsPage() {
                   </button>
                   <div className="flex items-center gap-1">
                     {event.status === 'published' && (
-                      <Link href={`/events/${event.id}`} target="_blank" className="p-2.5 text-slate-400 hover:text-navratri-primary hover:bg-navratri-primary/5 rounded-[12px] transition-colors border border-transparent hover:border-navratri-primary/20" title="View Public Page">
+                      <Link href={`/events/${event.id}`} target="_blank" className="btn-icon" title="View Public Page">
                         <ExternalLink className="w-4 h-4" />
                       </Link>
                     )}
-                    <Link href={`/admin/events/${event.id}`} className="p-2.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-[12px] transition-colors border border-transparent hover:border-blue-200" title="Event Analytics">
+                    <Link href={`/admin/events/${event.id}`} className="btn-icon" title="Event Analytics">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                     </Link>
-                    <Link href={`/admin/events/${event.id}/edit`} className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-[12px] transition-colors border border-transparent hover:border-indigo-200" title="Edit Event">
+                    <Link href={`/admin/events/${event.id}/edit`} className="btn-icon" title="Edit Event">
                       <Edit2 className="w-4 h-4" />
                     </Link>
-                    <button onClick={() => handleDelete(event.id)} className="p-2.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-[12px] transition-colors border border-transparent hover:border-red-200" title="Delete Event">
+                    <button onClick={() => handleDelete(event.id)} className="btn-icon hover:text-red-600 hover:bg-red-50 hover:border-red-200" title="Delete Event">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>

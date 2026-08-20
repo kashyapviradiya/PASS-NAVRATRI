@@ -65,6 +65,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     try {
+      if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY === 'mock-api-key' || process.env.NEXT_PUBLIC_DEMO_MODE === 'true') {
+        // Mock login for demo environment
+        toast.success('Demo login successful!');
+        const mockUser = {
+          uid: 'demo-user-123',
+          displayName: 'Demo User',
+          email: 'demo@example.com',
+          photoURL: null,
+          getIdToken: async () => 'mock-token-123',
+        } as unknown as User;
+        setUser(mockUser);
+        return;
+      }
+
       const provider = new GoogleAuthProvider();
       // Ensure we prompt for select_account if needed
       provider.setCustomParameters({
@@ -76,6 +90,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Google Sign-In Error:', error);
       if (error.code === 'auth/popup-closed-by-user') {
         toast.error('Login cancelled');
+      } else if (error.code === 'auth/invalid-api-key') {
+        toast.error('Invalid API Key setup in .env');
       } else if (error.code === 'auth/network-request-failed') {
         toast.error('Network error. Please try again.');
       } else {

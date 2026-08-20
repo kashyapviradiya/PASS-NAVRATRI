@@ -36,8 +36,9 @@ export default function PaymentProcessing() {
         }
 
         // Convert passes format for verify-payment API
-        const passTypes = orderData.event.ticketTypes || [];
-        const formattedPasses = Object.entries(orderData.passes).map(([passId, qty]) => {
+        const passTypes = orderData.event.ticketTypes || orderData.event.passes || [];
+        const selectedPasses = orderData.ticketTypes || orderData.passes || {};
+        const formattedPasses = Object.entries(selectedPasses).map(([passId, qty]) => {
           const passInfo = passTypes.find((p: any) => p.id === passId);
           return {
             passTypeId: passId,
@@ -87,7 +88,7 @@ export default function PaymentProcessing() {
           amount: orderData.amount
         }));
 
-        router.push('/booking-success');
+        router.push(`/booking-success/${verifyData.order.id}`);
 
       } catch (error: any) {
         console.error('Payment processing failed:', error);
@@ -100,42 +101,25 @@ export default function PaymentProcessing() {
   }, [router]);
 
   return (
-    <div className="bg-navratri-bg min-h-screen flex items-center justify-center p-4 font-sans selection:bg-navratri-primary selection:text-white">
-      <div 
-        className="max-w-md w-full bg-white rounded-[24px] p-8 md:p-12 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 animate-scale-in"
-      >
+    <div className="bg-navratri-bg min-h-screen flex items-center justify-center p-4 font-sans">
+      <div className="max-w-md w-full text-center">
         
-        <div className="mb-8 relative w-20 h-20 mx-auto">
+        <div className="mb-8 relative w-24 h-24 mx-auto">
           <div className="absolute inset-0 bg-navratri-primary/10 rounded-full animate-ping"></div>
-          <div className="absolute inset-0 bg-navratri-softBg rounded-full flex items-center justify-center border border-navratri-border">
+          <div className="absolute inset-0 bg-white rounded-full flex items-center justify-center shadow-sm">
             <Loader2 className="w-10 h-10 text-navratri-primary animate-spin" />
           </div>
         </div>
 
-        <h2 className="text-2xl font-[800] text-[#111111] mb-3 tracking-tight">Processing Payment</h2>
-        <p className="text-[#6B7280] font-[500] mb-8 leading-relaxed">
-          Please wait while we secure your transaction. Do not refresh or close this page.
+        <h2 className="text-3xl font-display font-bold text-navratri-text mb-4 tracking-tight">Processing your payment...</h2>
+        <p className="text-lg text-navratri-muted mb-8">
+          Please do not close this page or press back.
         </p>
 
-        <div className="flex flex-col items-center gap-3 p-4 bg-green-50/50 rounded-2xl border border-green-100">
-          <div className="flex items-center gap-2 text-green-600 font-[800] text-sm tracking-wide">
-            <Lock className="w-4 h-4" /> SECURE 256-BIT ENCRYPTION
-          </div>
+        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-navratri-border shadow-sm mb-12">
+          <Lock className="w-4 h-4 text-navratri-gold" />
+          <span className="text-sm font-medium text-navratri-text">Secure 256-bit Encryption</span>
         </div>
-
-        <div className="mt-8 pt-8 border-t border-gray-100">
-          <p className="text-[10px] font-[800] text-gray-400 uppercase tracking-widest mb-4">Supported Partners</p>
-          <div className="flex justify-center items-center gap-4 opacity-50 grayscale">
-            <div className="font-[800] text-sm">UPI</div>
-            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-            <div className="font-[800] text-sm">VISA</div>
-            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-            <div className="font-[800] text-sm">Mastercard</div>
-            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-            <div className="font-[800] text-sm">RuPay</div>
-          </div>
-        </div>
-
       </div>
     </div>
   );

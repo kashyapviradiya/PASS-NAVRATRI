@@ -44,20 +44,20 @@ export default function OrganizerLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-navratri-bg flex items-center justify-center p-4 font-sans relative overflow-hidden selection:bg-navratri-accent selection:text-white">
+    <div className="min-h-screen bg-navratri-bg flex items-center justify-center p-4 font-sans relative overflow-hidden selection:bg-navratri-primary/20 selection:text-navratri-dark">
       {/* Decorative background elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-navratri-accent/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-navratri-accent/5 rounded-full blur-3xl"></div>
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-navratri-primary/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-navratri-primary/5 rounded-full blur-3xl"></div>
       
       <div className="w-full max-w-md relative z-10">
-        <div className="bg-white rounded-card shadow-sm border border-navratri-lightGrey p-8 sm:p-12">
+        <div className="card-base p-8 sm:p-12">
           
           <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-navratri-bg border border-navratri-lightGrey rounded-[16px] flex items-center justify-center mx-auto mb-6 relative overflow-hidden p-3">
+            <div className="w-20 h-20 bg-navratri-bg border border-navratri-border rounded-[16px] flex items-center justify-center mx-auto mb-6 relative overflow-hidden p-3">
               <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-full w-auto object-contain relative z-10" />
             </div>
-            <h1 className="text-[28px] font-display font-[700] text-navratri-text tracking-tight mb-2">Organizer Portal</h1>
-            <p className="text-navratri-muted font-[500] text-[15px]">Sign in to manage your events</p>
+            <h1 className="text-[28px] font-display font-bold text-navratri-dark tracking-tight mb-2">Organizer Portal</h1>
+            <p className="text-navratri-muted font-medium text-[15px]">Sign in to manage your events</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -69,7 +69,7 @@ export default function OrganizerLogin() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Organizer Email" 
-                  className="w-full pl-12 pr-4 py-4 bg-navratri-bg border border-navratri-lightGrey rounded-[14px] focus:outline-none focus:ring-1 focus:ring-navratri-accent focus:border-navratri-accent font-[500] text-navratri-text transition-all placeholder:text-navratri-muted text-[15px]"
+                  className="input-field pl-12"
                   required
                 />
               </div>
@@ -82,7 +82,7 @@ export default function OrganizerLogin() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password" 
-                  className="w-full pl-12 pr-4 py-4 bg-navratri-bg border border-navratri-lightGrey rounded-[14px] focus:outline-none focus:ring-1 focus:ring-navratri-accent focus:border-navratri-accent font-[500] text-navratri-text transition-all placeholder:text-navratri-muted text-[15px]"
+                  className="input-field pl-12"
                   required
                 />
               </div>
@@ -91,7 +91,7 @@ export default function OrganizerLogin() {
             <button 
               type="submit"
               disabled={loading}
-              className="w-full bg-navratri-accent text-white font-[700] py-4 rounded-button flex items-center justify-center gap-2 hover:bg-navratri-darkAccent hover:-translate-y-0.5 shadow-sm transition-all text-[15px] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 mt-6"
+              className="w-full btn-primary mt-6"
             >
               {loading ? (
                 <><Loader2 className="w-5 h-5 animate-spin" /> Authenticating...</>
@@ -101,7 +101,7 @@ export default function OrganizerLogin() {
             </button>
           </form>
 
-          <div className="mt-8 text-center text-[12px] text-navratri-muted font-[600]">
+          <div className="mt-8 text-center text-[12px] text-navratri-muted font-semibold">
             <p>&copy; {new Date().getFullYear()} RaasPass</p>
           </div>
         </div>

@@ -18,6 +18,20 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({ success: true, event: eventData });
     } else {
+      let firestoreEvents: any[] = [];
+      try {
+        const snapshot = await adminDb.collection('events')
+          .where('status', 'in', ['published', 'sold_out'])
+          .get();
+        
+        firestoreEvents = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return { id: doc.id, ...data };
+        });
+      } catch (e) {
+        console.error("Failed to fetch firestore events", e);
+      }
+
       const mockEvents = [
         {
           id: 'demo-sachi',
@@ -82,7 +96,7 @@ export async function GET(request: NextRequest) {
         }
       ];
 
-      return NextResponse.json({ success: true, events: mockEvents });
+      return NextResponse.json({ success: true, events: [...firestoreEvents, ...mockEvents] });
     }
   } catch (error: any) {
     console.error('Fetch events error:', error);

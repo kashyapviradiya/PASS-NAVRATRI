@@ -12,7 +12,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-[calc(100vh-50px)] flex items-center justify-center bg-gray-50">
+      <div className="min-h-[calc(100vh-50px)] flex items-center justify-center bg-navratri-bg">
         <Loader2 className="w-8 h-8 animate-spin text-navratri-primary" />
       </div>
     );
@@ -20,16 +20,16 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="min-h-[calc(100vh-50px)] pt-24 pb-12 flex items-center justify-center bg-gray-50 px-4">
-        <div className="w-full max-w-md bg-white p-8 rounded-card border border-gray-100 shadow-sm text-center">
-          <div className="w-24 h-24 bg-navratri-bg border border-navratri-lightGrey rounded-full flex items-center justify-center mx-auto mb-6 p-4">
+      <div className="min-h-[calc(100vh-50px)] pt-24 pb-12 flex items-center justify-center bg-navratri-bg px-4">
+        <div className="w-full max-w-md card-base p-8 text-center">
+          <div className="w-24 h-24 bg-navratri-softBg rounded-full flex items-center justify-center mx-auto mb-6 p-4">
             <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="w-full h-auto object-contain" />
           </div>
-          <h1 className="text-2xl font-[800] text-gray-900 mb-2">Welcome to RaasPass</h1>
-          <p className="text-sm text-gray-500 font-medium mb-8">Sign in to book tickets and manage your passes effortlessly.</p>
+          <h1 className="text-2xl font-[800] text-navratri-dark mb-2">Welcome to RaasPass</h1>
+          <p className="text-sm text-navratri-muted font-medium mb-8">Sign in to book tickets and manage your passes effortlessly.</p>
           <button 
             onClick={signInWithGoogle}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-[700] py-3.5 rounded-[12px] transition-colors active:scale-95 shadow-sm"
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-navratri-dark hover:bg-navratri-softBg font-[700] py-3.5 rounded-[12px] transition-colors active:scale-95 shadow-sm"
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -45,67 +45,59 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-50px)] bg-gray-50 pt-20 pb-24 font-sans px-4">
+    <div className="min-h-[calc(100vh-50px)] bg-navratri-bg pt-20 pb-24 font-sans px-4">
       <div className="max-w-xl mx-auto space-y-6">
         
         {/* Profile Card */}
-        <div className="bg-white rounded-card p-6 border border-gray-100 shadow-sm flex items-center gap-5">
-          <div className="w-16 h-16 rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex-shrink-0">
+        <div className="card-base p-8 text-center flex flex-col items-center justify-center">
+          <div className="w-24 h-24 rounded-full overflow-hidden bg-navratri-softBg flex-shrink-0 mb-4 ring-4 ring-white shadow-sm">
             {user.photoURL ? (
               <img src={user.photoURL} alt={user.displayName || 'Profile'} className="w-full h-full object-cover" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-400 font-bold text-xl">
+              <div className="w-full h-full flex items-center justify-center text-navratri-muted font-bold text-3xl">
                 {user.email?.charAt(0).toUpperCase()}
               </div>
             )}
           </div>
-          <div className="flex-1 min-w-0">
-            <h2 className="text-lg font-[800] text-gray-900 truncate">{user.displayName || 'RaasPass User'}</h2>
-            <p className="text-sm text-gray-500 font-medium truncate">{user.email}</p>
-          </div>
+          <h2 className="text-xl font-[800] text-navratri-dark mb-1">{user.displayName || 'RaasPass User'}</h2>
+          <p className="text-sm text-navratri-muted font-medium">{user.email}</p>
         </div>
 
-        {/* Quick Actions */}
-        <div className="bg-white rounded-card border border-gray-100 shadow-sm overflow-hidden">
-          <Link href="/my-tickets" className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors border-b border-gray-50">
-            <div className="w-10 h-10 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center">
+        {/* Action Links */}
+        <div className="card-base overflow-hidden p-0">
+          <Link href="/my-tickets" className="flex items-center gap-4 p-5 hover:bg-navratri-softBg transition-colors border-b border-gray-100/50 group">
+            <div className="w-10 h-10 bg-navratri-softBg group-hover:bg-white text-navratri-primary rounded-full flex items-center justify-center transition-colors">
               <Ticket className="w-5 h-5" />
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-[700] text-gray-900">My Tickets</h3>
-              <p className="text-xs text-gray-500 font-medium">View and manage your bookings</p>
+              <h3 className="text-[15px] font-[700] text-navratri-dark">My Tickets</h3>
+              <p className="text-[13px] text-navratri-muted font-medium">View and manage your bookings</p>
             </div>
           </Link>
 
-          <Link href="/events" className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors border-b border-gray-50">
-            <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
-              <CalendarDays className="w-5 h-5" />
-            </div>
-            <div className="flex-1">
-              <h3 className="text-sm font-[700] text-gray-900">Explore Events</h3>
-              <p className="text-xs text-gray-500 font-medium">Discover new events to attend</p>
-            </div>
-          </Link>
-
-          <Link href="/contact" className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors">
-            <div className="w-10 h-10 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center">
+          <Link href="/contact" className="flex items-center gap-4 p-5 hover:bg-navratri-softBg transition-colors border-b border-gray-100/50 group">
+            <div className="w-10 h-10 bg-navratri-softBg group-hover:bg-white text-orange-500 rounded-full flex items-center justify-center transition-colors">
               <HelpCircle className="w-5 h-5" />
             </div>
             <div className="flex-1">
-              <h3 className="text-sm font-[700] text-gray-900">Help & Support</h3>
-              <p className="text-xs text-gray-500 font-medium">Contact organizer or support</p>
+              <h3 className="text-[15px] font-[700] text-navratri-dark">Help & Support</h3>
+              <p className="text-[13px] text-navratri-muted font-medium">Contact organizer or support</p>
             </div>
           </Link>
-        </div>
 
-        {/* Logout Button */}
-        <button 
-          onClick={signOut}
-          className="w-full flex items-center justify-center gap-2 text-red-600 bg-red-50 hover:bg-red-100 border border-red-100 font-[700] py-3.5 rounded-card transition-colors shadow-sm"
-        >
-          <LogOut className="w-4 h-4" />
-          Sign Out
-        </button>
+          <button 
+            onClick={signOut}
+            className="w-full flex items-center gap-4 p-5 hover:bg-navratri-softBg transition-colors text-left group"
+          >
+            <div className="w-10 h-10 bg-navratri-softBg group-hover:bg-white text-red-500 rounded-full flex items-center justify-center transition-colors">
+              <LogOut className="w-5 h-5" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-[15px] font-[700] text-red-600">Sign Out</h3>
+              <p className="text-[13px] text-navratri-muted font-medium">Log out of your account</p>
+            </div>
+          </button>
+        </div>
 
       </div>
     </div>

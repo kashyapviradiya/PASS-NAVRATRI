@@ -215,7 +215,7 @@ export default function ScannerDashboard() {
           initial={{ opacity: 0, scale: 0.95 }} 
           animate={{ opacity: 1, scale: 1 }} 
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-emerald-600 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white"
+          className="fixed inset-0 bg-green-500 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white"
         >
           <motion.div 
             initial={{ scale: 0.9 }} animate={{ scale: 1 }} transition={{ duration: 0.2 }}
@@ -228,35 +228,35 @@ export default function ScannerDashboard() {
           
           <motion.div 
             initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1, duration: 0.2 }}
-            className="bg-white/10 backdrop-blur-md rounded-[24px] p-6 w-full max-w-sm space-y-4 text-left border border-white/25 shadow-premium"
+            className="bg-black/20 backdrop-blur-md rounded-[24px] p-6 w-full max-w-sm space-y-4 text-left border border-white/25 shadow-2xl"
           >
             <div>
-              <p className="text-green-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Customer Name</p>
+              <p className="text-white/70 text-[11px] font-[800] uppercase tracking-widest mb-1">Customer Name</p>
               <p className="font-display font-[800] text-[24px]">{scanResult.ticket?.customerName}</p>
             </div>
             <div>
-              <p className="text-green-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Pass Type</p>
+              <p className="text-white/70 text-[11px] font-[800] uppercase tracking-widest mb-1">Pass Type</p>
               <p className="font-display font-[800] text-[20px]">{scanResult.ticket?.ticketType}</p>
             </div>
             <div className="flex justify-between pt-4 border-t border-white/20">
               <div>
-                <p className="text-green-100 text-[10px] font-[800] uppercase tracking-widest mb-1">Booking ID</p>
+                <p className="text-white/70 text-[10px] font-[800] uppercase tracking-widest mb-1">Booking ID</p>
                 <p className="font-mono font-[800] text-[16px]">{scanResult.ticket?.bookingId}</p>
               </div>
               <div className="text-right">
-                <p className="text-green-100 text-[10px] font-[800] uppercase tracking-widest mb-1">Gate</p>
+                <p className="text-white/70 text-[10px] font-[800] uppercase tracking-widest mb-1">Gate</p>
                 <p className="font-[800] text-[16px]">{selectedGate}</p>
               </div>
             </div>
             <div>
-                <p className="text-green-100 text-[10px] font-[800] uppercase tracking-widest mb-1 mt-2">Scan Time</p>
+                <p className="text-white/70 text-[10px] font-[800] uppercase tracking-widest mb-1 mt-2">Scan Time</p>
                 <p className="font-[500] text-[14px]">{new Date().toLocaleTimeString()}</p>
             </div>
           </motion.div>
           
           <motion.button 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-            onClick={dismissResult} className="mt-12 bg-white text-emerald-600 px-10 py-4 rounded-button font-[800] text-[16px] shadow-premium hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm"
+            onClick={dismissResult} className="mt-12 bg-white text-green-600 px-10 py-4 rounded-xl font-[800] text-[16px] shadow-lg hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm"
           >
             Scan Next Pass
           </motion.button>
@@ -266,25 +266,25 @@ export default function ScannerDashboard() {
 
     if (scanResult.status === 'used') {
       return (
-        <div className="fixed inset-0 bg-[#FF4D6D] z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
+        <div className="fixed inset-0 bg-red-500 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
           <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_24px_rgba(255,255,255,0.2)]">
             <XCircle className="w-16 h-16 text-white" />
           </div>
           <h1 className="text-[40px] font-display font-[850] tracking-tight mb-2">Ticket Already Used</h1>
           <p className="text-[18px] font-[500] opacity-90 mb-10">This pass has already been scanned.</p>
           
-          <div className="bg-white/10 backdrop-blur-md rounded-[24px] p-6 w-full max-w-sm space-y-4 text-left border border-white/25 shadow-premium">
+          <div className="bg-black/20 backdrop-blur-md rounded-[24px] p-6 w-full max-w-sm space-y-4 text-left border border-white/25 shadow-2xl">
             <div>
-              <p className="text-pink-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Customer</p>
+              <p className="text-white/70 text-[11px] font-[800] uppercase tracking-widest mb-1">Customer</p>
               <p className="font-display font-[800] text-[24px]">{scanResult.ticket?.customerName}</p>
             </div>
             <div>
-              <p className="text-pink-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Booking ID</p>
+              <p className="text-white/70 text-[11px] font-[800] uppercase tracking-widest mb-1">Booking ID</p>
               <p className="font-mono font-[800] text-[20px]">{scanResult.ticket?.bookingId}</p>
             </div>
           </div>
           
-          <button onClick={dismissResult} className="mt-12 bg-white text-[#FF4D6D] px-10 py-4 rounded-button font-[800] text-[16px] shadow-premium hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
+          <button onClick={dismissResult} className="mt-12 bg-white text-red-600 px-10 py-4 rounded-xl font-[800] text-[16px] shadow-lg hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
             Dismiss Alert
           </button>
         </div>
@@ -293,14 +293,14 @@ export default function ScannerDashboard() {
 
     if (scanResult.status === 'wrong_event') {
       return (
-        <div className="fixed inset-0 bg-amber-600 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
+        <div className="fixed inset-0 bg-yellow-500 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
           <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_24px_rgba(255,255,255,0.2)]">
             <AlertTriangle className="w-16 h-16 text-white" />
           </div>
           <h1 className="text-[40px] font-display font-[850] tracking-tight mb-2">Wrong Event</h1>
           <p className="text-[18px] font-[500] opacity-90 mb-10">This pass is not configured for the current event.</p>
           
-          <button onClick={dismissResult} className="mt-12 bg-white text-amber-600 px-10 py-4 rounded-button font-[800] text-[16px] shadow-premium hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
+          <button onClick={dismissResult} className="mt-12 bg-white text-yellow-600 px-10 py-4 rounded-xl font-[800] text-[16px] shadow-lg hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
             Dismiss
           </button>
         </div>
@@ -309,31 +309,31 @@ export default function ScannerDashboard() {
 
     if (scanResult.status === 'wrong_gate') {
       return (
-        <div className="fixed inset-0 bg-orange-600 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
+        <div className="fixed inset-0 bg-yellow-500 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white">
           <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mb-6 shadow-[0_0_24px_rgba(255,255,255,0.2)]">
             <AlertTriangle className="w-16 h-16 text-white" />
           </div>
           <h1 className="text-[40px] font-display font-[850] tracking-tight mb-2">Wrong Gate</h1>
           <p className="text-[18px] font-[500] opacity-90 mb-10">{scanResult.message}</p>
           
-          <div className="bg-white/10 backdrop-blur-md rounded-[24px] p-6 w-full max-w-sm space-y-4 text-left border border-white/25 shadow-premium">
+          <div className="bg-black/20 backdrop-blur-md rounded-[24px] p-6 w-full max-w-sm space-y-4 text-left border border-white/25 shadow-2xl">
             <div>
-              <p className="text-orange-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Customer</p>
+              <p className="text-white/70 text-[11px] font-[800] uppercase tracking-widest mb-1">Customer</p>
               <p className="font-display font-[800] text-[24px]">{scanResult.ticket?.customerName}</p>
             </div>
             <div className="flex justify-between pt-4 border-t border-white/20">
                <div>
-                  <p className="text-orange-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Pass Type</p>
+                  <p className="text-white/70 text-[11px] font-[800] uppercase tracking-widest mb-1">Pass Type</p>
                   <p className="font-display font-[800] text-[16px]">{scanResult.ticket?.ticketType}</p>
                </div>
                <div className="text-right">
-                  <p className="text-orange-100 text-[11px] font-[800] uppercase tracking-widest mb-1">Correct Gate</p>
+                  <p className="text-white/70 text-[11px] font-[800] uppercase tracking-widest mb-1">Correct Gate</p>
                   <p className="font-display font-[800] text-[16px]">{scanResult.ticket?.correctGate || 'N/A'}</p>
                </div>
             </div>
           </div>
           
-          <button onClick={dismissResult} className="mt-12 bg-white text-orange-600 px-10 py-4 rounded-button font-[800] text-[16px] shadow-premium hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
+          <button onClick={dismissResult} className="mt-12 bg-white text-yellow-600 px-10 py-4 rounded-xl font-[800] text-[16px] shadow-lg hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
             Dismiss
           </button>
         </div>
@@ -345,15 +345,15 @@ export default function ScannerDashboard() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }} 
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 bg-rose-700 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white"
+        className="fixed inset-0 bg-red-500 z-50 flex flex-col items-center justify-center p-6 text-white text-center selection:bg-white/20 selection:text-white"
       >
         <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mb-6 border border-white/25">
           <XCircle className="w-16 h-16 text-white" />
         </div>
         <h1 className="text-[40px] font-display font-[850] tracking-tight mb-2 text-white">Invalid Ticket</h1>
-        <p className="text-[18px] font-[500] text-rose-100 mb-10">{scanResult.message || 'This pass is not recognized.'}</p>
+        <p className="text-[18px] font-[500] text-white/90 mb-10">{scanResult.message || 'This pass is not recognized.'}</p>
         
-        <button onClick={dismissResult} className="mt-12 bg-white text-rose-750 px-10 py-4 rounded-button font-[800] text-[16px] shadow-premium hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
+        <button onClick={dismissResult} className="mt-12 bg-white text-red-600 px-10 py-4 rounded-xl font-[800] text-[16px] shadow-lg hover:scale-[1.02] active:scale-95 transition-all w-full max-w-sm">
           Dismiss
         </button>
       </motion.div>
@@ -361,7 +361,7 @@ export default function ScannerDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-navratri-bg flex flex-col w-full selection:bg-navratri-accent selection:text-white">
+    <div className="min-h-screen bg-[#0F172A] flex flex-col w-full selection:bg-[#00E5FF] selection:text-white">
       {/* Dedicated Header */}
       <header className="bg-gradient-to-b from-[#0F172A] to-[#1E1B4B] text-white px-4 py-4 flex flex-col shadow-premium z-10 w-full relative shrink-0 border-b border-white/10">
         <div className="flex items-center justify-between mb-4">
@@ -401,18 +401,18 @@ export default function ScannerDashboard() {
       </header>
 
       {/* Live Stats */}
-      <div className="bg-white border-b border-slate-100 px-4 py-4 flex gap-3 shrink-0 overflow-x-auto hide-scrollbar">
-        <div className="bg-slate-50 border border-slate-100 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm">
-          <p className="text-[10px] uppercase font-[800] text-navratri-muted tracking-widest mb-1">Today's Entry</p>
-          <p className="text-[22px] font-display font-[800] text-navratri-text">{stats.total}</p>
+      <div className="bg-slate-900 border-b border-slate-800 px-4 py-4 flex gap-3 shrink-0 overflow-x-auto hide-scrollbar sticky top-0 z-20 shadow-lg">
+        <div className="bg-slate-800 border border-slate-700 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm">
+          <p className="text-[10px] uppercase font-[800] text-slate-400 tracking-widest mb-1">Total Entry</p>
+          <p className="text-[22px] font-display font-[800] text-white">{stats.total}</p>
         </div>
-        <div className="bg-orange-50/50 border border-orange-100 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm">
-          <p className="text-[10px] uppercase font-[800] text-orange-600 tracking-widest mb-1">VIP</p>
-          <p className="text-[22px] font-display font-[800] text-orange-800">{stats.vip}</p>
+        <div className="bg-slate-800 border border-slate-700 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm">
+          <p className="text-[10px] uppercase font-[800] text-[#FF4D6D] tracking-widest mb-1">VIP</p>
+          <p className="text-[22px] font-display font-[800] text-white">{stats.vip}</p>
         </div>
-        <div className="bg-blue-50/50 border border-blue-100 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm">
-          <p className="text-[10px] uppercase font-[800] text-blue-600 tracking-widest mb-1">Regular</p>
-          <p className="text-[22px] font-display font-[800] text-blue-800">{stats.regular}</p>
+        <div className="bg-slate-800 border border-slate-700 rounded-[18px] px-5 py-3.5 shrink-0 flex-1 text-center shadow-sm">
+          <p className="text-[10px] uppercase font-[800] text-[#00E5FF] tracking-widest mb-1">Regular</p>
+          <p className="text-[22px] font-display font-[800] text-white">{stats.regular}</p>
         </div>
       </div>
 
@@ -475,39 +475,39 @@ export default function ScannerDashboard() {
       </div>
 
       {/* Recent Scans */}
-      <div className="bg-white shrink-0 shadow-[0_-10px_40px_rgba(0,0,0,0.04)] border-t border-slate-100 z-10 max-h-[30vh] overflow-y-auto">
-        <div className="p-4 border-b border-slate-100 sticky top-0 bg-white/90 backdrop-blur-md z-10">
-          <h3 className="text-[12px] font-[800] text-navratri-text flex items-center gap-2 uppercase tracking-widest">
-            <Clock className="w-4 h-4 text-navratri-primary animate-pulse" /> Recent Scans
+      <div className="bg-slate-900 shrink-0 border-t border-slate-800 z-10 max-h-[30vh] overflow-y-auto">
+        <div className="p-4 border-b border-slate-800 sticky top-0 bg-slate-900/90 backdrop-blur-md z-10">
+          <h3 className="text-[12px] font-[800] text-white flex items-center gap-2 uppercase tracking-widest">
+            <Clock className="w-4 h-4 text-[#00E5FF] animate-pulse" /> Recent Scans
           </h3>
         </div>
         <div className="p-3 space-y-2">
           {recentScans.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-[14px] text-navratri-muted font-[500]">No passes scanned yet in this session.</p>
+              <p className="text-[14px] text-slate-500 font-[500]">No passes scanned yet.</p>
             </div>
           ) : (
             recentScans.map((scan, idx) => (
-              <div key={idx} className="flex items-center justify-between p-3.5 rounded-[18px] bg-slate-50 border border-slate-100 hover:bg-slate-100/50 transition-colors">
+              <div key={idx} className="flex items-center justify-between p-3.5 rounded-[18px] bg-slate-800 border border-slate-700">
                 <div className="flex items-center gap-3">
                   {scan.status === 'valid' ? (
-                    <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />
                   ) : scan.status === 'used' ? (
-                    <XCircle className="w-5 h-5 text-[#FF4D6D] shrink-0" />
+                    <XCircle className="w-5 h-5 text-red-500 shrink-0" />
                   ) : (
-                    <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
+                    <AlertTriangle className="w-5 h-5 text-yellow-500 shrink-0" />
                   )}
                   <div>
-                    <p className="font-[800] text-[14px] text-navratri-text leading-tight truncate max-w-[180px]">
+                    <p className="font-[800] text-[14px] text-white leading-tight truncate max-w-[180px]">
                       {scan.ticket?.customerName || 'Unknown Pass'}
                     </p>
-                    <p className="text-[10px] font-[800] text-navratri-muted uppercase tracking-widest mt-0.5">
+                    <p className="text-[10px] font-[800] text-slate-400 uppercase tracking-widest mt-0.5">
                       {scan.ticket?.ticketType || scan.status.replace('_', ' ')}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-[12px] font-[700] text-navratri-text">
+                  <p className="text-[12px] font-[700] text-slate-400">
                     {new Date(scan.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>

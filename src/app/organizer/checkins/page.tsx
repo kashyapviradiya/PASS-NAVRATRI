@@ -59,16 +59,14 @@ export default function OrganizerCheckins() {
           <span className="text-xs font-[600] text-gray-400">Last updated: {lastUpdated.toLocaleTimeString()}</span>
           <button 
             onClick={() => setIsLive(!isLive)}
-            className={`px-4 py-2 rounded-xl font-[700] text-sm transition-all border ${
-              isLive ? 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50' : 'bg-[#9333EA] text-white border-[#9333EA] shadow-md shadow-[#9333EA]/20'
-            }`}
+            className={`btn-primary px-4 py-2 ${!isLive ? '' : 'bg-white text-gray-500 border-gray-200 hover:bg-gray-50'}`}
           >
             {isLive ? 'Pause Live Feed' : 'Resume Live Feed'}
           </button>
         </div>
       </div>
 
-      <div className="bg-white rounded-[1.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden">
+      <div className="card-base overflow-hidden">
         {loading && checkins.length === 0 ? (
           <div className="flex h-64 items-center justify-center">
             <Loader2 className="w-8 h-8 text-[#9333EA] animate-spin" />
@@ -82,43 +80,94 @@ export default function OrganizerCheckins() {
             <p className="text-gray-500 font-[500] text-sm mt-1 max-w-sm">When staff scan tickets at the gates, they will appear here in real-time.</p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-50">
-            {checkins.map((scan) => (
-              <div key={scan.id} className="p-4 sm:p-5 hover:bg-gray-50/50 transition-colors flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
+          <div className="divide-y divide-gray-50 hidden md:block">
+            <table className="w-full">
+              <thead className="bg-white border-b border-gray-100">
+                <tr>
+                  <th className="table-header">Customer & Ticket</th>
+                  <th className="table-header">Gate</th>
+                  <th className="table-header">Time</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50 bg-white">
+                {checkins.map((scan) => (
+                  <tr key={scan.id} className="hover:bg-gray-50/50 transition-colors">
+                    <td className="table-cell">
+                      <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
+                          scan.status === 'valid' ? 'bg-green-50 text-green-600' : 
+                          scan.status === 'used' ? 'bg-red-50 text-[#9333EA]' : 'bg-orange-50 text-orange-600'
+                        }`}>
+                          {scan.status === 'valid' ? <CheckCircle className="w-5 h-5" /> : <ScanLine className="w-5 h-5" />}
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-[800] text-[#111111]">{scan.ticketDetails?.customerName || 'Unknown Customer'}</h4>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-[10px] font-[700] text-gray-500 uppercase tracking-wide bg-gray-100 px-1.5 py-0.5 rounded">
+                              {scan.ticketDetails?.ticketType || 'Pass'}
+                            </span>
+                            <span className="text-[10px] font-[600] text-gray-400 font-mono">
+                              {scan.ticketId || 'No ID'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="table-cell">
+                      <div className="flex items-center gap-1.5 text-xs font-[600] text-gray-700 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100 inline-flex">
+                        <MapPin className="w-3 h-3 text-gray-400" />
+                        {scan.gateName || 'Main Gate'}
+                      </div>
+                    </td>
+                    <td className="table-cell text-xs font-[600] text-gray-400">
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5" />
+                        {scan.timestamp ? new Date(scan.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'}) : 'Just now'}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        
+        {/* Mobile cards view */}
+        <div className="md:hidden divide-y divide-gray-50">
+          {checkins.map((scan) => (
+             <div key={scan.id} className="p-4 hover:bg-gray-50/50 transition-colors flex flex-col gap-3">
+               <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
                     scan.status === 'valid' ? 'bg-green-50 text-green-600' : 
                     scan.status === 'used' ? 'bg-red-50 text-[#9333EA]' : 'bg-orange-50 text-orange-600'
                   }`}>
-                    {scan.status === 'valid' ? <CheckCircle className="w-6 h-6" /> : <ScanLine className="w-6 h-6" />}
+                    {scan.status === 'valid' ? <CheckCircle className="w-5 h-5" /> : <ScanLine className="w-5 h-5" />}
                   </div>
                   <div>
-                    <h4 className="text-base font-[800] text-[#111111]">{scan.ticketDetails?.customerName || 'Unknown Customer'}</h4>
-                    <div className="flex items-center gap-3 mt-1">
-                      <span className="text-xs font-[700] text-gray-500 uppercase tracking-wide bg-gray-100 px-2 py-0.5 rounded">
+                    <h4 className="text-sm font-[800] text-[#111111]">{scan.ticketDetails?.customerName || 'Unknown Customer'}</h4>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-[10px] font-[700] text-gray-500 uppercase tracking-wide bg-gray-100 px-1.5 py-0.5 rounded">
                         {scan.ticketDetails?.ticketType || 'Pass'}
                       </span>
-                      <span className="text-xs font-[600] text-gray-400 font-mono">
+                      <span className="text-[10px] font-[600] text-gray-400 font-mono">
                         {scan.ticketId || 'No ID'}
                       </span>
                     </div>
                   </div>
-                </div>
-                
-                <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-2 sm:gap-1">
-                  <div className="flex items-center gap-1.5 text-sm font-[600] text-gray-700 bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-100">
-                    <MapPin className="w-3.5 h-3.5 text-gray-400" />
+               </div>
+               <div className="flex items-center justify-between mt-1">
+                  <div className="flex items-center gap-1.5 text-xs font-[600] text-gray-700 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100 inline-flex">
+                    <MapPin className="w-3 h-3 text-gray-400" />
                     {scan.gateName || 'Main Gate'}
                   </div>
                   <div className="flex items-center gap-1.5 text-xs font-[600] text-gray-400">
                     <Clock className="w-3.5 h-3.5" />
                     {scan.timestamp ? new Date(scan.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'}) : 'Just now'}
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+               </div>
+             </div>
+          ))}
+        </div>
       </div>
     </div>
   );

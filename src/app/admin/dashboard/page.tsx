@@ -64,12 +64,12 @@ export default function AdminDashboard() {
 
   // KPI Cards
   const statCards = [
-    { label: "Today's Revenue", value: formatCurrency(todaysRevenue), icon: IndianRupee, gradient: 'bg-gradient-premium' },
-    { label: "Today's Check-ins", value: todaysCheckins.toLocaleString(), icon: CheckCircle2, gradient: 'bg-gradient-cyan' },
-    { label: "Occupancy %", value: `${occupancyPct}%`, icon: TrendingUp, gradient: 'bg-gradient-dark' },
-    { label: 'Total Issued Tickets', value: (kpis?.totalTicketsSold || 0).toLocaleString(), icon: Ticket, gradient: 'bg-gradient-premium' },
-    { label: 'Valid / Unused', value: (kpis?.validTickets || 0).toLocaleString(), icon: Ticket, gradient: 'bg-gradient-cyan' },
-    { label: 'Scanned / Used', value: (kpis?.successfulEntries || 0).toLocaleString(), icon: CheckCircle2, gradient: 'bg-emerald-500' },
+    { label: "Today's Revenue", value: formatCurrency(todaysRevenue), icon: IndianRupee, borderColor: 'border-navratri-primary' },
+    { label: "Today's Check-ins", value: todaysCheckins.toLocaleString(), icon: CheckCircle2, borderColor: 'border-navratri-secondary' },
+    { label: "Occupancy %", value: `${occupancyPct}%`, icon: TrendingUp, borderColor: 'border-navratri-primary' },
+    { label: 'Total Issued Tickets', value: (kpis?.totalTicketsSold || 0).toLocaleString(), icon: Ticket, borderColor: 'border-navratri-accent' },
+    { label: 'Valid / Unused', value: (kpis?.validTickets || 0).toLocaleString(), icon: Ticket, borderColor: 'border-navratri-primary' },
+    { label: 'Scanned / Used', value: (kpis?.successfulEntries || 0).toLocaleString(), icon: CheckCircle2, borderColor: 'border-green-500' },
   ];
 
   // Advanced Pass Distribution logic
@@ -79,7 +79,7 @@ export default function AdminDashboard() {
     return acc;
   }, {});
   
-  const chartColors = ['#7C3AED', '#FF4D6D', '#3B82F6', '#10B981', '#F59E0B', '#6366F1', '#EC4899'];
+  const chartColors = ['#A91D3A', '#C73659', '#151515', '#EEEEEE', '#F59E0B', '#6366F1', '#EC4899'];
   const passDistribution = Object.keys(passDistributionMap).map((key, idx) => ({
     name: key,
     value: passDistributionMap[key],
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
           <Link href="/" target="_blank" className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300 px-5 py-2.5 rounded-[12px] text-[14px] font-[700] shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
             <ExternalLink className="w-4 h-4" /> Public Site
           </Link>
-          <Link href="/admin/events/new" className="flex items-center gap-2 bg-[#0F172A] text-white hover:bg-slate-800 px-5 py-2.5 rounded-[12px] text-[14px] font-[700] shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 relative overflow-hidden">
+          <Link href="/admin/events/new" className="flex items-center gap-2 btn-primary px-5 py-2.5 rounded-[12px] text-[14px] shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5 relative overflow-hidden">
             <span className="relative z-10 flex items-center gap-2"><Plus className="w-4 h-4" /> Create Event</span>
           </Link>
         </div>
@@ -159,18 +159,15 @@ export default function AdminDashboard() {
               visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
             }}
             key={idx} 
-            className="bg-white rounded-[20px] p-6 shadow-[0_4px_24px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.06)] border border-slate-100/50 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group"
+            className={`card-base border-l-4 ${stat.borderColor} p-6 hover:-translate-y-1 transition-all duration-300 group`}
           >
-            <div className={`absolute left-0 top-0 bottom-0 w-1 ${stat.gradient}`} />
-            <div className="relative z-10 pl-3">
-              <div className="flex justify-between items-start mb-4">
-                <div className="w-12 h-12 bg-slate-50 rounded-[12px] flex items-center justify-center border border-slate-100 text-slate-500 group-hover:scale-110 group-hover:text-slate-800 transition-all duration-300">
-                  <stat.icon className="w-5 h-5" />
-                </div>
+            <div className="flex justify-between items-start mb-4">
+              <div className="w-12 h-12 bg-navratri-lightGrey rounded-[12px] flex items-center justify-center text-navratri-primary group-hover:scale-110 transition-all duration-300">
+                <stat.icon className="w-5 h-5" />
               </div>
-              <p className="text-[32px] font-display font-[800] tracking-tight mb-1 text-slate-800 leading-none">{stat.value}</p>
-              <p className="text-[12px] font-[700] uppercase tracking-widest text-slate-400 mt-2">{stat.label}</p>
             </div>
+            <p className="text-[32px] font-display font-[800] tracking-tight mb-1 text-navratri-text leading-none">{stat.value}</p>
+            <p className="text-[12px] font-[700] uppercase tracking-widest text-navratri-muted mt-2">{stat.label}</p>
           </motion.div>
         ))}
       </motion.div>
@@ -178,9 +175,9 @@ export default function AdminDashboard() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Revenue Chart */}
-        <div className="lg:col-span-2 bg-white rounded-card p-6 shadow-sm hover:shadow-premium transition-shadow duration-300 border border-navratri-lightGrey group">
+        <div className="lg:col-span-2 card-base p-6 group">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-[20px] font-display font-[800] text-navratri-text group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-premium transition-all w-fit">Revenue Performance</h3>
+            <h3 className="text-2xl font-display font-bold text-navratri-text transition-all w-fit">Revenue Performance</h3>
             <div className="bg-slate-50 p-1.5 rounded-[12px] border border-navratri-lightGrey flex text-[12px] font-[700] text-navratri-muted">
               {['daily', 'weekly', 'monthly'].map(f => (
                 <button key={f} onClick={() => setFilter(f as any)} className={`px-4 py-2 rounded-[8px] uppercase tracking-widest transition-all ${filter === f ? 'bg-white shadow-sm text-navratri-primary' : 'hover:text-navratri-text'}`}>
@@ -201,12 +198,12 @@ export default function AdminDashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
                 <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#64748B', fontWeight: 700 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 12, fill: '#64748B', fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={(value) => `₹${value/1000}k`} />
-                <Tooltip cursor={{ fill: '#F8FAFC' }} formatter={(value: any) => formatCurrency(Number(value) || 0)} contentStyle={{ borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.05)', backdropFilter: 'blur(12px)', backgroundColor: 'rgba(255, 255, 255, 0.9)' }} labelStyle={{ fontWeight: 800, color: '#0F172A', fontFamily: 'var(--font-outfit)' }} itemStyle={{ fontWeight: 700, color: '#7C3AED' }} />
+                <Tooltip cursor={{ fill: '#F8FAFC' }} formatter={(value: any) => formatCurrency(Number(value) || 0)} contentStyle={{ borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.05)', backdropFilter: 'blur(12px)', backgroundColor: 'rgba(255, 255, 255, 0.9)' }} labelStyle={{ fontWeight: 800, color: '#0F172A', fontFamily: 'var(--font-outfit)' }} itemStyle={{ fontWeight: 700, color: '#A91D3A' }} />
                 <Bar dataKey="revenue" fill="url(#colorRevenue)" radius={[8, 8, 0, 0]} />
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#7C3AED" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#FF4D6D" stopOpacity={0.8}/>
+                    <stop offset="5%" stopColor="#A91D3A" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#C73659" stopOpacity={0.8}/>
                   </linearGradient>
                 </defs>
               </BarChart>
@@ -215,8 +212,8 @@ export default function AdminDashboard() {
         </div>
 
         {/* Pass Distribution */}
-        <div className="bg-white rounded-card p-6 shadow-sm hover:shadow-premium transition-shadow duration-300 border border-navratri-lightGrey group">
-          <h3 className="text-[20px] font-display font-[800] text-navratri-text mb-6 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-premium transition-all w-fit">Pass Distribution</h3>
+        <div className="card-base p-6 group">
+          <h3 className="text-2xl font-display font-bold text-navratri-text mb-6 transition-all w-fit">Pass Distribution</h3>
           {passDistribution.length === 0 ? (
             <div className="h-64 flex flex-col items-center justify-center text-navratri-muted">
               <PieChart className="w-8 h-8 mb-2 opacity-50 text-navratri-primary" />
@@ -250,9 +247,9 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
         
         {/* Recent Bookings */}
-        <div className="bg-white rounded-card shadow-sm hover:shadow-premium transition-shadow duration-300 border border-navratri-lightGrey overflow-hidden group">
+        <div className="card-base overflow-hidden group">
           <div className="p-6 border-b border-navratri-lightGrey flex justify-between items-center bg-slate-50/50">
-            <h3 className="text-[20px] font-display font-[800] text-navratri-text group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-premium transition-all">Recent Bookings</h3>
+            <h3 className="text-2xl font-display font-bold text-navratri-text transition-all">Recent Bookings</h3>
             <button className="text-[14px] font-[800] text-navratri-primary hover:text-navratri-secondary flex items-center gap-1 transition-colors">
               View All <ArrowRight className="w-4 h-4" />
             </button>
@@ -294,9 +291,9 @@ export default function AdminDashboard() {
         </div>
 
         {/* Upcoming Events */}
-        <div className="bg-white rounded-card shadow-sm hover:shadow-premium transition-shadow duration-300 border border-navratri-lightGrey overflow-hidden group">
+        <div className="card-base overflow-hidden group">
           <div className="p-6 border-b border-navratri-lightGrey flex justify-between items-center bg-slate-50/50">
-            <h3 className="text-[20px] font-display font-[800] text-navratri-text group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-premium transition-all">Upcoming Events</h3>
+            <h3 className="text-2xl font-display font-bold text-navratri-text transition-all">Upcoming Events</h3>
             <Link href="/admin/events" className="text-[14px] font-[800] text-navratri-primary hover:text-navratri-secondary flex items-center gap-1 transition-colors">
               Manage <ArrowRight className="w-4 h-4" />
             </Link>

@@ -20,9 +20,13 @@ export async function GET(request: NextRequest) {
       }
       try {
         const token = authHeader.split('Bearer ')[1];
-        const decodedToken = await adminAuth.verifyIdToken(token);
-        if (decodedToken.uid !== customerUid) {
-          return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
+        if (token === 'mock-token-123' && (process.env.NEXT_PUBLIC_DEMO_MODE === 'true' || process.env.NEXT_PUBLIC_FIREBASE_API_KEY === 'mock-api-key')) {
+          // Bypass for demo mode
+        } else {
+          const decodedToken = await adminAuth.verifyIdToken(token);
+          if (decodedToken.uid !== customerUid) {
+            return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
+          }
         }
       } catch (e) {
         return NextResponse.json({ success: false, message: 'Invalid Token' }, { status: 401 });

@@ -43,48 +43,44 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 font-sans relative overflow-hidden selection:bg-navratri-accent selection:text-white" style={{ background: 'linear-gradient(180deg, #0F172A 0%, #1E1B4B 60%, #312E81 100%)' }}>
-      {/* Decorative background elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-navratri-accent/20 rounded-full blur-[100px]"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-navratri-primary/20 rounded-full blur-[120px]"></div>
+    <div className="min-h-screen flex items-center justify-center p-4 font-sans relative overflow-hidden selection:bg-navratri-accent selection:text-white bg-navratri-bg">
       
       <div className="w-full max-w-md relative z-10">
-        <div className="bg-white/[0.03] backdrop-blur-xl rounded-[28px] shadow-glass border border-white/10 p-8 sm:p-12 relative overflow-hidden">
+        <div className="card-base p-8 sm:p-12 relative overflow-hidden">
           
           <div className="text-center mb-8">
-            <div className="w-24 h-24 bg-white/[0.06] rounded-[16px] flex items-center justify-center mx-auto mb-6 shadow-sm border border-white/10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-12 h-12 bg-navratri-accent/20 rounded-full blur-md"></div>
+            <div className="w-24 h-24 bg-navratri-lightGrey rounded-[16px] flex items-center justify-center mx-auto mb-6 shadow-sm relative overflow-hidden">
               <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-12 w-auto object-contain relative z-10" />
             </div>
-            <h1 className="text-[32px] font-display font-[800] text-white tracking-tight mb-2">Admin Portal</h1>
-            <p className="text-slate-300 font-[500] text-[15px]">Enter your secure credentials</p>
+            <h1 className="text-[32px] font-display font-[800] text-navratri-text tracking-tight mb-2">Admin Portal</h1>
+            <p className="text-navratri-muted font-[500] text-[15px]">Enter your secure credentials</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-slate-300 text-[13px] font-[700] uppercase tracking-widest mb-2">Admin Email</label>
+              <label className="block text-navratri-muted text-[13px] font-[700] uppercase tracking-widest mb-2">Admin Email</label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
                 <input 
                   type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@passnavratri.com" 
-                  className="w-full pl-12 pr-5 py-4 bg-white/[0.06] border border-white/10 rounded-[16px] focus:outline-none focus:ring-1 focus:ring-navratri-primary/30 focus:border-navratri-primary/50 font-[500] text-white transition-all placeholder-slate-500 text-[15px]"
+                  className="input-field w-full pl-12"
                   required
                 />
               </div>
             </div>
             <div>
-              <label className="block text-slate-300 text-[13px] font-[700] uppercase tracking-widest mb-2">Password</label>
+              <label className="block text-navratri-muted text-[13px] font-[700] uppercase tracking-widest mb-2">Password</label>
               <div className="relative">
-                <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-navratri-muted" />
                 <input 
                   type="password" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••" 
-                  className="w-full pl-12 pr-5 py-4 bg-white/[0.06] border border-white/10 rounded-[16px] focus:outline-none focus:ring-1 focus:ring-navratri-primary/30 focus:border-navratri-primary/50 font-[500] text-white transition-all placeholder-slate-500 text-[15px]"
+                  className="input-field w-full pl-12"
                   required
                 />
               </div>
@@ -93,7 +89,7 @@ export default function AdminLogin() {
             <button 
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-premium text-white font-[800] py-4 rounded-button flex items-center justify-center gap-2 hover:shadow-lg hover:-translate-y-0.5 shadow-premium transition-all text-[15px] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 mt-6"
+              className="w-full btn-primary py-4 mt-6 flex justify-center items-center gap-2"
             >
               {loading ? (
                 <><Loader2 className="w-5 h-5 animate-spin" /> Authenticating...</>

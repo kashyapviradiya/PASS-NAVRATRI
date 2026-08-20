@@ -88,13 +88,13 @@ export default function OrganizerStaff() {
         </div>
         <button 
           onClick={() => setIsAddModalOpen(true)}
-          className="bg-[#111111] text-white px-5 py-2.5 rounded-xl font-[700] text-sm shadow-sm hover:bg-gray-900 transition-colors flex items-center gap-2"
+          className="btn-primary flex items-center gap-2"
         >
           <Plus className="w-4 h-4" /> Add Staff
         </button>
       </div>
 
-      <div className="bg-white rounded-[1.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden">
+      <div className="card-base overflow-hidden">
         <div className="overflow-x-auto">
           {loading ? (
              <div className="flex h-64 items-center justify-center">
@@ -109,26 +109,27 @@ export default function OrganizerStaff() {
               <p className="text-gray-500 font-[500] text-sm mt-1 max-w-sm mb-6">Create credentials for your event staff so they can use the RaasPass Scanner app.</p>
               <button 
                 onClick={() => setIsAddModalOpen(true)}
-                className="bg-[#9333EA] text-white px-6 py-3 rounded-xl font-[800] text-sm shadow-[0_0_20px_rgba(229,57,53,0.2)] hover:bg-[#7E22CE] transition-all"
+                className="btn-primary"
               >
                 Create Staff Account
               </button>
             </div>
           ) : (
-            <table className="w-full">
+            <>
+            <table className="w-full hidden md:table">
               <thead className="bg-white border-b border-gray-100">
                 <tr>
-                  <th className="px-6 py-4 text-left text-[11px] font-[800] text-gray-500 uppercase tracking-wider">Staff Details</th>
-                  <th className="px-6 py-4 text-left text-[11px] font-[800] text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-4 text-left text-[11px] font-[800] text-gray-500 uppercase tracking-wider">Assigned Events</th>
-                  <th className="px-6 py-4 text-left text-[11px] font-[800] text-gray-500 uppercase tracking-wider">Assigned Gates</th>
-                  <th className="px-6 py-4 text-left text-[11px] font-[800] text-gray-500 uppercase tracking-wider">Added On</th>
+                  <th className="table-header">Staff Details</th>
+                  <th className="table-header">Status</th>
+                  <th className="table-header">Assigned Events</th>
+                  <th className="table-header">Assigned Gates</th>
+                  <th className="table-header">Added On</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50 bg-white">
                 {staff.map((s: any) => (
                   <tr key={s.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="table-cell">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-[800] text-gray-600 border border-gray-200">
                           {s.name.charAt(0)}
@@ -139,14 +140,12 @@ export default function OrganizerStaff() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-[800] rounded-lg tracking-wide uppercase ${
-                        s.active ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'
-                      }`}>
+                    <td className="table-cell">
+                      <span className={s.active ? 'badge-success' : 'badge-danger'}>
                         {s.active ? 'Active' : 'Inactive'}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="table-cell">
                       <div className="flex flex-wrap gap-1">
                         {(s.assignedEvents || []).map((ev: string) => (
                           <span key={ev} className="px-2 py-1 text-[10px] font-[700] bg-gray-100 text-gray-600 rounded-md border border-gray-200">
@@ -155,7 +154,7 @@ export default function OrganizerStaff() {
                         ))}
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="table-cell">
                       <div className="flex flex-wrap gap-1">
                         {(s.assignedGates || []).map((g: string) => (
                           <span key={g} className="px-2 py-1 text-[10px] font-[800] bg-[#9333EA]/10 text-[#9333EA] rounded-md border border-[#9333EA]/20 flex items-center gap-1">
@@ -164,13 +163,57 @@ export default function OrganizerStaff() {
                         ))}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-[600] text-gray-500">
+                    <td className="table-cell text-sm font-[600] text-gray-500">
                       {s.createdAt ? new Date(s.createdAt).toLocaleDateString() : 'N/A'}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            
+            <div className="md:hidden flex flex-col divide-y divide-gray-50">
+                {staff.map((s: any) => (
+                  <div key={s.id} className="p-4 hover:bg-gray-50/50 transition-colors">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-[800] text-gray-600 border border-gray-200">
+                          {s.name.charAt(0)}
+                        </div>
+                        <div>
+                          <div className="text-sm font-[800] text-[#111111]">{s.name}</div>
+                          <div className="text-xs font-[600] text-gray-500 font-mono mt-0.5">{s.mobile}</div>
+                        </div>
+                      </div>
+                      <span className={s.active ? 'badge-success' : 'badge-danger'}>
+                        {s.active ? 'Active' : 'Inactive'}
+                      </span>
+                    </div>
+                    
+                    <div className="mb-2">
+                      <div className="text-[10px] font-[800] text-gray-400 uppercase mb-1">Assigned Events</div>
+                      <div className="flex flex-wrap gap-1">
+                        {(s.assignedEvents || []).map((ev: string) => (
+                          <span key={ev} className="px-2 py-1 text-[10px] font-[700] bg-gray-100 text-gray-600 rounded-md border border-gray-200">
+                            {ev}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="mb-2">
+                      <div className="text-[10px] font-[800] text-gray-400 uppercase mb-1">Assigned Gates</div>
+                      <div className="flex flex-wrap gap-1">
+                        {(s.assignedGates || []).map((g: string) => (
+                          <span key={g} className="px-2 py-1 text-[10px] font-[800] bg-[#9333EA]/10 text-[#9333EA] rounded-md border border-[#9333EA]/20 flex items-center gap-1">
+                            <MapPin className="w-3 h-3" /> {g}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+            </>
           )}
         </div>
       </div>
@@ -198,7 +241,7 @@ export default function OrganizerStaff() {
                     value={name}
                     onChange={e => setName(e.target.value)}
                     required
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
+                    className="input-field"
                     placeholder="e.g. Rahul Sharma"
                   />
                 </div>
@@ -209,7 +252,7 @@ export default function OrganizerStaff() {
                     value={mobile}
                     onChange={e => setMobile(e.target.value)}
                     required
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
+                    className="input-field"
                     placeholder="10 digit mobile"
                   />
                 </div>
@@ -224,7 +267,7 @@ export default function OrganizerStaff() {
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     required
-                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
+                    className="input-field pl-10"
                     placeholder="Set a secure password"
                   />
                 </div>
@@ -237,7 +280,7 @@ export default function OrganizerStaff() {
                   value={assignedEventsStr}
                   onChange={e => setAssignedEventsStr(e.target.value)}
                   required
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
+                  className="input-field"
                   placeholder="e.g. evt-ahmedabad-royal-garba (comma separated)"
                 />
                 <p className="text-[10px] text-gray-400 font-[600] mt-1.5">Only include events assigned to you.</p>
@@ -250,7 +293,7 @@ export default function OrganizerStaff() {
                   value={assignedGatesStr}
                   onChange={e => setAssignedGatesStr(e.target.value)}
                   required
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] font-[500] text-sm"
+                  className="input-field"
                   placeholder="e.g. VIP Gate, Gate 1, Gate 2 (comma separated)"
                 />
               </div>
@@ -259,14 +302,14 @@ export default function OrganizerStaff() {
                 <button 
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="flex-1 px-4 py-3 border border-gray-200 text-gray-700 font-[700] rounded-xl hover:bg-gray-50 transition-colors text-sm"
+                  className="btn-ghost flex-1"
                 >
                   Cancel
                 </button>
                 <button 
                   type="submit"
                   disabled={adding}
-                  className="flex-1 px-4 py-3 bg-[#9333EA] text-white font-[800] rounded-xl hover:bg-[#7E22CE] shadow-[0_0_20px_rgba(229,57,53,0.2)] transition-all text-sm disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="btn-primary flex-1 flex items-center justify-center gap-2"
                 >
                   {adding ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create Account'}
                 </button>

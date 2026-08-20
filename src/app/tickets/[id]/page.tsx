@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Download, Share2, Calendar, Clock, Loader2, ShieldCheck, ShieldAlert, CheckCircle2, Navigation, AlertCircle } from 'lucide-react';
+import { Download, Share2, Calendar, Clock, Loader2, ShieldCheck, ShieldAlert, CheckCircle2, Navigation, AlertCircle, MapPin } from 'lucide-react';
 import QRCode from 'qrcode';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
@@ -128,7 +128,12 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       ctx.arc(ticketX + 235, ticketY + 68, 8, 0, Math.PI * 2);
       ctx.fill();
 
-      const isExpired = new Date(ticket.eventEndDate || ticket.eventDate) < new Date();
+      const expiryDateStrCanvas = ticket.eventEndDate || ticket.eventDate;
+      const expiryDateCanvas = new Date(expiryDateStrCanvas);
+      if (!ticket.eventEndDate) {
+          expiryDateCanvas.setHours(23, 59, 59, 999);
+      }
+      const isExpired = expiryDateCanvas < new Date();
       const statusText = isExpired ? 'EXPIRED' : ticket.status.toUpperCase();
       let badgeBg = '#22C55E';
       if (statusText === 'USED' || statusText === 'CHECKED IN') badgeBg = '#3B82F6';
@@ -149,7 +154,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       ctx.fillStyle = '#5A2132';
       ctx.font = '800 40px sans-serif';
       
-      const eventName = ticket.eventName || 'Navratri Event';
+      const eventName = ticket.eventName || ticket.eventTitle || 'Navratri Event';
       let eventLines = [];
       if (eventName.length > 25) {
         eventLines = [eventName.slice(0, 25) + '...', eventName.slice(25)];
@@ -160,11 +165,12 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       
       ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
-      ctx.fillText(ticket.ticketType?.toUpperCase() || 'PASS', ticketX + 60, ticketY + 220);
+      const displayTicketType = ticket.ticketType || ticket.ticketTypeName || 'PASS';
+      ctx.fillText(displayTicketType.toUpperCase(), ticketX + 60, ticketY + 220);
 
       ctx.fillStyle = '#475569';
       ctx.font = '600 22px sans-serif';
-      const isCouple = ticket.ticketType?.toLowerCase().includes('couple');
+      const isCouple = displayTicketType.toLowerCase().includes('couple');
       const entryCountNum = ticket.entryCount || (isCouple ? 2 : 1);
       const quantityText = `Total Entry: ${entryCountNum} ${entryCountNum > 1 ? 'People' : 'Person'}`;
       ctx.fillText(quantityText, ticketX + 60, ticketY + 260);
@@ -226,8 +232,9 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       
       ctx.fillStyle = '#5A2132';
       ctx.font = 'bold 24px sans-serif';
-      const formattedDate = new Date(ticket.eventDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-      ctx.fillText(`${formattedDate} • 7:00 PM`, ticketX + 60, timeY + 35);
+      const validDateCanvas = ticket.eventDate || ticket.createdAt || new Date().toISOString();
+      const formattedDateCanvas = new Date(validDateCanvas).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      ctx.fillText(`${formattedDateCanvas} • 7:00 PM`, ticketX + 60, timeY + 35);
 
       const gateY = timeY + 110;
       ctx.fillStyle = '#94A3B8';
@@ -297,7 +304,7 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
       const blob = await (await fetch(dataUrl)).blob();
       const url = URL.createObjectURL(blob);
       
-      const cleanEventName = ticket.eventName.replace(/[^a-zA-Z0-9]/g, '-');
+      const cleanEventName = (ticket.eventName || ticket.eventTitle || 'Event').replace(/[^a-zA-Z0-9]/g, '-');
       const filename = `RaasPass-${cleanEventName}-${ticket.ticketId}.png`;
 
       const link = document.createElement('a');
@@ -392,28 +399,37 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
         </motion.div>
 
         {tickets.map((ticket, index) => {
-          const isExpired = new Date(ticket.eventEndDate || ticket.eventDate) < new Date();
+          // Expiration check: Add 24 hours to eventDate if eventEndDate is not provided so tickets for 'today' are valid until midnight
+          const expiryDateStr = ticket.eventEndDate || ticket.eventDate;
+          const expiryDate = new Date(expiryDateStr);
+          if (!ticket.eventEndDate) {
+             expiryDate.setHours(23, 59, 59, 999);
+          }
+          const isExpired = expiryDate < new Date();
           const isUsed = ticket.status === 'used' || ticket.checkedIn;
           const isCancelled = ticket.status === 'cancelled';
           const isValid = ticket.status === 'valid' && !isExpired && !isUsed;
 
-          const isCouple = ticket.ticketType?.toLowerCase().includes('couple');
+          const isCouple = (ticket.ticketType || ticket.ticketTypeName || '').toLowerCase().includes('couple');
           const entryCountNum = ticket.entryCount || (isCouple ? 2 : 1);
-          const formattedDate = new Date(ticket.eventDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+          const validDate = ticket.eventDate || ticket.createdAt || new Date().toISOString();
+          const formattedDate = new Date(validDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
           const codeUrl = qrCodes[ticket.ticketId];
+          const displayEventName = ticket.eventName || ticket.eventTitle || 'Navratri Event';
+          const displayTicketType = ticket.ticketType || ticket.ticketTypeName || 'Pass';
+          
+          let statusText = ticket.status.toUpperCase();
+          if (isUsed) statusText = 'USED';
+          if (isCancelled) statusText = 'CANCELLED';
+          if (isExpired && !isUsed) statusText = 'EXPIRED';
 
           return (
-            <div 
-              key={ticket.ticketId} 
-              className="w-full relative"
-            >
-              
-              {/* Boarding Pass Ticket Card */}
-              <div className="relative bg-[#ffffff] text-slate-900 rounded-[2.5rem] overflow-hidden shadow-premium border border-slate-100 print:border-none print:bg-white print:shadow-none flex flex-col">
+            <div key={ticket.ticketId} className="w-full relative">
+              <div className="relative bg-[#ffffff] text-slate-900 rounded-[2rem] overflow-hidden shadow-premium border border-slate-100 print:border-none print:bg-white print:shadow-none flex flex-col">
                 
                 {/* Event Banner */}
                 {ticket.eventBanner && (
-                  <div className="h-40 w-full relative">
+                  <div className="h-32 sm:h-40 w-full relative">
                     <img src={ticket.eventBanner} alt="Event Banner" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent pointer-events-none"></div>
                   </div>
@@ -421,145 +437,149 @@ export default function BookingTicketsPage({ params }: { params: { id: string } 
 
                 <div className="p-6 md:p-8 flex flex-col bg-[#FDFDFF] border-b border-dashed border-slate-200 relative">
                   
+                  {/* Top Bar: Brand + Status */}
                   <div className="flex items-center justify-between mb-6">
-                    <span className="flex items-center">
-                      <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-8 md:h-9 w-auto object-contain" />
-                    </span>
+                    <img src="/brand/raaspass-logo.svg" alt="RaasPass" className="h-7 md:h-8 w-auto object-contain" />
                     
                     <div>
                       {isValid && (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 rounded-full text-xs font-[800] tracking-wider uppercase">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 rounded-full text-[11px] font-[800] tracking-wider uppercase">
                           <ShieldCheck className="w-3.5 h-3.5" /> VALID PASS
                         </span>
                       )}
                       {isUsed && (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 text-blue-600 border border-blue-500/20 rounded-full text-xs font-[800] tracking-wider uppercase">
-                          <CheckCircle2 className="w-3.5 h-3.5" /> CHECKED IN
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 text-blue-600 border border-blue-500/20 rounded-full text-[11px] font-[800] tracking-wider uppercase">
+                          <CheckCircle2 className="w-3.5 h-3.5" /> ALREADY USED
                         </span>
                       )}
                       {isCancelled && (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-500/10 text-red-600 border border-red-500/20 rounded-full text-xs font-[800] tracking-wider uppercase">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-500/10 text-red-600 border border-red-500/20 rounded-full text-[11px] font-[800] tracking-wider uppercase">
                           <ShieldAlert className="w-3.5 h-3.5" /> CANCELLED
                         </span>
                       )}
-                      {isExpired && (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-500/10 text-gray-600 border border-gray-500/20 rounded-full text-xs font-[800] tracking-wider uppercase">
+                      {isExpired && !isUsed && (
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-500/10 text-gray-600 border border-gray-500/20 rounded-full text-[11px] font-[800] tracking-wider uppercase">
                           <ShieldAlert className="w-3.5 h-3.5" /> EXPIRED
                         </span>
                       )}
                     </div>
                   </div>
 
-                  <div className="mb-8 text-left">
-                    <h1 className="text-[26px] md:text-[32px] font-display font-[850] text-slate-900 leading-tight mb-3 tracking-tight">{ticket.eventName}</h1>
-                    <div className="flex items-center gap-3">
-                      <span className="px-3 py-1 bg-navratri-primary/10 text-navratri-primary text-[12px] font-[800] uppercase tracking-wider rounded-md border border-navratri-primary/20">
-                        {ticket.ticketType}
-                      </span>
-                      <span className="text-[13px] text-slate-500 font-semibold">
-                        Total Entry: {entryCountNum} {entryCountNum > 1 ? 'People' : 'Person'}
-                      </span>
+                  {/* EVENT DETAILS */}
+                  <div className="mb-6">
+                    <h1 className="text-[24px] md:text-[28px] font-display font-[850] text-slate-900 leading-tight mb-3 tracking-tight">{displayEventName}</h1>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <Calendar className="w-5 h-5 text-navratri-primary shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-slate-900 font-[700] text-[15px]">{formattedDate}</p>
+                          <p className="text-slate-500 text-[13px] font-medium">{ticket.eventTime || '7:00 PM'}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3">
+                        <MapPin className="w-5 h-5 text-navratri-primary shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-slate-900 font-[700] text-[15px]">{ticket.venue || 'Venue TBD'}</p>
+                          {ticket.venueAddress && (
+                            <p className="text-slate-500 text-[13px] font-medium mt-0.5">{ticket.venueAddress}</p>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-center justify-center py-8 bg-slate-50 rounded-[24px] border border-slate-100 relative overflow-hidden">
-                    <div className="p-4 bg-white rounded-[16px] shadow-sm border border-gray-200 relative z-10 isolate">
-                      {codeUrl ? (
-                        <img src={codeUrl} alt="QR Code" className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] object-contain block bg-white" />
-                      ) : (
-                        <div className="w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[280px] md:h-[280px] bg-slate-100 rounded-xl"></div>
-                      )}
-                    </div>
-                    <p className="text-[11px] text-slate-400 font-[800] uppercase tracking-widest mt-4">Scan at Entry</p>
-                    <p className="font-mono text-[13px] font-[800] text-slate-700 tracking-wider mt-1.5">{ticket.ticketId}</p>
-                  </div>
-                  
+                  {/* Cutout / Notch */}
                   <div className="absolute -left-4 bottom-0 w-8 h-8 bg-navratri-bg rounded-full transform translate-y-1/2 border-r border-slate-100 print:hidden"></div>
                   <div className="absolute -right-4 bottom-0 w-8 h-8 bg-navratri-bg rounded-full transform translate-y-1/2 border-l border-slate-100 print:hidden"></div>
                 </div>
 
-                <div className="p-6 md:p-8 bg-[#FFFFFF] space-y-6">
-                  
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-5 text-left text-sm">
+                {/* TICKET DETAILS */}
+                <div className="p-6 md:p-8 bg-[#FFFFFF] border-b border-dashed border-slate-200 relative">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-5 text-left mb-6">
                     <div>
-                      <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Guest Name</p>
+                      <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Ticket Type</p>
+                      <p className="text-slate-900 font-[800] text-[14px] uppercase">{displayTicketType}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Total Entry</p>
+                      <p className="text-slate-900 font-[800] text-[14px] uppercase">{entryCountNum} {entryCountNum > 1 ? 'PEOPLE' : 'PERSON'}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Gate</p>
+                      <p className="text-slate-900 font-[800] text-[14px] uppercase">{ticket.gateName || `GATE ${ticket.gateNumber || 'ANY'}`}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-5 text-left">
+                    <div className="col-span-2">
+                      <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Customer</p>
                       <p className="text-slate-900 font-semibold truncate text-[15px]">{ticket.customerName}</p>
                     </div>
                     
                     <div>
                       <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Booking ID</p>
-                      <p className="text-slate-900 font-semibold truncate font-mono text-[15px]">{ticket.bookingId}</p>
+                      <p className="text-slate-900 font-mono font-[700] text-[13px]">{ticket.bookingId}</p>
                     </div>
 
                     <div>
-                      <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Date & Time</p>
-                      <p className="text-slate-900 font-semibold text-[15px]">
-                        {formattedDate} • 7:00 PM
-                      </p>
+                      <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Ticket ID</p>
+                      <p className="text-slate-900 font-mono font-[700] text-[13px]">{ticket.ticketId}</p>
                     </div>
+                  </div>
 
-                    <div>
-                      <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Gate Assignment</p>
-                      <p className="text-slate-900 font-semibold text-[15px]">
-                        {ticket.gateName ? `${ticket.gateName} (Gate ${ticket.gateNumber || 'N/A'})` : 'Gate Announced at Venue'}
-                      </p>
-                    </div>
+                  {/* Cutout / Notch */}
+                  <div className="absolute -left-4 bottom-0 w-8 h-8 bg-navratri-bg rounded-full transform translate-y-1/2 border-r border-slate-100 print:hidden"></div>
+                  <div className="absolute -right-4 bottom-0 w-8 h-8 bg-navratri-bg rounded-full transform translate-y-1/2 border-l border-slate-100 print:hidden"></div>
+                </div>
 
-                    {ticket.gateInstructions && (
-                      <div className="col-span-2 bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-                        <p className="text-slate-500 text-[10px] uppercase tracking-widest font-[800] mb-1">Gate Instructions</p>
-                        <p className="text-slate-700 text-xs font-[500] leading-relaxed">{ticket.gateInstructions}</p>
+                {/* QR CODE SECTION */}
+                <div className="p-6 md:p-8 bg-[#FDFDFF] flex flex-col items-center justify-center relative">
+                  
+                  <div className={`p-3 rounded-2xl relative z-10 isolate transition-all duration-300 ${isValid ? 'bg-white shadow-sm border border-gray-200' : 'bg-slate-50 opacity-60 grayscale'}`}>
+                    {codeUrl ? (
+                      <img src={codeUrl} alt="QR Code" className="w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] object-contain block bg-white rounded-xl" />
+                    ) : (
+                      <div className="w-[200px] h-[200px] sm:w-[240px] sm:h-[240px] bg-slate-100 rounded-xl"></div>
+                    )}
+                    
+                    {/* Watermark overlay if not valid */}
+                    {!isValid && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                         <span className="bg-slate-900/80 text-white font-[800] px-4 py-2 rounded-lg tracking-widest uppercase rotate-12 backdrop-blur-sm border border-white/20">
+                            {statusText}
+                         </span>
                       </div>
                     )}
-
-                    <div className="col-span-2">
-                      <p className="text-slate-400 text-[10px] uppercase tracking-widest font-[800] mb-1">Venue</p>
-                      <p className="text-slate-900 font-semibold text-[14px] leading-snug">{ticket.venue}</p>
-                    </div>
-                    
-                    <div className="col-span-2 flex items-center justify-between text-[11px] text-slate-500 pt-2">
-                      <span>Reporting Time: Arrive 30 min before event</span>
-                      <span>support@raaspass.in</span>
-                    </div>
                   </div>
+                  
+                  <p className="text-[12px] text-slate-500 font-[700] uppercase tracking-widest mt-6 flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                    Scan this QR at the entrance
+                  </p>
 
                   {isUsed && ticket.checkedInAt && (
-                    <div className="bg-blue-50 text-blue-700 rounded-2xl p-4 border border-blue-100 text-xs font-semibold flex items-center gap-2">
-                      <Clock className="w-4 h-4" /> Checked in on {new Date(ticket.checkedInAt).toLocaleString('en-IN')}
+                    <div className="mt-4 bg-blue-50 text-blue-700 rounded-xl px-4 py-2.5 border border-blue-100 text-[11px] font-[700] uppercase tracking-wider flex items-center gap-2">
+                      <Clock className="w-3.5 h-3.5" /> Checked in: {new Date(ticket.checkedInAt).toLocaleString('en-IN')}
                     </div>
                   )}
-                  
-                  <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 mt-4">
-                    <h3 className="text-[11px] uppercase tracking-widest font-[800] text-slate-600 mb-2 flex items-center gap-1.5">
-                      <AlertCircle className="w-3.5 h-3.5" /> Important Instructions
-                    </h3>
-                    <ul className="text-[11px] text-slate-500 space-y-1.5 font-medium">
-                      <li>• Keep screen brightness high during scanning</li>
-                      <li>• Carry a valid government ID</li>
-                      <li>• QR code can be scanned only once</li>
-                      <li>• Screenshot of QR is not recommended</li>
-                      <li>• Reach venue 30 minutes before event time</li>
-                    </ul>
-                  </div>
                 </div>
-                
-                <div className="h-2 w-full animate-shimmer print:hidden"></div>
+
+                <div className="h-1.5 w-full animate-shimmer print:hidden"></div>
 
                 {/* Inline Ticket Actions */}
-                <div className="bg-slate-50 p-4 border-t border-slate-200 flex justify-between gap-3 print:hidden">
+                <div className="bg-slate-50 p-4 border-t border-slate-200 flex flex-col sm:flex-row gap-3 print:hidden">
                   <button 
                     onClick={() => handleDownloadPass(ticket)} 
                     disabled={downloading === ticket.ticketId || isCancelled}
-                    className="flex-1 bg-white hover:bg-slate-100 active:scale-95 transition-all text-slate-800 font-[800] py-3 rounded-xl flex items-center justify-center gap-2 text-sm border border-slate-200 shadow-sm disabled:opacity-55"
+                    className="flex-1 bg-white hover:bg-slate-100 active:scale-95 transition-all text-slate-800 font-[800] py-3.5 rounded-xl flex items-center justify-center gap-2 text-[13px] border border-slate-200 shadow-sm disabled:opacity-55"
                   >
                     {downloading === ticket.ticketId ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                    Download
+                    Download Ticket
                   </button>
-                  <button onClick={() => handleShare(ticket)} disabled={isCancelled} className="p-3 bg-white hover:bg-slate-100 active:scale-95 text-slate-800 rounded-xl border border-slate-200 shadow-sm transition-all" title="Share Pass">
-                    <Share2 className="w-4 h-4" />
-                  </button>
-                  <button onClick={() => openMaps(ticket.venue)} className="p-3 bg-white hover:bg-slate-100 active:scale-95 text-navratri-primary rounded-xl border border-slate-200 shadow-sm transition-all" title="Directions">
-                    <Navigation className="w-4 h-4" />
+                  <button onClick={() => handleShare(ticket)} disabled={isCancelled} className="sm:w-auto w-full py-3.5 px-6 bg-white hover:bg-slate-100 active:scale-95 text-slate-800 font-[800] rounded-xl border border-slate-200 shadow-sm transition-all flex items-center justify-center gap-2 text-[13px]" title="Share Pass">
+                    <Share2 className="w-4 h-4" /> Share
                   </button>
                 </div>
               </div>

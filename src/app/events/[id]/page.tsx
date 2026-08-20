@@ -64,8 +64,8 @@ export default function EventDetails({ params }: { params: { id: string } }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-navratri-primary/30 border-t-navratri-primary rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-navratri-bg flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-navratri-primary/30 border-t-navratri-primary rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -86,158 +86,159 @@ export default function EventDetails({ params }: { params: { id: string } }) {
   };
 
   return (
-    <div className="bg-white min-h-[calc(100vh-50px)] pb-32 md:pb-24 font-sans">
+    <div className="bg-navratri-bg min-h-[calc(100vh-50px)] pb-36 font-sans">
       
-      {/* 1. FULL-BLEED HERO POSTER ON MOBILE */}
-      <div className="w-full relative pb-[100%] md:pb-[40%] bg-slate-100 overflow-hidden">
+      {/* 1. FULL-WIDTH HERO */}
+      <div className="w-full relative h-[40vh] md:h-[50vh] bg-slate-100 overflow-hidden">
         <img 
           src={event.bannerImage || event.bannerUrl || '/demo/events/poster_navratri.jpg'} 
           alt={event.title} 
           className="absolute inset-0 w-full h-full object-cover"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         
         {/* Floating Actions on Top */}
         <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
-          <button onClick={handleFavourite} className="w-10 h-10 flex items-center justify-center bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full active:scale-95 transition-transform">
+          <button onClick={handleFavourite} className="w-10 h-10 flex items-center justify-center bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full active:scale-95 transition-transform hover:bg-white/30">
             <Heart className="w-5 h-5" />
           </button>
-          <button onClick={handleShare} className="w-10 h-10 flex items-center justify-center bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full active:scale-95 transition-transform">
-            <Share2 className="w-4 h-4" />
+          <button onClick={handleShare} className="w-10 h-10 flex items-center justify-center bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full active:scale-95 transition-transform hover:bg-white/30">
+            <Share2 className="w-5 h-5" />
           </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 md:mt-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 md:mt-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* MAIN CONTENT COLUMN */}
-          <div className="lg:col-span-2 space-y-6 md:space-y-8">
+          {/* LEFT (lg:col-span-2) */}
+          <div className="lg:col-span-2 space-y-8 md:space-y-10">
             
             {/* Title & Core Metadata */}
             <div>
-              <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className="bg-navratri-primary/10 text-navratri-primary text-[10px] font-[800] px-2 py-1 rounded-full uppercase tracking-wider">Garba & Navratri</span>
-                <span className="bg-gray-100 text-gray-600 text-[10px] font-[800] px-2 py-1 rounded-full uppercase tracking-wider">{event.city}</span>
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <span className="bg-navratri-primary/10 text-navratri-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Garba & Navratri</span>
+                <span className="bg-white/50 border border-navratri-border text-navratri-dark text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">{event.city}</span>
               </div>
-              <h1 className="text-[28px] md:text-[36px] font-[850] text-gray-900 leading-tight tracking-tight mb-4">
+              <h1 className="text-3xl md:text-4xl font-display font-extrabold text-navratri-dark leading-tight tracking-tight mb-6">
                 {event.title}
               </h1>
               
-              <div className="flex flex-col gap-3 py-4 border-y border-gray-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 shrink-0">
-                    <Calendar className="w-5 h-5 text-gray-600" />
+              <div className="flex flex-col gap-4 py-6 border-y border-navratri-border/40">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border border-navratri-border/50 shadow-sm shrink-0">
+                    <Calendar className="w-6 h-6 text-navratri-primary" />
                   </div>
                   <div>
-                    <p className="text-[14px] font-[700] text-gray-900">
+                    <p className="text-base font-bold text-navratri-dark">
                       {new Date(event.startDate).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
                     </p>
-                    <p className="text-[12px] text-gray-500 font-[500]">
+                    <p className="text-sm text-navratri-muted font-medium">
                       {new Date(event.startDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 shrink-0">
-                    <MapPin className="w-5 h-5 text-gray-600" />
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border border-navratri-border/50 shadow-sm shrink-0">
+                    <MapPin className="w-6 h-6 text-navratri-primary" />
                   </div>
                   <div>
-                    <p className="text-[14px] font-[700] text-gray-900">{event.venue}</p>
-                    <p className="text-[12px] text-gray-500 font-[500] line-clamp-1">{event.address}</p>
+                    <p className="text-base font-bold text-navratri-dark">{event.venue}</p>
+                    <p className="text-sm text-navratri-muted font-medium">{event.address}</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* About */}
-            <div>
-              <h2 className="text-[18px] md:text-[20px] font-[800] text-gray-900 mb-2">About This Event</h2>
-              <p className="text-gray-600 font-[500] leading-relaxed text-[14px] mb-4">
+            <div className="space-y-4">
+              <h2 className="text-2xl font-display font-bold text-navratri-dark">About This Event</h2>
+              <p className="text-navratri-text font-medium leading-relaxed text-base">
                 {event.description} Get ready for a premium event experience featuring live performances, vibrant energy and secure digital entry. Book your pass online and receive an instant QR ticket for smooth access at the venue.
               </p>
               
-              <ul className="grid sm:grid-cols-2 gap-3">
+              <ul className="grid sm:grid-cols-2 gap-4 mt-6">
                 {['Live performances', 'Premium venue', 'Secure QR entry', 'Food and beverage zone'].map((highlight, i) => (
-                  <li key={i} className="flex items-center gap-2 text-gray-700 font-[600] text-[13px]">
-                    <CheckCircle className="w-4 h-4 text-navratri-primary shrink-0" /> {highlight}
+                  <li key={i} className="flex items-center gap-3 text-navratri-dark font-semibold text-sm">
+                    <CheckCircle className="w-5 h-5 text-navratri-primary shrink-0" /> {highlight}
                   </li>
                 ))}
               </ul>
             </div>
 
             {/* Artist Lineup */}
-            <div>
-              <h2 className="text-[18px] md:text-[20px] font-[800] text-gray-900 mb-4">Artist Lineup</h2>
-              <div className="flex items-center gap-4">
+            <div className="space-y-4">
+              <h2 className="text-2xl font-display font-bold text-navratri-dark">Artist Lineup</h2>
+              <div className="flex items-center gap-4 p-4 card-base rounded-2xl">
                 <div className="w-16 h-16 rounded-full bg-slate-200 bg-cover bg-center shrink-0" style={{ backgroundImage: `url('${event.bannerUrl || '/demo/events/poster_navratri.jpg'}')` }}></div>
                 <div>
-                  <h3 className="text-[16px] font-[800] text-gray-900">Live Performances</h3>
-                  <p className="text-[13px] font-[500] text-gray-500">Starts at 9:00 PM</p>
+                  <h3 className="text-lg font-bold text-navratri-dark">Live Performances</h3>
+                  <p className="text-sm font-medium text-navratri-muted">Starts at 9:00 PM</p>
                 </div>
               </div>
             </div>
 
             {/* Location Map Placeholder */}
-            <div>
-              <h2 className="text-[18px] md:text-[20px] font-[800] text-gray-900 mb-4">Location</h2>
-              <div className="w-full h-[200px] bg-slate-100 rounded-[16px] flex flex-col items-center justify-center text-gray-500 mb-4 border border-gray-200">
-                <MapPin className="w-8 h-8 mb-2" />
-                <span className="font-[600] text-[13px]">Map View</span>
+            <div className="space-y-4">
+              <h2 className="text-2xl font-display font-bold text-navratri-dark">Location</h2>
+              <div className="w-full h-[200px] bg-white rounded-2xl flex flex-col items-center justify-center text-navratri-muted border border-navratri-border shadow-sm">
+                <MapPin className="w-8 h-8 mb-2 opacity-50" />
+                <span className="font-semibold text-sm">Map View</span>
               </div>
-              <a href={`https://maps.google.com/?q=${event.venue} ${event.city}`} target="_blank" rel="noopener noreferrer" className="w-full inline-flex justify-center items-center gap-2 px-5 py-3 bg-gray-100 text-gray-900 font-[700] rounded-[12px] text-[14px] active:scale-95 transition-transform">
-                <MapPin className="w-4 h-4" /> Get Directions
+              <a href={`https://maps.google.com/?q=${event.venue} ${event.city}`} target="_blank" rel="noopener noreferrer" className="btn-secondary w-full inline-flex justify-center items-center gap-2 px-6 py-4 rounded-xl text-base">
+                <MapPin className="w-5 h-5" /> Get Directions
               </a>
             </div>
 
-            {/* Ticket Selection (Mobile & Desktop) */}
-            <div className="pt-4 border-t border-gray-100 block lg:hidden">
-              <h2 className="text-[18px] md:text-[20px] font-[800] text-gray-900 mb-4">Select Tickets</h2>
+            {/* MOBILE TICKET SELECTION (Inline) */}
+            <div className="pt-6 border-t border-navratri-border/40 block lg:hidden">
+              <h2 className="text-2xl font-display font-bold text-navratri-dark mb-4">Select Tickets</h2>
               <div className="space-y-3">
                 {activeTickets.map(tt => (
-                  <label key={tt.id} className={`flex items-start p-3 border rounded-[12px] cursor-pointer transition-colors ${selectedPassId === tt.id ? 'border-navratri-primary bg-navratri-primary/5' : 'border-gray-200'}`}>
+                  <label key={tt.id} className={`flex items-start p-4 card-base rounded-2xl cursor-pointer transition-all ${selectedPassId === tt.id ? 'border-navratri-primary ring-1 ring-navratri-primary' : 'border-navratri-border'}`}>
                     <input 
                       type="radio" 
                       name="mobile_ticket" 
                       value={tt.id} 
                       checked={selectedPassId === tt.id} 
                       onChange={() => setSelectedPassId(tt.id)}
-                      className="mt-1 mr-3 accent-navratri-primary w-4 h-4"
+                      className="mt-1 mr-4 accent-navratri-primary w-5 h-5"
                     />
                     <div className="flex-1">
-                      <div className="flex justify-between items-start mb-1">
-                        <span className="font-[700] text-[14px] text-gray-900">{tt.name}</span>
-                        <span className="font-[850] text-[15px] text-gray-900">{formatCurrency(tt.price)}</span>
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="font-bold text-base text-navratri-dark">{tt.name}</span>
+                        <span className="font-extrabold text-lg text-navratri-primary">{formatCurrency(tt.price)}</span>
                       </div>
-                      <div className="flex flex-wrap gap-2 text-[11px] font-[600] text-gray-500">
-                        {tt.description && <span className="w-full text-[12px] mb-1">{tt.description}</span>}
-                        <span className="bg-gray-100 px-2 py-0.5 rounded">{tt.entryCount} Entry</span>
-                        {tt.gateNumber && <span className="bg-gray-100 px-2 py-0.5 rounded">Gate {tt.gateNumber}</span>}
-                        {tt.remainingQuantity < 50 && <span className="text-orange-600 bg-orange-50 px-2 py-0.5 rounded">Only {tt.remainingQuantity} left</span>}
+                      <div className="flex flex-wrap gap-2 text-xs font-semibold text-navratri-muted">
+                        {tt.description && <span className="w-full text-sm mb-2 text-navratri-text">{tt.description}</span>}
+                        <span className="bg-navratri-bg border border-navratri-border px-2 py-1 rounded-md">{tt.entryCount} Entry</span>
+                        {tt.gateNumber && <span className="bg-navratri-bg border border-navratri-border px-2 py-1 rounded-md">Gate {tt.gateNumber}</span>}
+                        {tt.remainingQuantity < 50 && <span className="text-red-600 bg-red-50 border border-red-100 px-2 py-1 rounded-md">Only {tt.remainingQuantity} left</span>}
                       </div>
                     </div>
                   </label>
                 ))}
-                {!hasTickets && <div className="text-center p-4 bg-gray-50 rounded-[12px] font-[700] text-gray-500">Sold Out</div>}
+                {!hasTickets && <div className="text-center p-6 card-base rounded-2xl font-bold text-navratri-muted">Sold Out</div>}
               </div>
             </div>
 
             {/* FAQs */}
-            <div className="pt-4 border-t border-gray-100">
-              <h2 className="text-[18px] md:text-[20px] font-[800] text-gray-900 mb-4">FAQ</h2>
-              <div className="space-y-3">
+            <div className="pt-6 border-t border-navratri-border/40">
+              <h2 className="text-2xl font-display font-bold text-navratri-dark mb-4">FAQ</h2>
+              <div className="space-y-4">
                 {[
                   { q: 'Is the ticket refundable?', a: 'Refunds depend on the event policy. Generally, tickets are non-refundable unless the event is cancelled.' },
                   { q: 'What time should I arrive?', a: 'We recommend arriving at least 30 minutes before the event starts.' },
                 ].map((faq, i) => (
-                  <details key={i} className="group bg-gray-50 rounded-[12px] overflow-hidden">
-                    <summary className="flex justify-between items-center font-[700] cursor-pointer list-none p-4 text-[14px] text-gray-900">
+                  <details key={i} className="group card-base rounded-2xl overflow-hidden">
+                    <summary className="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-base text-navratri-dark">
                       {faq.q}
                       <span className="transition group-open:rotate-180">
-                        <ChevronDown className="w-4 h-4 text-gray-500" />
+                        <ChevronDown className="w-5 h-5 text-navratri-muted" />
                       </span>
                     </summary>
-                    <div className="text-gray-600 text-[13px] px-4 pb-4 font-[500]">
+                    <div className="text-navratri-text text-sm px-5 pb-5 font-medium leading-relaxed">
                       {faq.a}
                     </div>
                   </details>
@@ -246,47 +247,62 @@ export default function EventDetails({ params }: { params: { id: string } }) {
             </div>
           </div>
 
-          {/* DESKTOP BOOKING PANEL */}
+          {/* RIGHT (lg:col-span-1): STICKY BOOKING PANEL (Desktop) */}
           <div className="hidden lg:block space-y-6">
-            <div className="sticky top-24 bg-white rounded-[20px] p-6 shadow-sm border border-gray-200">
-              <h3 className="text-[28px] font-[850] text-gray-900 mb-6">
+            <div className="lg:sticky lg:top-24 card-base rounded-3xl p-6">
+              <h3 className="text-3xl font-display font-extrabold text-navratri-dark mb-2">
                 {hasTickets ? formatCurrency(minPrice) : 'Sold out'}
               </h3>
+              <p className="text-sm font-medium text-navratri-muted mb-6">Starting price</p>
               
-              <div className="space-y-5 mb-6">
+              <div className="space-y-6 mb-6">
                 <div>
-                  <label className="text-[12px] font-[700] text-gray-900 mb-2 block">Ticket Type</label>
-                  <div className="relative">
-                    <select 
-                      value={selectedPassId}
-                      onChange={(e) => setSelectedPassId(e.target.value)}
-                      disabled={!hasTickets}
-                      className="w-full px-3 py-3 rounded-[12px] bg-gray-50 border border-gray-200 focus:outline-none focus:ring-1 focus:ring-navratri-primary font-[600] text-gray-900 text-[14px] appearance-none"
-                    >
-                      {activeTickets.map(tt => (
-                        <option key={tt.id} value={tt.id}>{tt.name} - {formatCurrency(tt.price)}</option>
-                      ))}
-                      {!hasTickets && <option value="">No Tickets Available</option>}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+                  <label className="text-sm font-bold text-navratri-dark mb-3 block">Select Ticket</label>
+                  <div className="space-y-3">
+                    {activeTickets.map(tt => (
+                      <label key={tt.id} className={`flex items-start p-3 border rounded-xl cursor-pointer transition-all ${selectedPassId === tt.id ? 'border-navratri-primary bg-navratri-primary/5' : 'border-navratri-border'}`}>
+                        <input 
+                          type="radio" 
+                          name="desktop_ticket" 
+                          value={tt.id} 
+                          checked={selectedPassId === tt.id} 
+                          onChange={() => setSelectedPassId(tt.id)}
+                          className="mt-1 mr-3 accent-navratri-primary w-4 h-4"
+                        />
+                        <div className="flex-1">
+                          <div className="flex justify-between items-start mb-1">
+                            <span className="font-bold text-sm text-navratri-dark">{tt.name}</span>
+                            <span className="font-extrabold text-sm text-navratri-primary">{formatCurrency(tt.price)}</span>
+                          </div>
+                          {selectedPassId === tt.id && (
+                            <div className="flex flex-wrap gap-2 text-[10px] font-semibold text-navratri-muted mt-2">
+                              <span className="bg-white border border-navratri-border px-1.5 py-0.5 rounded">{tt.entryCount} Entry</span>
+                              {tt.gateNumber && <span className="bg-white border border-navratri-border px-1.5 py-0.5 rounded">Gate {tt.gateNumber}</span>}
+                              {tt.remainingQuantity < 50 && <span className="text-red-600 bg-red-50 px-1.5 py-0.5 rounded">Only {tt.remainingQuantity} left</span>}
+                            </div>
+                          )}
+                        </div>
+                      </label>
+                    ))}
+                    {!hasTickets && <div className="text-center p-4 border border-navratri-border rounded-xl font-bold text-navratri-muted">Sold Out</div>}
                   </div>
                 </div>
                 
                 <div>
-                  <label className="text-[12px] font-[700] text-gray-900 mb-2 block">Quantity</label>
-                  <div className="flex items-center justify-between p-1 rounded-[12px] bg-gray-50 border border-gray-200">
+                  <label className="text-sm font-bold text-navratri-dark mb-3 block">Quantity</label>
+                  <div className="flex items-center justify-between p-1.5 rounded-xl bg-navratri-bg border border-navratri-border">
                     <button 
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
                       disabled={!hasTickets || quantity <= 1}
-                      className="w-10 h-10 rounded-[8px] bg-white shadow-sm flex items-center justify-center font-[700] text-gray-900 border border-gray-200 disabled:opacity-50"
+                      className="w-12 h-12 rounded-lg bg-white shadow-sm flex items-center justify-center font-bold text-navratri-dark border border-navratri-border disabled:opacity-50"
                     >
                       -
                     </button>
-                    <span className="font-[700] text-[16px] text-gray-900">{quantity}</span>
+                    <span className="font-extrabold text-lg text-navratri-dark">{quantity}</span>
                     <button 
                       onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
                       disabled={!hasTickets || quantity >= maxQty}
-                      className="w-10 h-10 rounded-[8px] bg-white shadow-sm flex items-center justify-center font-[700] text-gray-900 border border-gray-200 disabled:opacity-50"
+                      className="w-12 h-12 rounded-lg bg-white shadow-sm flex items-center justify-center font-bold text-navratri-dark border border-navratri-border disabled:opacity-50"
                     >
                       +
                     </button>
@@ -295,9 +311,9 @@ export default function EventDetails({ params }: { params: { id: string } }) {
               </div>
 
               {hasTickets && selectedTicket && (
-                <div className="flex justify-between items-center py-4 border-t border-gray-100 mb-4">
-                  <span className="text-[14px] font-[700] text-gray-900">Total</span>
-                  <span className="text-[20px] font-[850] text-gray-900">{formatCurrency(totalPrice)}</span>
+                <div className="flex justify-between items-center py-5 border-t border-navratri-border/50 mb-4">
+                  <span className="text-base font-bold text-navratri-dark">Total</span>
+                  <span className="text-2xl font-extrabold text-navratri-dark">{formatCurrency(totalPrice)}</span>
                 </div>
               )}
 
@@ -309,58 +325,39 @@ export default function EventDetails({ params }: { params: { id: string } }) {
                   router.push(`/checkout/${event.id}`);
                 }}
                 disabled={!hasTickets}
-                className="w-full bg-navratri-primary hover:opacity-90 text-white font-[700] py-3.5 rounded-[12px] flex justify-center items-center text-[15px] active:scale-95 transition-all disabled:opacity-50 shadow-premium"
+                className="btn-primary w-full py-4 rounded-xl text-lg mb-4"
               >
                 {hasTickets ? 'Book Now' : 'Sold Out'}
               </button>
+
+              <div className="flex items-center justify-center gap-2 text-xs font-semibold text-navratri-muted">
+                <Shield className="w-4 h-4" /> Secure checkout · Instant digital pass
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* MOBILE STICKY BOTTOM BAR (TICKET SELECTION & BOOKING CTA) */}
-      <div className="fixed bottom-[56px] left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-3 lg:hidden z-40 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
-        
-        {/* Compact Quantity Selector on Mobile */}
-        {hasTickets && (
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-[12px] font-[700] text-gray-700">Quantity</span>
-            <div className="flex items-center gap-2 bg-gray-100 rounded-[8px] px-1 shrink-0">
-               <button 
-                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                 disabled={quantity <= 1}
-                 className="w-7 h-7 flex items-center justify-center font-[700] text-gray-900"
-               >-</button>
-               <span className="font-[700] text-[13px] text-gray-900 w-3 text-center">{quantity}</span>
-               <button 
-                 onClick={() => setQuantity(Math.min(maxQty, quantity + 1))}
-                 disabled={quantity >= maxQty}
-                 className="w-7 h-7 flex items-center justify-center font-[700] text-gray-900"
-               >+</button>
-            </div>
-          </div>
-        )}
-
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex flex-col shrink-0">
-            <span className="text-[10px] text-gray-500 uppercase font-[700]">Total</span>
-            <span className="text-[18px] font-[850] text-gray-900 leading-none">
-              {hasTickets ? formatCurrency(totalPrice) : '-'}
-            </span>
-          </div>
-          <button 
-            onClick={() => {
-              if (!selectedPassId || !hasTickets) return;
-              localStorage.setItem('checkout_event', JSON.stringify(event));
-              localStorage.setItem('checkout_ticketTypes', JSON.stringify({ [selectedPassId]: quantity }));
-              router.push(`/checkout/${event.id}`);
-            }}
-            disabled={!hasTickets}
-            className="flex-1 bg-navratri-primary hover:opacity-90 text-white font-[700] py-3 rounded-[12px] flex items-center justify-center shadow-premium active:scale-95 transition-all text-[14px]"
-          >
-            {hasTickets ? 'Book Now' : 'Sold Out'}
-          </button>
+      <div className="fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-navratri-border lg:hidden z-50 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] px-4 flex items-center justify-between">
+        <div className="flex flex-col shrink-0">
+          <span className="text-xs text-navratri-muted font-bold">Total Price</span>
+          <span className="text-xl font-extrabold text-navratri-dark leading-none mt-1">
+            {hasTickets ? formatCurrency(totalPrice) : '-'}
+          </span>
         </div>
+        <button 
+          onClick={() => {
+            if (!selectedPassId || !hasTickets) return;
+            localStorage.setItem('checkout_event', JSON.stringify(event));
+            localStorage.setItem('checkout_ticketTypes', JSON.stringify({ [selectedPassId]: quantity }));
+            router.push(`/checkout/${event.id}`);
+          }}
+          disabled={!hasTickets}
+          className="btn-primary py-2.5 px-8 rounded-xl flex items-center justify-center text-base"
+        >
+          {hasTickets ? 'Book Tickets' : 'Sold Out'}
+        </button>
       </div>
     </div>
   );

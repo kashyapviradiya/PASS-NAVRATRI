@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, CalendarDays, Ticket, Users, 
-  Settings, LogOut, Sparkles, Menu, X, Bell, Search, ShieldAlert
+  Settings, LogOut, Sparkles, Menu, X, Bell, Search, ShieldAlert, Briefcase
 } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -22,15 +22,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Events Hub', href: '/admin/events', icon: CalendarDays },
     { name: 'Bookings', href: '/admin/bookings', icon: Ticket },
+    { name: 'Organizers', href: '/admin/organizers', icon: Briefcase },
     { name: 'Audit Logs', href: '/admin/logs', icon: ShieldAlert },
-    // Later we can add Organizers, etc.
   ];
 
   return (
     <div className="min-h-screen bg-navratri-bg font-sans flex flex-col md:flex-row selection:bg-navratri-accent selection:text-white">
       
       {/* Mobile Header & Menu Toggle */}
-      <div className="md:hidden bg-[#0F172A] p-4 flex items-center justify-between sticky top-0 z-50 shadow-sm border-b border-white/10">
+      <div className="md:hidden bg-[#1A1A1A] p-4 flex items-center justify-between sticky top-0 z-50 shadow-sm border-b border-white/10">
         <div className="flex items-center gap-2">
           <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-8 w-auto object-contain" />
           <span className="text-[10px] text-slate-400 tracking-widest uppercase font-sans mt-1">Admin</span>
@@ -42,7 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar */}
       <div className={`
-        fixed md:sticky top-0 left-0 h-screen w-64 bg-[#0F172A] flex flex-col z-40 shadow-xl transition-transform duration-300
+        fixed md:sticky top-0 left-0 h-screen w-64 bg-[#1A1A1A] flex flex-col z-40 shadow-xl transition-transform duration-300
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         <div className="p-6 border-b border-white/10 hidden md:flex items-end gap-3">
@@ -60,18 +60,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onClick={() => setMobileMenuOpen(false)}
                 className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-[12px] transition-all group ${
                   isActive 
-                  ? 'bg-gradient-to-r from-[#7C3AED]/20 to-transparent text-[#00E5FF] border-l-4 border-[#00E5FF]' 
+                  ? 'bg-gradient-to-r from-navratri-primary/20 to-transparent text-white border-l-4 border-navratri-primary' 
                   : 'text-slate-400 hover:bg-white/5 hover:text-white border-l-4 border-transparent'
                 }`}
               >
-                <link.icon className={`w-5 h-5 ${isActive ? 'text-[#00E5FF]' : 'text-slate-400 group-hover:text-white'}`} />
-                <span className="font-[600] text-[14px]">{link.name}</span>
+                <link.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-white'}`} />
+                <span className="font-medium text-[14px]">{link.name}</span>
               </Link>
             );
           })}
         </div>
         
-        <div className="p-4 border-t border-white/10 space-y-2 bg-[#0F172A]">
+        <div className="p-4 border-t border-white/10 space-y-2 bg-[#1A1A1A]">
           <Link href="/" target="_blank" className="w-full flex items-center justify-center gap-2 bg-white/5 text-slate-300 px-4 py-3.5 rounded-[12px] text-[14px] font-[700] hover:bg-white/10 hover:text-white transition-colors border border-white/10">
             View Public Site
           </Link>

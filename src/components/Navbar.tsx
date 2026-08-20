@@ -1,53 +1,142 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, User, ChevronDown } from 'lucide-react';
+import { Search, User, Menu, X } from 'lucide-react';
+import GlobalSearch from './GlobalSearch';
 
 export default function Navbar({ mobileMenuOpen, setMobileMenuOpen }: { mobileMenuOpen: boolean, setMobileMenuOpen: (v: boolean) => void }) {
   const pathname = usePathname();
+  const [searchOpen, setSearchOpen] = useState(false);
   const isAdminRoute = pathname?.startsWith('/admin');
   const isScanRoute = pathname?.startsWith('/scan');
   
   if (isAdminRoute || isScanRoute) return null;
 
+  const navLinks = [
+    { name: 'Events', href: '/events' },
+    { name: 'How It Works', href: '#how-it-works' },
+    { name: 'For Organizers', href: '/for-organizers' },
+    { name: 'Help', href: '/contact' },
+  ];
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 transition-all py-2 duration-300 bg-navratri-card border-b border-navratri-border">
-      <div className="w-full px-4 md:px-6 flex justify-between items-center min-h-[50px]">
-        
-        {/* Left Side: Logo & Mobile City */}
-        <div className="flex flex-col justify-center">
-          <Link href="/" className="block">
-            <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-[52px] md:h-[72px] w-auto object-contain scale-[1.15] md:scale-[1.25] origin-left mb-1.5 md:mb-0" />
-          </Link>
-          <button type="button" aria-label="Open city selection" className="md:hidden flex h-[18px] items-center gap-1 cursor-pointer group mt-0.5">
-            <span className="text-[11px] font-[600] text-navratri-muted">Ahmedabad</span>
-            <ChevronDown className="w-3 h-3 text-navratri-muted" />
-          </button>
-        </div>
-
-        {/* Right Side: City, CTA, Icons */}
-        <div className="flex gap-2 justify-center items-center">
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-navratri-bg/95 backdrop-blur-md border-b border-navratri-border h-16">
+        <nav className="w-full h-full px-4 md:px-6 flex justify-between items-center max-w-[1440px] mx-auto">
           
-          <div className="hidden md:flex h-[40px] px-4 rounded-[12px] items-center justify-center border border-navratri-border bg-navratri-softBg cursor-pointer hover:bg-gray-100 transition-colors">
-            <span className="text-[14px] font-[600] text-navratri-dark">Ahmedabad</span>
-            <ChevronDown className="w-4 h-4 text-navratri-dark ml-2" />
+          {/* Left Side: Logo */}
+          <div className="flex-shrink-0 flex items-center h-full">
+            <Link href="/" className="flex items-center h-full">
+              <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="h-[36px] md:h-[44px] w-auto object-contain" />
+            </Link>
           </div>
-          
-          <Link href="/contact" className="hidden md:flex rounded-[12px] items-center bg-navratri-primary text-white text-[14px] font-[700] tracking-wide whitespace-nowrap cursor-pointer px-4 py-2 hover:opacity-90 transition-all shadow-sm">
-            List Your Event
-          </Link>
-          
-          <button type="button" aria-label="Search" className="flex w-[40px] h-[40px] rounded-[12px] justify-center items-center cursor-pointer bg-navratri-softBg border border-navratri-border hover:bg-gray-100 transition-colors">
-            <Search className="w-[18px] h-[18px] text-navratri-dark" />
-          </button>
-          
-          <Link href="/profile" aria-label="Log in" className="flex w-[40px] h-[40px] rounded-[12px] justify-center items-center cursor-pointer bg-navratri-softBg border border-navratri-border hover:bg-gray-100 transition-colors">
-            <User className="w-[18px] h-[18px] text-navratri-dark" />
-          </Link>
 
-        </div>
-      </div>
-    </header>
+          {/* Center: Desktop Nav Links */}
+          <div className="hidden md:flex h-full items-center justify-center absolute left-1/2 -translate-x-1/2">
+            <ul className="flex space-x-6 lg:space-x-8">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className={`text-[15px] font-medium transition-colors hover:text-navratri-primary ${
+                        isActive ? 'text-navratri-primary' : 'text-navratri-text'
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          {/* Right Side: Icons & CTA */}
+          <div className="flex items-center gap-2 md:gap-4">
+            <button 
+              type="button" 
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search" 
+              className="flex w-10 h-10 rounded-full justify-center items-center text-navratri-text hover:bg-black/5 transition-colors"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+            
+            <Link 
+              href="/profile" 
+              aria-label="Profile" 
+              className="hidden md:flex w-10 h-10 rounded-full justify-center items-center text-navratri-text hover:bg-black/5 transition-colors"
+            >
+              <User className="w-5 h-5" />
+            </Link>
+
+            <Link 
+              href="/events" 
+              className="hidden md:flex items-center justify-center bg-navratri-primary text-white text-[15px] font-semibold px-5 py-2 rounded-full hover:opacity-90 transition-opacity"
+            >
+              Find Events
+            </Link>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              type="button"
+              className="md:hidden flex w-10 h-10 rounded-full justify-center items-center text-navratri-text hover:bg-black/5 transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle Menu"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </nav>
+        
+        {/* Mobile Slide-down Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-navratri-bg border-b border-navratri-border shadow-md">
+            <ul className="flex flex-col px-4 py-4 space-y-4">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`block text-[16px] font-medium transition-colors ${
+                        isActive ? 'text-navratri-primary' : 'text-navratri-text'
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                );
+              })}
+              <li className="pt-4 border-t border-navratri-border/50">
+                <Link 
+                  href="/profile"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 text-[16px] font-medium text-navratri-text"
+                >
+                  <User className="w-5 h-5" />
+                  Profile
+                </Link>
+              </li>
+              <li className="pt-2">
+                <Link 
+                  href="/events" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex justify-center items-center bg-navratri-primary text-white text-[16px] font-semibold py-3 rounded-full hover:opacity-90 transition-opacity w-full"
+                >
+                  Find Events
+                </Link>
+              </li>
+            </ul>
+          </div>
+        )}
+      </header>
+      
+      <GlobalSearch isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+    </>
   );
 }

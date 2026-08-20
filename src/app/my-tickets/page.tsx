@@ -70,7 +70,7 @@ export default function MyTicketsPage() {
   // UI for Not Logged In
   if (authLoading || (loading && user)) {
     return (
-      <div className="min-h-[calc(100vh-50px)] bg-gray-50 flex items-center justify-center pt-[80px]">
+      <div className="min-h-[calc(100vh-50px)] bg-navratri-bg flex items-center justify-center pt-[80px]">
         <Loader2 className="w-8 h-8 animate-spin text-navratri-primary" />
       </div>
     );
@@ -78,22 +78,22 @@ export default function MyTicketsPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col pt-[80px] px-4 sm:px-6">
+      <div className="min-h-screen bg-navratri-bg flex flex-col pt-[80px] px-4 sm:px-6">
         <div className="max-w-md w-full mx-auto animate-fade-in-up">
           <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 border border-gray-200 shadow-sm p-3">
             <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="w-full h-auto object-contain" />
           </div>
           
-          <h1 className="text-[28px] md:text-[32px] font-[850] text-gray-900 mb-2 tracking-tight">
+          <h1 className="text-[28px] md:text-[32px] font-[850] text-navratri-dark mb-2 tracking-tight">
             My Tickets
           </h1>
-          <p className="text-[14px] text-gray-500 font-[500] mb-8">
+          <p className="text-[14px] text-navratri-muted font-[500] mb-8">
             Sign in to view your bookings and manage your event passes securely.
           </p>
 
           <button 
             onClick={signInWithGoogle}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-[700] py-3.5 rounded-[12px] transition-colors active:scale-95 shadow-sm"
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-navratri-dark hover:bg-navratri-softBg font-[700] py-3.5 rounded-[12px] transition-colors active:scale-95 shadow-sm"
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -113,19 +113,19 @@ export default function MyTicketsPage() {
     <div className="bg-navratri-bg min-h-[calc(100vh-50px)] pb-24 pt-[60px] font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-[24px] md:text-[28px] font-[850] text-gray-900 tracking-tight">My Tickets</h1>
-          <button onClick={signOut} className="flex items-center gap-2 text-[13px] font-[700] text-gray-500 hover:text-gray-900 transition-colors">
+          <h1 className="text-[24px] md:text-[28px] font-[850] text-navratri-dark tracking-tight">My Tickets</h1>
+          <button onClick={signOut} className="flex items-center gap-2 text-[13px] font-[700] text-navratri-muted hover:text-navratri-dark transition-colors">
             <LogOut className="w-4 h-4" />
             Sign out
           </button>
         </div>
 
         {bookings.length === 0 ? (
-          <div className="bg-navratri-card rounded-[16px] p-10 text-center border border-navratri-border shadow-sm flex flex-col items-center">
-            <div className="w-16 h-16 bg-navratri-softBg rounded-full flex items-center justify-center mb-4 border border-navratri-border p-3">
-              <img src="/brand/raaspass-logo.svg" alt="RaasPass Logo" className="w-full h-auto object-contain" />
+          <div className="card-base p-10 text-center flex flex-col items-center">
+            <div className="w-16 h-16 bg-navratri-softBg rounded-full flex items-center justify-center mb-4 p-3">
+              <Ticket className="w-8 h-8 text-navratri-primary" />
             </div>
-            <h2 className="text-[18px] font-[800] text-navratri-text mb-2">No Bookings Found</h2>
+            <h2 className="text-[18px] font-[800] text-navratri-dark mb-2">No tickets yet — discover events</h2>
             <p className="text-navratri-muted font-[500] max-w-sm mb-6 text-[13px]">You haven't booked any tickets yet. Explore our events and book your passes.</p>
             <button onClick={() => router.push('/events')} className="bg-navratri-primary hover:opacity-90 text-white font-[700] px-6 py-2.5 rounded-[12px] active:scale-95 transition-all text-[13px] shadow-premium">
               Explore Events
@@ -138,30 +138,28 @@ export default function MyTicketsPage() {
               const bannerImage = booking.eventBanner || booking.tickets[0]?.eventBanner;
               
               return (
-                <div key={booking.id} className="bg-navratri-card rounded-[16px] p-4 border border-navratri-border shadow-sm flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                <div key={booking.id} className="card-base hover:shadow-card-hover p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center transition-shadow duration-200">
                   
-                  <div className="flex gap-4 flex-1 w-full">
-                    <div className="w-24 h-24 sm:w-20 sm:h-20 bg-gray-100 rounded-[12px] flex items-center justify-center shrink-0 overflow-hidden border border-gray-200">
-                      {bannerImage ? (
-                        <img src={bannerImage} alt={booking.eventName} className="w-full h-full object-cover" />
-                      ) : (
-                        <Ticket className="w-6 h-6 text-gray-400" />
-                      )}
+                  <div className="w-full sm:w-32 h-40 sm:h-24 bg-navratri-softBg rounded-[12px] flex items-center justify-center shrink-0 overflow-hidden">
+                    {bannerImage ? (
+                      <img src={bannerImage} alt={booking.eventName} className="w-full h-full object-cover" />
+                    ) : (
+                      <Ticket className="w-8 h-8 text-navratri-muted" />
+                    )}
+                  </div>
+                  
+                  <div className="flex-1 min-w-0 flex flex-col justify-center w-full">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 sm:mb-1">
+                      <h3 className="text-[16px] sm:text-[18px] font-[800] text-navratri-dark truncate">{booking.eventName}</h3>
+                      <span className="w-fit text-[11px] bg-green-50 border border-green-200 text-green-700 font-[800] uppercase tracking-wider px-2 py-0.5 rounded-[6px]">Paid</span>
                     </div>
-                    
-                    <div className="flex-1 min-w-0 flex flex-col justify-center">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] bg-green-50 border border-green-200 text-green-700 font-[800] uppercase tracking-wider px-2 py-0.5 rounded-[6px]">Paid</span>
-                      </div>
-                      <h3 className="text-[15px] font-[800] text-gray-900 mb-1 truncate">{booking.eventName}</h3>
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-gray-500 font-[600]">
-                        <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {new Date(booking.eventDate || booking.tickets[0]?.createdAt).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})}</span>
-                        <span className="flex items-center gap-1 bg-gray-100 px-2 rounded-sm text-gray-700">{booking.tickets[0]?.ticketType || 'Pass'} x {totalTickets}</span>
-                      </div>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-navratri-muted font-[600]">
+                      <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {new Date(booking.eventDate || booking.tickets[0]?.createdAt).toLocaleDateString(undefined, {month: 'short', day: 'numeric', year: 'numeric'})}</span>
+                      <span className="flex items-center gap-1.5 bg-navratri-softBg px-2.5 py-0.5 rounded-md text-navratri-dark">{booking.tickets[0]?.ticketType || 'Pass'} × {totalTickets}</span>
                     </div>
                   </div>
                   
-                  <div className="w-full sm:w-auto shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-navratri-border mt-1 sm:mt-0">
+                  <div className="w-full sm:w-auto shrink-0 pt-4 sm:pt-0 border-t sm:border-t-0 border-navratri-softBg mt-2 sm:mt-0 flex justify-end">
                     <button 
                       onClick={() => router.push(`/tickets/${booking.id}`)}
                       className="w-full sm:w-auto bg-navratri-primary text-white font-[700] px-5 py-2.5 rounded-[10px] hover:opacity-90 active:scale-95 transition-all text-[13px] shadow-premium flex justify-center items-center gap-2"

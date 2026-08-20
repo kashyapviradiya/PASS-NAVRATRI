@@ -40,7 +40,7 @@ export default function OrganizerReports() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         {/* Bookings Report */}
-        <div className="bg-white p-6 sm:p-8 rounded-[1.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col items-center text-center">
+        <div className="card-base p-6 sm:p-8 flex flex-col items-center text-center">
           <div className="w-16 h-16 bg-[#9333EA]/10 rounded-2xl flex items-center justify-center mb-6">
             <Ticket className="w-8 h-8 text-[#9333EA]" />
           </div>
@@ -51,14 +51,14 @@ export default function OrganizerReports() {
           <button 
             onClick={() => handleExport('bookings')}
             disabled={downloading}
-            className="w-full bg-[#111111] text-white px-6 py-3.5 rounded-xl font-[800] text-sm shadow-md hover:bg-gray-900 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+            className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-70"
           >
             <Download className="w-4 h-4" /> Download Bookings CSV
           </button>
         </div>
 
         {/* Check-ins Report */}
-        <div className="bg-white p-6 sm:p-8 rounded-[1.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col items-center text-center">
+        <div className="card-base p-6 sm:p-8 flex flex-col items-center text-center">
           <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
             <ScanLine className="w-8 h-8 text-blue-600" />
           </div>
@@ -69,7 +69,7 @@ export default function OrganizerReports() {
           <button 
             onClick={() => handleExport('checkins')}
             disabled={downloading}
-            className="w-full bg-white border border-gray-200 text-[#111111] px-6 py-3.5 rounded-xl font-[800] text-sm shadow-sm hover:bg-gray-50 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+            className="btn-secondary w-full flex items-center justify-center gap-2 disabled:opacity-70"
           >
             <Download className="w-4 h-4" /> Download Check-ins CSV
           </button>

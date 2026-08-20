@@ -3,81 +3,174 @@
 @tailwind utilities;
 
 :root {
-  --background-rgb: 239, 233, 233; /* #EFE9E9 Light bg */
-  --foreground-rgb: 90, 33, 50;    /* #5A2132 Primary text */
+  --color-bg: 250, 248, 246;
+  --color-text: 45, 32, 36;
+  --color-primary: 107, 29, 50;
+  --color-muted: 140, 122, 128;
+  --color-border: 232, 224, 221;
 }
 
+/* ─── Base ─── */
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background-color: rgb(var(--background-rgb));
-  font-family: 'Inter', sans-serif;
+  color: rgb(var(--color-text));
+  background-color: rgb(var(--color-bg));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Base focus and selection styles */
 ::selection {
-  background-color: #5A2132;
+  background-color: rgb(var(--color-primary));
   color: white;
 }
 
-/* Premium utility classes */
-@layer utilities {
-  .glass {
-    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-glass;
-  }
-  .glass-dark {
-    @apply bg-slate-900/70 backdrop-blur-md border border-slate-700/50 shadow-glass;
-  }
-  .text-gradient {
-    @apply text-navratri-primary;
-  }
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .premium-border {
-    position: relative;
-  }
-  .premium-border::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(90,33,50,0.3), rgba(90,33,50,0.1));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+/* ─── Focus & Accessibility ─── */
+:focus-visible {
+  outline: 2px solid rgb(var(--color-primary));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-/* Smooth scrollbar */
+/* ─── Component Classes ─── */
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 ease-out active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+  .btn-primary {
+    @apply btn bg-navratri-primary text-white px-6 py-3 rounded-button text-sm hover:bg-navratri-primary/90 shadow-xs hover:shadow-premium;
+  }
+  .btn-secondary {
+    @apply btn bg-white text-navratri-text px-6 py-3 rounded-button text-sm border border-navratri-border hover:border-navratri-primary/30 hover:bg-navratri-softBg shadow-xs;
+  }
+  .btn-ghost {
+    @apply btn text-navratri-muted px-4 py-2 rounded-button text-sm hover:text-navratri-text hover:bg-navratri-softBg;
+  }
+  .btn-danger {
+    @apply btn bg-red-50 text-red-600 px-6 py-3 rounded-button text-sm border border-red-100 hover:bg-red-100;
+  }
+  .btn-icon {
+    @apply btn w-10 h-10 rounded-xl text-navratri-muted hover:text-navratri-text hover:bg-navratri-softBg;
+  }
+
+  /* Inputs */
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-navratri-border rounded-xl text-sm font-medium text-navratri-text placeholder:text-navratri-muted/60 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-navratri-primary/15 focus:border-navratri-primary/40;
+  }
+  .input-label {
+    @apply block text-xs font-bold text-navratri-muted uppercase tracking-wider mb-2;
+  }
+
+  /* Cards */
+  .card-base {
+    @apply bg-white rounded-card border border-navratri-border/60 shadow-card;
+  }
+  .card-interactive {
+    @apply card-base hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full;
+  }
+  .badge-success {
+    @apply badge bg-green-50 text-green-700 border border-green-100;
+  }
+  .badge-warning {
+    @apply badge bg-amber-50 text-amber-700 border border-amber-100;
+  }
+  .badge-danger {
+    @apply badge bg-red-50 text-red-700 border border-red-100;
+  }
+  .badge-info {
+    @apply badge bg-blue-50 text-blue-700 border border-blue-100;
+  }
+  .badge-neutral {
+    @apply badge bg-gray-50 text-gray-600 border border-gray-100;
+  }
+  .badge-primary {
+    @apply badge bg-navratri-primary/10 text-navratri-primary border border-navratri-primary/15;
+  }
+
+  /* Section headings */
+  .section-heading {
+    @apply text-2xl md:text-3xl font-display font-extrabold text-navratri-dark tracking-tight;
+  }
+  .section-subheading {
+    @apply text-sm text-navratri-muted font-medium mt-1;
+  }
+
+  /* Skeleton loading */
+  .skeleton {
+    @apply bg-navratri-border/40 rounded-xl animate-shimmer;
+    background-image: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    background-size: 200% 100%;
+  }
+
+  /* Data table */
+  .table-header {
+    @apply text-[11px] font-bold uppercase tracking-wider text-navratri-muted px-4 py-3 text-left bg-navratri-softBg/50;
+  }
+  .table-cell {
+    @apply px-4 py-3.5 text-sm font-medium text-navratri-text border-b border-navratri-border/40;
+  }
+
+  /* Status dots */
+  .status-dot {
+    @apply w-2 h-2 rounded-full shrink-0;
+  }
+  .status-dot-active {
+    @apply status-dot bg-green-500;
+  }
+  .status-dot-inactive {
+    @apply status-dot bg-gray-300;
+  }
+  .status-dot-warning {
+    @apply status-dot bg-amber-500;
+  }
+}
+
+/* ─── Utility Classes ─── */
+@layer utilities {
+  .glass {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+  }
+  .glass-dark {
+    @apply bg-black/80 backdrop-blur-md border border-white/10;
+  }
+  .text-gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-navratri-primary to-navratri-accent;
+  }
+}
+
+/* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: #D1C9C6;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: #B0A6A2;
 }
 
-/* Hide scrollbar utility */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -86,6 +179,7 @@ body {
   scrollbar-width: none;
 }
 
+/* ─── Print ─── */
 @media print {
   body {
     -webkit-print-color-adjust: exact;

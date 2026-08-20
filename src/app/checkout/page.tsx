@@ -108,8 +108,8 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="bg-navratri-bg min-h-[calc(100vh-64px)] pb-32 font-sans selection:bg-navratri-primary selection:text-white pt-10">
-      <div className="max-w-[1024px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-navratri-bg min-h-[calc(100vh-64px)] pb-32 lg:pb-16 font-sans selection:bg-navratri-primary selection:text-white pt-10 relative">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* HEADER */}
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -125,26 +125,28 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           
           {/* LEFT: WIZARD */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-3 space-y-6">
             
             {/* Step Indicators */}
-            <div className="flex items-center mb-4">
+            <div className="flex items-center mb-6">
               {[1, 2, 3].map((num) => (
-                <div key={num} className="flex items-center">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center font-[800] text-[14px] border ${step >= num ? 'bg-navratri-primary text-white border-navratri-primary shadow-premium' : 'bg-white text-slate-400 border-slate-200'} transition-all duration-300`}>
+                <div key={num} className="flex items-center flex-1 last:flex-none">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-[800] text-[14px] border-2 z-10 relative ${step >= num ? 'bg-navratri-primary text-white border-navratri-primary shadow-premium' : 'bg-white text-slate-400 border-slate-200'} transition-all duration-300`}>
                     {step > num ? <CheckCircle className="w-5 h-5 text-white" /> : num}
                   </div>
                   {num < 3 && (
-                    <div className={`w-16 h-[2px] ${step > num ? 'bg-navratri-primary' : 'bg-slate-200'} transition-colors mx-2 rounded-full`}></div>
+                    <div className="flex-1 h-[2px] mx-2 bg-slate-200 relative rounded-full overflow-hidden">
+                      <div className={`absolute top-0 left-0 h-full bg-navratri-primary transition-all duration-500 ${step > num ? 'w-full' : 'w-0'}`}></div>
+                    </div>
                   )}
                 </div>
               ))}
             </div>
 
-            <div className="bg-white rounded-card p-8 md:p-10 border border-slate-100 shadow-card relative overflow-hidden">
+            <div className="card-base bg-white rounded-card p-8 md:p-10 shadow-card border border-slate-100 relative overflow-hidden">
               <div className="absolute top-0 inset-x-0 h-[3px] bg-navratri-primary"></div>
               
               {/* STEP 1: CUSTOMER DETAILS */}
@@ -153,80 +155,35 @@ export default function CheckoutPage() {
                   <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-6">Customer Details</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">Full Name</label>
-                      <input type="text" className="w-full px-5 py-3.5 rounded-[16px] bg-slate-50 border border-slate-200 focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 outline-none transition-all font-[500] text-[15px] text-navratri-text" placeholder="Rahul Sharma" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
+                      <label className="input-label text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">Full Name</label>
+                      <input type="text" className={`input-field w-full px-5 py-3.5 rounded-[16px] bg-slate-50 border border-slate-200 focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 outline-none transition-all font-[500] text-[15px] text-navratri-text ${user && user.displayName === formData.name && formData.name ? 'bg-emerald-50/50 border-emerald-200' : ''}`} placeholder="Rahul Sharma" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">Email Address</label>
-                      <input type="email" className="w-full px-5 py-3.5 rounded-[16px] bg-slate-50 border border-slate-200 focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 outline-none transition-all font-[500] text-[15px] text-navratri-text" placeholder="rahul@example.com" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
+                      <label className="input-label text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">Email Address</label>
+                      <input type="email" className={`input-field w-full px-5 py-3.5 rounded-[16px] bg-slate-50 border border-slate-200 focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 outline-none transition-all font-[500] text-[15px] text-navratri-text ${user && user.email === formData.email && formData.email ? 'bg-emerald-50/50 border-emerald-200' : ''}`} placeholder="rahul@example.com" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">Phone Number</label>
-                      <input type="tel" className="w-full px-5 py-3.5 rounded-[16px] bg-slate-50 border border-slate-200 focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 outline-none transition-all font-[500] text-[15px] text-navratri-text" placeholder="Enter 10 digits" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
+                      <label className="input-label text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">Phone Number</label>
+                      <input type="tel" className="input-field w-full px-5 py-3.5 rounded-[16px] bg-slate-50 border border-slate-200 focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 outline-none transition-all font-[500] text-[15px] text-navratri-text" placeholder="Enter 10 digits" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">City</label>
-                      <input type="text" className="w-full px-5 py-3.5 rounded-[16px] bg-slate-50 border border-slate-200 focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 outline-none transition-all font-[500] text-[15px] text-navratri-text" placeholder="Ahmedabad" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} />
+                      <label className="input-label text-[11px] font-[800] text-navratri-muted uppercase tracking-widest">City</label>
+                      <input type="text" className="input-field w-full px-5 py-3.5 rounded-[16px] bg-slate-50 border border-slate-200 focus:outline-none focus:border-navratri-primary focus:ring-1 focus:ring-navratri-primary/30 outline-none transition-all font-[500] text-[15px] text-navratri-text" placeholder="Ahmedabad" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} />
                     </div>
                   </div>
-                  <button onClick={handleNextStep} className="mt-8 px-8 py-4 bg-navratri-primary text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all w-full sm:w-auto text-[15px] hover:opacity-90">
-                    Continue to Order Summary
+                  <button onClick={handleNextStep} className="mt-8 btn-primary px-8 py-4 bg-navratri-primary text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all w-full sm:w-auto text-[15px] hover:opacity-90">
+                    Continue to Payment Method
                   </button>
                 </div>
               )}
 
-              {/* STEP 2: ORDER SUMMARY */}
+              {/* STEP 2: PAYMENT METHOD */}
               {step === 2 && (
-                <div className="animate-fade-in-up">
-                  <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-6">Order Confirmation</h2>
-                  
-                  <div className="bg-slate-50 p-6 rounded-[20px] border border-slate-100 mb-6 space-y-4">
-                    {ticketTypesList.map(pass => {
-                      const qty = selectedPasses[pass.id] || 0;
-                      if (qty === 0) return null;
-                      return (
-                        <div key={pass.id} className="flex justify-between items-center text-[15px] pb-4 border-b border-slate-200/60 last:border-0 last:pb-0">
-                          <div>
-                            <p className="font-[800] text-navratri-text">{pass.name}</p>
-                            <p className="text-navratri-muted font-[500]">{qty} x {formatCurrency(pass.price)}</p>
-                          </div>
-                          <p className="font-[800] text-navratri-text">{formatCurrency(qty * pass.price)}</p>
-                        </div>
-                      );
-                    })}
-                    <div className="pt-2 border-t border-slate-200/60">
-                       <div className="flex justify-between items-center text-[15px] py-2">
-                        <p className="text-navratri-muted font-[600]">Convenience Fee</p>
-                        <p className="font-[800] text-navratri-text">{formatCurrency(convenienceFee)}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-slate-50 p-6 rounded-[20px] border border-slate-200 flex justify-between items-center mb-8 shadow-sm">
-                    <div>
-                      <p className="text-[11px] font-[800] text-navratri-primary uppercase tracking-widest mb-1">Total Payable</p>
-                      <p className="text-[32px] font-display font-[800] text-navratri-text tracking-tight">{formatCurrency(totalAmount)}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <button onClick={handleNextStep} className="w-full sm:w-auto px-8 py-4 bg-navratri-primary text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all text-[15px] hover:opacity-90">
-                      Proceed to Payment
-                    </button>
-                    <button onClick={() => setStep(1)} className="w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-navratri-text font-[700] rounded-button hover:bg-slate-50 transition-colors text-[15px]">
-                      Edit Details
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 3: PAYMENT METHOD */}
-              {step === 3 && (
                 <div className="animate-fade-in-up">
                   <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-6">Select Payment Method</h2>
                   
                   <div className="space-y-4 mb-8">
-                    <label className={`flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'upi' ? 'border-navratri-primary bg-navratri-primary/5' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
+                    <label className={`card-base flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'upi' ? 'border-navratri-primary bg-navratri-primary/5' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
                       <input type="radio" name="payment" value="upi" checked={paymentMethod === 'upi'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 accent-navratri-primary focus:ring-navratri-primary" />
                       <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 shrink-0">
                         <Smartphone className="w-5 h-5 text-navratri-primary" />
@@ -237,7 +194,7 @@ export default function CheckoutPage() {
                       </div>
                     </label>
 
-                    <label className={`flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-navratri-primary bg-navratri-primary/5' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
+                    <label className={`card-base flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-navratri-primary bg-navratri-primary/5' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
                       <input type="radio" name="payment" value="card" checked={paymentMethod === 'card'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 accent-navratri-primary focus:ring-navratri-primary" />
                       <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 shrink-0">
                         <CreditCard className="w-5 h-5 text-navratri-primary" />
@@ -248,7 +205,7 @@ export default function CheckoutPage() {
                       </div>
                     </label>
 
-                    <label className={`flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'netbanking' ? 'border-navratri-primary bg-navratri-primary/5' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
+                    <label className={`card-base flex items-center gap-4 p-5 rounded-[20px] border-2 cursor-pointer transition-all ${paymentMethod === 'netbanking' ? 'border-navratri-primary bg-navratri-primary/5' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
                       <input type="radio" name="payment" value="netbanking" checked={paymentMethod === 'netbanking'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-5 h-5 accent-navratri-primary focus:ring-navratri-primary" />
                       <div className="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 shrink-0">
                         <Building className="w-5 h-5 text-navratri-primary" />
@@ -260,20 +217,48 @@ export default function CheckoutPage() {
                     </label>
                   </div>
 
+                  <div className="flex flex-col sm:flex-row items-center gap-4">
+                    <button onClick={handleNextStep} className="btn-primary w-full sm:w-auto px-8 py-4 bg-navratri-primary text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all text-[15px] hover:opacity-90">
+                      Review & Confirm
+                    </button>
+                    <button onClick={() => setStep(1)} className="btn-secondary w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-navratri-text font-[700] rounded-button hover:bg-slate-50 transition-colors text-[15px]">
+                      Back
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 3: REVIEW & CONFIRM */}
+              {step === 3 && (
+                <div className="animate-fade-in-up">
+                  <h2 className="text-[24px] font-display font-[700] text-navratri-text mb-6">Review & Confirm</h2>
+                  
+                  <div className="bg-slate-50 p-6 rounded-[20px] border border-slate-100 mb-6 space-y-4">
+                    <h3 className="font-[800] text-navratri-text text-[15px] mb-2 border-b border-slate-200/60 pb-2">Customer Info</h3>
+                    <p className="text-[14px] text-navratri-text font-[600]">{formData.name}</p>
+                    <p className="text-[14px] text-navratri-muted font-[500]">{formData.email} | +91 {formData.phone}</p>
+                    <p className="text-[14px] text-navratri-muted font-[500]">{formData.city}</p>
+                  </div>
+
+                  <div className="bg-slate-50 p-6 rounded-[20px] border border-slate-100 mb-8 space-y-4">
+                    <h3 className="font-[800] text-navratri-text text-[15px] mb-2 border-b border-slate-200/60 pb-2">Payment Mode</h3>
+                    <p className="text-[14px] text-navratri-text font-[600] uppercase">{paymentMethod}</p>
+                  </div>
+
                   <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-100">
                     <button 
                       onClick={handleCheckout} 
                       disabled={isProcessing}
-                      className="w-full sm:w-auto px-10 py-4 bg-navratri-primary text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:translate-y-0 text-[15px] hover:opacity-90"
+                      className="btn-primary w-full sm:w-auto px-10 py-4 bg-navratri-primary text-white font-[700] rounded-button hover:shadow-premium hover:-translate-y-0.5 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:translate-y-0 text-[15px] hover:opacity-90"
                     >
                       {isProcessing ? (
-                        <><Loader2 className="w-5 h-5 animate-spin" /> Processing Securely...</>
+                        <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
                       ) : (
-                        <>{process.env.NEXT_PUBLIC_DEMO_MODE === 'true' ? 'Complete Demo Booking' : `Pay ${formatCurrency(totalAmount)}`}</>
+                        <>{process.env.NEXT_PUBLIC_DEMO_MODE === 'true' ? 'Complete Demo Booking' : `Confirm & Pay ${formatCurrency(totalAmount)}`}</>
                       )}
                     </button>
                     {!isProcessing && (
-                      <button onClick={() => setStep(2)} className="w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-navratri-text font-[700] rounded-button hover:bg-slate-50 transition-colors text-[15px]">
+                      <button onClick={() => setStep(2)} className="btn-secondary w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-navratri-text font-[700] rounded-button hover:bg-slate-50 transition-colors text-[15px]">
                         Back
                       </button>
                     )}
@@ -284,9 +269,9 @@ export default function CheckoutPage() {
           </div>
 
           {/* RIGHT: ORDER OVERVIEW */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-card p-6 md:p-8 border border-slate-100 lg:sticky lg:top-28 shadow-card">
-              <h3 className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest mb-6">Booking Details</h3>
+          <div className="lg:col-span-2 space-y-6">
+            <div className="card-base bg-white rounded-card p-6 md:p-8 border border-slate-100 lg:sticky lg:top-28 shadow-card">
+              <h3 className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest mb-6">Order Summary</h3>
               
               <div className="flex gap-4 mb-6 pb-6 border-b border-slate-100">
                 <img src={event.bannerImage || event.bannerUrl || '/demo/events/poster_navratri.jpg'} alt={event.title || event.name} className="w-20 h-20 object-cover rounded-[16px] border border-slate-100" />
@@ -301,21 +286,60 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
+              <div className="space-y-4 mb-6 pb-6 border-b border-slate-100">
+                {ticketTypesList.map(pass => {
+                  const qty = selectedPasses[pass.id] || 0;
+                  if (qty === 0) return null;
+                  return (
+                    <div key={pass.id} className="flex justify-between items-start text-[14px]">
+                      <div>
+                        <p className="font-[800] text-navratri-text">{pass.name}</p>
+                        <p className="text-navratri-muted font-[500]">{qty} x {formatCurrency(pass.price)}</p>
+                      </div>
+                      <p className="font-[800] text-navratri-text">{formatCurrency(qty * pass.price)}</p>
+                    </div>
+                  );
+                })}
+                <div className="pt-4 flex justify-between items-center text-[14px] border-t border-slate-200/60 mt-4">
+                  <p className="text-navratri-muted font-[600]">Convenience Fee</p>
+                  <p className="font-[800] text-navratri-text">{formatCurrency(convenienceFee)}</p>
+                </div>
+              </div>
+
               <div className="flex justify-between items-end mb-6">
                 <div>
-                  <p className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest mb-1">Total Amount</p>
+                  <p className="text-[11px] font-[800] text-navratri-primary uppercase tracking-widest mb-1">Total Payable</p>
                   <p className="text-[32px] font-display font-[800] text-navratri-text tracking-tight leading-none">{formatCurrency(totalAmount)}</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 bg-slate-50 p-4 rounded-[16px] text-[13px] text-navratri-muted font-[500] leading-relaxed border border-slate-100">
+              <div className="flex items-start gap-3 bg-navratri-softBg p-4 rounded-[16px] text-[13px] text-navratri-muted font-[500] leading-relaxed border border-navratri-border">
                 <Shield className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                <p>Your payment is processed securely. We never store your card details.</p>
+                <p>Secured by 256-bit encryption. We never store your card details.</p>
               </div>
             </div>
           </div>
 
         </div>
+      </div>
+      
+      {/* MOBILE STICKY BOTTOM BAR */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-50 flex items-center justify-between">
+        <div>
+          <p className="text-[11px] font-[800] text-navratri-muted uppercase tracking-widest mb-0.5">Total</p>
+          <p className="text-[20px] font-display font-[800] text-navratri-text leading-none">{formatCurrency(totalAmount)}</p>
+        </div>
+        <button 
+          onClick={step === 3 ? handleCheckout : handleNextStep} 
+          disabled={isProcessing}
+          className="btn-primary py-3 px-8 bg-navratri-primary text-white font-[700] rounded-button hover:shadow-premium transition-all m-0 flex items-center gap-2"
+        >
+          {isProcessing ? (
+             <><Loader2 className="w-4 h-4 animate-spin" /> Processing</>
+          ) : (
+            step === 3 ? 'Pay Now' : 'Continue'
+          )}
+        </button>
       </div>
     </div>
   );

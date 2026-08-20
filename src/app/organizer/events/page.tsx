@@ -60,10 +60,10 @@ export default function OrganizerEvents() {
             placeholder="Search events by name or city..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-[1rem] focus:outline-none focus:ring-2 focus:ring-[#9333EA]/20 focus:border-[#9333EA] text-sm font-[500] transition-all"
+            className="input-field pl-11"
           />
         </div>
-        <button className="flex items-center gap-2 px-5 py-3 bg-white border border-gray-200 rounded-[1rem] hover:bg-gray-50 font-[700] text-sm text-[#111111] shadow-sm">
+        <button className="btn-secondary flex items-center gap-2">
           <Filter className="w-4 h-4" /> Filter
         </button>
       </div>
@@ -75,14 +75,14 @@ export default function OrganizerEvents() {
           const percentSold = totalPasses > 0 ? Math.round((totalSold / totalPasses) * 100) : 0;
           
           return (
-            <div key={event.id} className="bg-white rounded-[1.5rem] overflow-hidden hover:shadow-md transition-shadow group flex flex-col border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)]">
+            <div key={event.id} className="card-base hover:shadow-card-hover group flex flex-col overflow-hidden">
               <div className="h-48 relative overflow-hidden bg-gray-100">
                 <img src={event.imageUrl || event.bannerUrl || '/placeholder.jpg'} alt={event.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute top-4 right-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-[800] uppercase tracking-wider shadow-sm ${
-                    event.status === 'published' ? 'bg-green-100 text-green-700' :
-                    event.status === 'draft' ? 'bg-gray-100 text-gray-700' :
-                    'bg-red-100 text-[#9333EA]'
+                  <span className={`${
+                    event.status === 'published' ? 'badge-success' :
+                    event.status === 'draft' ? 'badge-warning' :
+                    'badge-danger'
                   }`}>
                     {event.status || 'DRAFT'}
                   </span>
