@@ -172,98 +172,84 @@ export default function ScannerDashboard() {
     } catch (e) {}
   };
 
-  const requestCameraPermission = async (): Promise<boolean> => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-      // Permission granted - stop the test stream immediately
-      stream.getTracks().forEach(track => track.stop());
-      return true;
-    } catch (err) {
-      // Try without facingMode constraint
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        stream.getTracks().forEach(track => track.stop());
-        return true;
-      } catch (err2) {
-        return false;
-      }
-    }
-  };
-
   const startScanner = async () => {
     if (scannerRef.current) return;
+    setIsScanning(true);
+  };
 
-    // Step 1: Request camera permission first
-    const hasPermission = await requestCameraPermission();
-    if (!hasPermission) {
-      toast.error("Camera access denied. Please allow camera permission in your browser settings and reload the page.");
-      return;
-    }
+  // Start the actual QR scanner AFTER the DOM element is rendered
+  useEffect(() => {
+    if (!isScanning || scannerRef.current) return;
 
-    try {
-      setIsScanning(true);
-      const html5QrCode = new Html5Qrcode(scanRegionId);
-      scannerRef.current = html5QrCode;
-
-      const config = {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-        aspectRatio: 1.0
-      };
-
-      // Strategy 1: Try rear camera
+    const initScanner = async () => {
       try {
-        await html5QrCode.start(
-          { facingMode: "environment" },
-          config,
-          onScanSuccess,
-          onScanFailure
-        );
-        return;
-      } catch (e) {
-        console.warn("Rear camera failed, trying front camera...", e);
-      }
+        const html5QrCode = new Html5Qrcode(scanRegionId);
+        scannerRef.current = html5QrCode;
 
-      // Strategy 2: Try front camera
-      try {
-        await html5QrCode.start(
-          { facingMode: "user" },
-          config,
-          onScanSuccess,
-          onScanFailure
-        );
-        return;
-      } catch (e) {
-        console.warn("Front camera failed, trying device list...", e);
-      }
+        const config = {
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
+          aspectRatio: 1.0
+        };
 
-      // Strategy 3: List all devices and try first available
-      try {
-        const devices = await Html5Qrcode.getCameras();
-        if (devices && devices.length > 0) {
+        // Strategy 1: Try rear camera
+        try {
           await html5QrCode.start(
-            devices[0].id,
+            { facingMode: "environment" },
             config,
             onScanSuccess,
             onScanFailure
           );
           return;
+        } catch (e) {
+          console.warn("Rear camera failed:", e);
         }
-      } catch (e) {
-        console.warn("Device list failed", e);
+
+        // Strategy 2: Try front camera
+        try {
+          await html5QrCode.start(
+            { facingMode: "user" },
+            config,
+            onScanSuccess,
+            onScanFailure
+          );
+          return;
+        } catch (e) {
+          console.warn("Front camera failed:", e);
+        }
+
+        // Strategy 3: Device list
+        try {
+          const devices = await Html5Qrcode.getCameras();
+          if (devices && devices.length > 0) {
+            await html5QrCode.start(
+              devices[0].id,
+              config,
+              onScanSuccess,
+              onScanFailure
+            );
+            return;
+          }
+        } catch (e) {
+          console.warn("Device list failed:", e);
+        }
+
+        toast.error("No camera found. Use manual input below.");
+        setIsScanning(false);
+        scannerRef.current = null;
+      } catch (err) {
+        console.error("Scanner error:", err);
+        toast.error("Camera failed. Use manual input below.");
+        setIsScanning(false);
+        scannerRef.current = null;
       }
+    };
 
-      toast.error("No camera found on this device.");
-      setIsScanning(false);
-      scannerRef.current = null;
+    // Small delay to ensure DOM element exists after React render
+    const timer = setTimeout(initScanner, 100);
+    return () => clearTimeout(timer);
+  }, [isScanning]);
 
-    } catch (err) {
-      console.error("Error starting scanner:", err);
-      toast.error("Could not start camera. Please check permissions.");
-      setIsScanning(false);
-      scannerRef.current = null;
-    }
-  };
 
   const stopScanner = async () => {
     if (scannerRef.current) {
