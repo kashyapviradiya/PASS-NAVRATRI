@@ -172,8 +172,33 @@ export default function ScannerDashboard() {
     } catch (e) {}
   };
 
+  const requestCameraPermission = async (): Promise<boolean> => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+      // Permission granted - stop the test stream immediately
+      stream.getTracks().forEach(track => track.stop());
+      return true;
+    } catch (err) {
+      // Try without facingMode constraint
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream.getTracks().forEach(track => track.stop());
+        return true;
+      } catch (err2) {
+        return false;
+      }
+    }
+  };
+
   const startScanner = async () => {
     if (scannerRef.current) return;
+
+    // Step 1: Request camera permission first
+    const hasPermission = await requestCameraPermission();
+    if (!hasPermission) {
+      toast.error("Camera access denied. Please allow camera permission in your browser settings and reload the page.");
+      return;
+    }
 
     try {
       setIsScanning(true);
@@ -228,8 +253,7 @@ export default function ScannerDashboard() {
         console.warn("Device list failed", e);
       }
 
-      // All strategies failed
-      toast.error("No camera found. Please allow camera access and try again.");
+      toast.error("No camera found on this device.");
       setIsScanning(false);
       scannerRef.current = null;
 
