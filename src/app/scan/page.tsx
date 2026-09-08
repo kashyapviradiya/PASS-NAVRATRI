@@ -31,6 +31,7 @@ export default function ScannerDashboard() {
   
   const [isScanning, setIsScanning] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [manualQr, setManualQr] = useState('');
   
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [recentScans, setRecentScans] = useState<ScanResult[]>([]);
@@ -594,6 +595,42 @@ export default function ScannerDashboard() {
             >
               <ScanLine className="w-5 h-5" /> Start Scanning
             </button>
+
+            {/* Manual QR Input for desktop / no camera */}
+            <div className="mt-8 w-full max-w-[340px]">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="h-px flex-1 bg-white/10"></div>
+                <span className="text-[11px] font-[700] text-white/30 uppercase tracking-widest">or enter manually</span>
+                <div className="h-px flex-1 bg-white/10"></div>
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={manualQr}
+                  onChange={(e) => setManualQr(e.target.value)}
+                  placeholder="Paste QR code value"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-[12px] px-4 py-3 text-white text-[14px] font-[600] placeholder-white/30 outline-none focus:border-[#00E5FF]/50 transition-colors"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && manualQr.trim()) {
+                      onScanSuccess(manualQr.trim());
+                      setManualQr('');
+                    }
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    if (manualQr.trim()) {
+                      onScanSuccess(manualQr.trim());
+                      setManualQr('');
+                    }
+                  }}
+                  disabled={!manualQr.trim() || processing}
+                  className="bg-[#00E5FF] text-slate-900 px-5 py-3 rounded-[12px] font-[800] text-[13px] hover:bg-[#00B4D8] active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Scan
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
