@@ -7,9 +7,12 @@ export async function GET() {
     const ordersSnap = await adminDb.collection('orders').get();
     const ticketsSnap = await adminDb.collection('tickets').get();
 
-    const events = eventsSnap.docs.map(d => d.data());
-    const orders = ordersSnap.docs.map(d => d.data());
-    const tickets = ticketsSnap.docs.map(d => d.data());
+    const events = eventsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const orders = ordersSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const tickets = ticketsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    const checkinsSnap = await adminDb.collection('checkins').orderBy('scannedAt', 'desc').limit(50).get();
+    const checkins = checkinsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
     const scanLogsSnapshot = await adminDb.collection('scanLogs').where('isDuplicateAttempt', '==', true).get();
     const duplicateScanAttempts = scanLogsSnapshot.docs.length;
@@ -82,7 +85,8 @@ export async function GET() {
       },
       events,
       bookings: orders,
-      tickets
+      tickets,
+      checkins
     });
 
   } catch (error: any) {

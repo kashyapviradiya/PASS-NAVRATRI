@@ -179,19 +179,62 @@ export default function ScannerDashboard() {
       const html5QrCode = new Html5Qrcode(scanRegionId);
       scannerRef.current = html5QrCode;
 
-      await html5QrCode.start(
-        { facingMode: "environment" },
-        {
-          fps: 10,
-          qrbox: { width: 300, height: 300 },
-          aspectRatio: 1.0
-        },
-        onScanSuccess,
-        onScanFailure
-      );
+      const config = {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1.0
+      };
+
+      // Strategy 1: Try rear camera
+      try {
+        await html5QrCode.start(
+          { facingMode: "environment" },
+          config,
+          onScanSuccess,
+          onScanFailure
+        );
+        return;
+      } catch (e) {
+        console.warn("Rear camera failed, trying front camera...", e);
+      }
+
+      // Strategy 2: Try front camera
+      try {
+        await html5QrCode.start(
+          { facingMode: "user" },
+          config,
+          onScanSuccess,
+          onScanFailure
+        );
+        return;
+      } catch (e) {
+        console.warn("Front camera failed, trying device list...", e);
+      }
+
+      // Strategy 3: List all devices and try first available
+      try {
+        const devices = await Html5Qrcode.getCameras();
+        if (devices && devices.length > 0) {
+          await html5QrCode.start(
+            devices[0].id,
+            config,
+            onScanSuccess,
+            onScanFailure
+          );
+          return;
+        }
+      } catch (e) {
+        console.warn("Device list failed", e);
+      }
+
+      // All strategies failed
+      toast.error("No camera found. Please allow camera access and try again.");
+      setIsScanning(false);
+      scannerRef.current = null;
+
     } catch (err) {
       console.error("Error starting scanner:", err);
-      toast.error("Could not start camera.");
+      toast.error("Could not start camera. Please check permissions.");
       setIsScanning(false);
       scannerRef.current = null;
     }

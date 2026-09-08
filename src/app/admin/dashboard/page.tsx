@@ -107,12 +107,15 @@ export default function AdminDashboard() {
           if (data.success) {
             if (data.tickets) setTickets(data.tickets.filter((t: any) => t.eventId === selectedEventId));
             if (data.bookings) setBookings(data.bookings.filter((b: any) => b.eventId === selectedEventId));
-            if (data.tickets) {
-               // Extract pseudo check-ins from tickets
+            if (data.checkins) {
+               const cks = data.checkins.filter((c: any) => c.eventId === selectedEventId);
+               setCheckins(cks.slice(0, 20));
+            } else if (data.tickets) {
+               // Pseudo check-ins fallback
                const cks = data.tickets
                  .filter((t: any) => (t.checkedIn || t.status === 'used') && t.eventId === selectedEventId)
                  .map((t: any) => ({
-                    id: t.id,
+                    id: t.id || t.ticketId || Math.random().toString(),
                     customerName: t.customerName || 'Customer',
                     ticketId: t.ticketId || t.id,
                     ticketType: t.ticketType || t.passType || 'Standard',
